@@ -54,3 +54,28 @@ body {
   height: 60px;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.logoimg {
+    width: 50px;
+}
+
+.navbar-logo {
+    width: 124px;
+    max-height: 42px;
+}
+
+.bg-black {
+    background-color: black;
+}
+
+.width-100 {
+    width: 150px;
+}
+
+.totalsbg {
+    background-color: #e9ecef;
+}
+
+.center {
+    left: 45%;
+}

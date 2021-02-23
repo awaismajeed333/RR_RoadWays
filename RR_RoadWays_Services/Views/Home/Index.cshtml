@@ -2,7 +2,296 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
+@*<div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+</div>*@
+    <div>
+        <h4>Voucher Details</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Number</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Month</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+        </div>
+        <h4>UP Details</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Date</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">From</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">To</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Amount</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+        </div>
+        <h4>Down Details</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Returned Date</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">From</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">To</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Description</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Amount</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Diesel Details</h4>
+            </div>
+            <div class="col-md-6">
+                <button type="button" class="btn btn-outline-primary float-right">Add New</button>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Sr.No</th>
+                            <th>Date</th>
+                            <th>Pump Name</th>
+                            <th>Litre</th>
+                            <th>Rate</th>
+                            <th>Amount</th>
+                            <th>Oil & Others</th>
+                            <th>Amount</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>7/2/2021</td>
+                            <td>PumpA</td>
+                            <td>317</td>
+                            <td>125.01</td>
+                            <td>39628.17</td>
+                            <td></td>
+                            <td>111</td>
+                            <td>39739.17</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>7/2/2021</td>
+                            <td>Random</td>
+                            <td>310</td>
+                            <td>124.6</td>
+                            <td>38626</td>
+                            <td></td>
+                            <td>111</td>
+                            <td>38737</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td class="totalsbg">Total Diesel</td>
+                            <td class="totalsbg">738</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="totalsbg">Total Diesel</td>
+                            <td class="totalsbg">78476.17</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="totalsbg">Oil Shop 2</td>
+                            <td class="totalsbg">20,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="totalsbg">Total Amount</td>
+                            <td class="totalsbg">98476.17</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-6 pl-2">
+                <div class="row totalsbg mb-3">
+                    <div class="col-md-2">
+                        Sr.No
+                    </div>
+                    <div class="col-md-5">
+                        Others Expense
+                    </div>
+                    <div class="col-md-5">
+                        Amount
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        1
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" value="Toll Tax" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" value="14,500" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-2">
+                        1
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" value="Fone Chokidarah	" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" value="800" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-2">
+
+                    </div>
+                    <div class="col-md-5 totalsbg">
+                        Total
+                    </div>
+                    <div class="col-md-5 totalsbg">
+                        36,634
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 pl-2"></div>
+            <div class="col-md-5 pr-2">
+                <div class="row">
+                    <div class="col-md-6">
+                        Total Amdan
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" value="200,000" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        Total Deisel & oil
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" value="98,476" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        Total Others Expense
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" value="36,634" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12 totalsbg text-center">
+                        Trip Profit
+                    </div>
+                    <div class="col-md-12  text-center">
+                        <h3>
+                            64,890
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="center">
+                    <button type="button" class="btn btn-primary ">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
