@@ -15,9 +15,9 @@
                     <h2 class="m-auto">Log In</h2>
                 </div>
                 <div class="row">
-                    <form control="" class="form-group">
+                    <form action="~/Login" method="post" class="form-group">
                         <div class="row">
-                            <input type="text" name="username" id="username" class="form__input" placeholder="Username">
+                            <input type="text" name="email" id="email" class="form__input" placeholder="Username">
                         </div>
                         <div class="row">
                             <!-- <span class="fa fa-lock"></span> -->
@@ -28,9 +28,14 @@
                         </div>
                     </form>
                 </div>
-                @*<div class="row">
-                        <p>Don't have an account? <a href="#">Register Here</a></p>
-                    </div>*@
+                @if (!String.IsNullOrEmpty(ViewBag.ErrorMessage))
+                {
+                    <div class="mt-2">
+                        <div class="alert alert-danger" role="alert">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RR_RoadWays_Services</title>
+    <title>@ViewData["Title"] - RRRoadwaysServices</title>
 
     <environment include="Development">
         <link rel="icon" href="~/Logo.ico">
@@ -17,9 +17,16 @@
               crossorigin="anonymous"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     </environment>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script src="~/js/bootstable.js"></script>
 </head>
 <body>
     <header>
@@ -34,11 +41,23 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                        <li class="nav-item pl-2 pr-2">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item pl-2 pr-2">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Vehicle" asp-action="Index">Vehicles</a>
+                        </li>
+                        <li class="nav-item pl-2 pr-2">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Company" asp-action="Index">Companies</a>
+                        </li>
+                        <li class="nav-item pl-2 pr-2">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Station" asp-action="Index">Stations</a>
+                        </li>
+                        <li class="nav-item pl-2 pr-2">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item pl-2 pr-2">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Login" asp-action="Signout">Signout</a>
                         </li>
                     </ul>
                 </div>

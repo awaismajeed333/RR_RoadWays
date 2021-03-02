@@ -1,0 +1,62 @@
+﻿@model List<RR_RoadWays_Services.Models.Company>;
+@{
+    ViewData["Title"] = "Companies";
+}
+
+<script>
+    $(document).ready(function () {
+        let userRole = "@String.Format(User.Claims.FirstOrDefault(x => x.Type.Contains("role")).Value)"
+        var table = $('#example').DataTable({
+            "ajax": "/Company/getCompanies",
+            "ordering": false,
+            "columns": [
+                { "data": "Name"},
+                { "data": "ContactPerson" },
+                { "data": "ContactNumber" },
+                { "data": "" },
+            ],
+            "columnDefs": [
+                {
+                    "data": null,
+                    "defaultContent": userRole == "Admin" ? "<button id='edit' class='btn btn-dark'>Edit</button> <button id='delete' class='btn btn-dark'>Delete</button>" : "N/A",
+                    "targets": -1,
+                    "orderable": false,
+                }
+            ],
+            error: function (error) {
+            alert(error);
+        }
+        });
+
+        $('#example tbody').on( 'click', '#edit', function () {
+            var data = table.row( $(this).parents('tr') ).data();
+            var url = '@Url.Action("Edit", "Company", new { id = "__id__" })';
+            window.location.href = url.replace('__id__', data.Id);
+        });
+
+        $('#example tbody').on( 'click', '#delete', function () {
+            var data = table.row( $(this).parents('tr') ).data();
+            var url = '@Url.Action("Delete", "Company", new { id = "__id__" })';
+            if (confirm("Please confirm to delete this record")) {
+                window.location.href = url.replace('__id__', data.Id);
+            }
+        });
+    });
+</script>
+
+<div>
+    <div class="m-2 float-right">
+        <input type="button" class="btn btn-dark" value="Add New" onclick="location.href='@Url.Action("Add", "Company")'" />
+    </div>
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Company Name</th>
+                <th>Contact Person</th>
+                <th>Contact Number</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
