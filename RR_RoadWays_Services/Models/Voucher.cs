@@ -27,6 +27,7 @@ namespace RR_RoadWays_Services.Models
         public bool IsDeleted { get; set; }
         public int? CreatedById { get; set; }
         public int? OilShopId { get; set; }
+        public decimal? OilAmount { get; set; }
 
         public virtual Users CreatedBy { get; set; }
         public virtual City DownFromNavigation { get; set; }

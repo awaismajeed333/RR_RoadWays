@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace RR_RoadWays_Services.Models
 {
@@ -17,10 +20,17 @@ namespace RR_RoadWays_Services.Models
 
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<Company> Company { get; set; }
+        public virtual DbSet<Department> Department { get; set; }
+        public virtual DbSet<ExpanseHead> ExpanseHead { get; set; }
+        public virtual DbSet<FixedExpanse> FixedExpanse { get; set; }
+        public virtual DbSet<Installment> Installment { get; set; }
+        public virtual DbSet<Maintenance> Maintenance { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<Station> Station { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<Vehicle> Vehicle { get; set; }
+        public virtual DbSet<VehicleClaim> VehicleClaim { get; set; }
+        public virtual DbSet<VehicleLoadingDetail> VehicleLoadingDetail { get; set; }
         public virtual DbSet<Voucher> Voucher { get; set; }
         public virtual DbSet<VoucherDieselDetails> VoucherDieselDetails { get; set; }
         public virtual DbSet<VoucherOthersExpenses> VoucherOthersExpenses { get; set; }
@@ -30,13 +40,19 @@ namespace RR_RoadWays_Services.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=LAPTOP-D6CQL5UE;Database=RRRoadwaysDB;Trusted_Connection=True;uid=awaisoo;password=test1234");
+                // IConfigurationRoot configuration = new ConfigurationBuilder()
+                //.SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
+                //.AddJsonFile("appsettings.json")
+                //.Build();
+                // optionsBuilder.UseSqlServer(configuration.GetConnectionString("RRRDbConstr"));
+
+                optionsBuilder.UseSqlServer("Server = DESKTOP-KI4V3OT\\SQLEXPRESS; Database = RRRoadwaysDB; Trusted_Connection = True");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
+            modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
 
             modelBuilder.Entity<City>(entity =>
             {
@@ -63,6 +79,86 @@ namespace RR_RoadWays_Services.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Department>(entity =>
+            {
+                entity.Property(e => e.DepartmentName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ExpanseHead>(entity =>
+            {
+                entity.Property(e => e.HeadName)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<FixedExpanse>(entity =>
+            {
+                entity.Property(e => e.BhattaDetails).IsUnicode(false);
+
+                entity.Property(e => e.EntryDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ExpanseMonth)
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ExtraExpenseDetails).IsUnicode(false);
+
+                entity.HasOne(d => d.Vehicle)
+                    .WithMany(p => p.FixedExpanse)
+                    .HasForeignKey(d => d.VehicleId)
+                    .HasConstraintName("FK_FixedExpanse_Vehicle");
+            });
+
+            modelBuilder.Entity<Installment>(entity =>
+            {
+                entity.Property(e => e.EntryDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.InstallmentDate).HasColumnType("date");
+
+                entity.Property(e => e.InstallmentDetail).IsUnicode(false);
+
+                entity.Property(e => e.InstallmentsMonth)
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Vehicle)
+                    .WithMany(p => p.Installment)
+                    .HasForeignKey(d => d.VehicleId)
+                    .HasConstraintName("FK_Installment_Vehicle");
+            });
+
+            modelBuilder.Entity<Maintenance>(entity =>
+            {
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.Property(e => e.EntryDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.MaintenanceDate).HasColumnType("date");
+
+                entity.HasOne(d => d.Department)
+                    .WithMany(p => p.Maintenance)
+                    .HasForeignKey(d => d.DepartmentId)
+                    .HasConstraintName("FK_Maintenance_Department");
+
+                entity.HasOne(d => d.Station)
+                    .WithMany(p => p.Maintenance)
+                    .HasForeignKey(d => d.StationId)
+                    .HasConstraintName("FK_Maintenance_Station");
+
+                entity.HasOne(d => d.Vehicle)
+                    .WithMany(p => p.Maintenance)
+                    .HasForeignKey(d => d.VehicleId)
+                    .HasConstraintName("FK_Maintenance_Vehicle");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -155,6 +251,46 @@ namespace RR_RoadWays_Services.Models
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<VehicleClaim>(entity =>
+            {
+                entity.Property(e => e.Claim)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ClaimDate).HasColumnType("date");
+
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.Property(e => e.EntryDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.Vehicle)
+                    .WithMany(p => p.VehicleClaim)
+                    .HasForeignKey(d => d.VehicleId)
+                    .HasConstraintName("FK_VehicleClaim_Vehicle");
+            });
+
+            modelBuilder.Entity<VehicleLoadingDetail>(entity =>
+            {
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.Property(e => e.EntryDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.LoadingDate).HasColumnType("date");
+
+                entity.Property(e => e.VehicleName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Vehicle)
+                    .WithMany(p => p.VehicleLoadingDetail)
+                    .HasForeignKey(d => d.VehicleId)
+                    .HasConstraintName("FK_VehicleLoadingDetail_Vehicle");
+            });
+
             modelBuilder.Entity<Voucher>(entity =>
             {
                 entity.Property(e => e.CreatedDate).HasColumnType("date");
@@ -171,6 +307,8 @@ namespace RR_RoadWays_Services.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.OilAmount).HasColumnType("decimal(9, 0)");
 
                 entity.Property(e => e.UpAmount).HasColumnType("decimal(18, 0)");
 
@@ -241,9 +379,10 @@ namespace RR_RoadWays_Services.Models
 
                 entity.Property(e => e.CreatedDate).HasColumnType("date");
 
-                entity.Property(e => e.OthersExpense)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.HasOne(d => d.Expanse)
+                    .WithMany(p => p.VoucherOthersExpenses)
+                    .HasForeignKey(d => d.ExpanseId)
+                    .HasConstraintName("FK_VoucherOthersExpenses_ExpanseHead");
 
                 entity.HasOne(d => d.Voucher)
                     .WithMany(p => p.VoucherOthersExpenses)

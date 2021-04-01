@@ -1,0 +1,679 @@
+﻿@model RR_RoadWays_Services.Models.Voucher;
+@{
+    ViewData["Title"] = "Voucher";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h5>Voucher Details</h5>
+        <hr />
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle</span>
+                    </div>
+                    @Html.DropDownListFor(model => model.VehicleNumber, (IEnumerable<SelectListItem>)ViewBag.vehicleId, "--- Select Vehicle ---", new { @class = "form-control", required = "required" })
+
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Month</span>
+                    </div>
+                    @Html.DropDownListFor(model => model.Month, Enumerable.Range(1, 12).Select(x => new SelectListItem { Value = x.ToString(), Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(x) }), "--- Select Month ---", new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+
+        <h5>UP Details</h5>
+        <hr />
+        <div class="row">
+
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Departure Date</span>
+                    </div>
+                    @Html.EditorFor(model => model.UpDate, new
+               {
+                   htmlAttributes = new { @class = "form-control", required = "required" }
+               })
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">From</span>
+                    </div>
+                    @Html.DropDownListFor(model => model.UpFrom, (IEnumerable<SelectListItem>)ViewBag.UpFrom, "--- Select Company ---", new { @class = "form-control", required = "required" })
+
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">To</span>
+                    </div>
+                    @Html.DropDownListFor(model => model.UpTo, (IEnumerable<SelectListItem>)ViewBag.UpTo, "--- Select City ---", new { @class = "form-control", required = "required" })
+
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Amount</span>
+                    </div>
+                    @Html.EditorFor(model => model.UpAmount, new
+               {
+                   htmlAttributes =
+new { @class = "form-control", @type = "number", @min = "0", @step = "1", @value = "0", @onchange = "UpdatePage()" }
+               })
+                </div>
+            </div>
+        </div>
+
+        <h5>Down Details</h5>
+        <hr />
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Return Date</span>
+                    </div>
+                    @Html.EditorFor(model => model.DownReturnDate, new
+               {
+                   htmlAttributes = new { @class = "form-control", required = "required" }
+               })
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">From</span>
+                    </div>
+                    @Html.DropDownListFor(model => model.DownFrom, (IEnumerable<SelectListItem>)ViewBag.DownFrom, "--- Select City ---", new { @class = "form-control", required = "required" })
+
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">To</span>
+                    </div>
+                    @Html.DropDownListFor(model => model.DownTo, (IEnumerable<SelectListItem>)ViewBag.DownTo, "--- Select City ---", new { @class = "form-control", required = "required" })
+
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Description</span>
+                    </div>
+                    @Html.EditorFor(model => model.DownDescription, new
+               {
+                   htmlAttributes =
+new { @class = "form-control" }
+               })
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Amount</span>
+                    </div>
+                    @Html.EditorFor(model => model.DownAmount, new
+               {
+                   htmlAttributes =
+new { @class = "form-control", @type = "number", @min = "0", @step = "1", @value = "0", @onchange= "UpdatePage()" }
+})
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Amount</span>
+                    </div>
+                    <input type="number" id ="TotalIncome" class="form-control" readonly="readonly" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+        </div>
+
+
+        <div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Diesel Details</h4>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-warning float-right" onclick="addDieselDetail()">Add Diesel Details</button>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tbl_DieselDetails" class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th>Sr. No</th>
+                                <th>Date</th>
+                                <th>Pump Name</th>
+                                <th>Litre</th>
+                                <th>Rate</th>
+                                <th>Amount</th>
+                                <th>Oil & Others</th>
+                                <th>Amount</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row totalsbg">
+
+                <div class="col-md-5 pr-2">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <strong>Total Litres</strong>
+                        </div>
+                        <div class="col-md-2">
+                            <h5 id="TotalLitres">0</h5>
+                            @*<input type="text" class="form-control" value="200" aria-label="Small" aria-describedby="inputGroup-sizing-sm">*@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1 pl-2"></div>
+
+                <div class="col-md-1 pl-2"></div>
+                <div class="col-md-5 pr-2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Total Diesel</strong>
+                        </div>
+                        <div class="col-md-6">
+                            @*<input type="text" class="form-control" value="200,000" aria-label="Small" aria-describedby="inputGroup-sizing-sm">*@
+                            <h5 id="TotalDiesel">0</h5>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            @Html.DropDownListFor(model => model.OilShopId, (IEnumerable<SelectListItem>)ViewBag.OilShop, "--- Select Oil Shop ---", new { @class = "form-control", required = "required" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.OilAmount, new
+                       {
+                           htmlAttributes =
+new { @class = "form-control", @type = "number", @value = "0", @onchange= "UpdatePage()" }
+                       })
+                            @*<input type="text" id="OilShopAmount" class="form-control" value="98,476" aria-label="Small" aria-describedby="inputGroup-sizing-sm">*@
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <strong>Total Amount</strong>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 id="TotalAmount">0</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <h5>Other Expanses</h5>
+            <hr />
+            <div class="row">
+                <div class="col-md-7">
+                    <button type="button" class="btn btn-warning float-right" onclick="addExpanseDetail()">Add Expanses</button>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-7 pl-2">
+
+                    <table id="tbl_ExpanseDetails" class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th>Sr. No</th>
+                                <th>Others Expense</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <div class="row mt-3 totalsbg">
+
+                        <div class="col-md-4  text-center">
+                            Total Expanse
+                        </div>
+                        <div class="col-md-8  text-center">
+                            <h5 id="totalExpanse">0</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5 pr-2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Total Amdan
+                        </div>
+                        <div class="col-md-6">
+                            <h5 id="TotalIncome1">0</h5>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            Total Deisel & oil
+                        </div>
+                        <div class="col-md-6">
+                            <h5 id="TotalDiesel1">0</h5>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            Total Others Expense
+                        </div>
+                        <div class="col-md-6">
+                            <h5 id="totalExpanse1">0</h5>
+                        </div>
+                    </div>
+                    <div class="row mt-3 totalsbg">
+                        <div class="col-md-12  text-center">
+                            Trip Profit
+                        </div>
+                        <div class="col-md-12  text-center">
+                            <h5 id="totalProfit">0</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <hr />
+
+        <div class="row">
+            <div class="col-md-6">
+
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="button" class="btn btn-dark" id="btnSaveVoucher">Save</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="newDieselModal">
+            <div class="modal-dialog modal-lg" style="width:1000px !important;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Diesel Details</h5>
+                        <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    </div>
+                    <form id="NewDieselForm">
+                        <div class="modal-body">
+                            <div class="form-horizontal">
+                                <input type="hidden" id="CustomerId" />
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group input-group-sm mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text width-100" id="inputGroup-sizing-sm">Date</span>
+                                            </div>
+                                            <input type="date" id="txtdieseldate" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group input-group-sm mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text width-100" id="inputGroup-sizing-sm">To</span>
+                                            </div>
+                                            @Html.DropDownList("dropDownPump", (IEnumerable<SelectListItem>)ViewBag.PumpId, new { @class = "form-control", required = "required" })
+
+                                            @*@Html.DropDownListFor(model => model.DownTo, (IEnumerable<SelectListItem>)ViewBag.PumpId, new { @class = "form-control", required = "required" })*@
+
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group input-group-sm mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text width-100" id="inputGroup-sizing-sm">Litre</span>
+                                            </div>
+                                            <input type="number" id="txtLitre" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group input-group-sm mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text width-100" id="inputGroup-sizing-sm">Rate</span>
+                                            </div>
+                                            <input type="number" id="txtRate" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group input-group-sm mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text width-100" id="inputGroup-sizing-sm">Oil and Others</span>
+                                            </div>
+                                            <input type="text" id="txtOilandOthers" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group input-group-sm mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text width-100" id="inputGroup-sizing-sm">Amount</span>
+                                            </div>
+                                            <input type="number" id="txtAmount" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button id="saveDieselDetails" type="submit" class="btn btn-warning">Save Diesel Details</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="newExpanseModal">
+            <div class="modal-dialog modal-lg" style="width:1000px !important;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Expanse Details</h5>
+                        <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    </div>
+                    <form id="NewExpanseForm">
+                        <div class="modal-body">
+                            <div class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group input-group-sm mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text width-100" id="inputGroup-sizing-sm">To</span>
+                                            </div>
+                                            @Html.DropDownList("dropDownExpanseHead", (IEnumerable<SelectListItem>)ViewBag.ExpanseHead, new { @class = "form-control", required = "required" })
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group input-group-sm mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text width-100" id="inputGroup-sizing-sm">Amount</span>
+                                            </div>
+                                            <input type="number" id="txtExpanseAmount" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                <button id="saveExpanseDetails" type="submit" class="btn btn-warning">Save Expanse Details</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        @section scripts{
+                <script>
+                //Show Modal.
+                function addDieselDetail() {
+                    $("#newDieselModal").modal();
+                }
+
+                function addExpanseDetail() {
+                    $("#newExpanseModal").modal();
+                }
+                //Add Multiple Order.
+                //$("#addToList").click(function (e) {
+                //    e.preventDefault();
+
+                //    if ($.trim($("#productName").val()) == "" || $.trim($("#price").val()) == "" || $.trim($("#quantity").val()) == "") return;
+
+                //    var productName = $("#productName").val(),
+                //        price = $("#price").val(),
+                //        quantity = $("#quantity").val(),
+                //        detailsTableBody = $("#detailsTable tbody");
+
+                //    var productItem = '<tr><td>' + productName + '</td><td>' + quantity + '</td><td>' + price + '</td><td>' + (parseFloat(price) * parseInt(quantity)) + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+                //    detailsTableBody.append(productItem);
+                //    clearItem();
+                //});
+                //After Add A New Order In The List, Clear Clean The Form For Add More Order.
+                function clearItem() {
+                    $("#txtdieseldate").val('');
+                    $("#txtLitre").val('');
+                    $("#txtRate").val('');
+                    $("#txtOilandOthers").val('');
+                    $("#txtAmount").val('');
+                }
+
+                function clearExpanseItem() {
+                    $("#txtExpanseAmount").val('');
+                    $("#dropDownExpanseHead").val('');
+                }
+
+                // After Add A New Order In The List, If You Want, You Can Remove It.
+                $(document).on('click', 'a.deleteItem', function (e) {
+                    e.preventDefault();
+                    var $self = $(this);
+                    if ($(this).attr('data-itemId') == "0") {
+                        $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800, function () {
+                            $(this).remove();
+                            UpdatePage();
+                        });
+                    }
+
+                });
+
+
+
+                //After Click Save Button Pass All Data View To Controller For Save Database
+                    $("#btnSaveVoucher").click(function (e) {
+                        alert("ss");
+                        var data = JSON.stringify({
+                            name: $("#name").val(),
+                            address: $("#address").val(),
+                            order: orderArr
+                        });
+                        alert(data);
+                        return null;
+                        //$.ajax({
+                        //contentType: 'application/json; charset=utf-8',
+                        //dataType: 'json',
+                        //type: 'POST',
+                        //url: "/Orders/SaveOrder",
+                        //data: data,
+                        //success: function (result) {
+                        //    alert(result);
+                        //    location.reload();
+                        //},
+                        //error: function () {
+                        //    alert("Error!")
+                        //}
+                    });
+                
+                //Collect Multiple Order List For Pass To Controller
+                $("#saveDieselDetails").click(function (e) {
+                    e.preventDefault();
+
+                    if ($.trim($("#txtdieseldate").val()) == "" || $.trim($("#txtLitre").val()) == "" || $.trim($("#txtRate").val()) == "") return;
+
+                    var date = $("#txtdieseldate").val(),
+                        litre = $("#txtLitre").val(),
+                        rate = $("#txtRate").val(),
+                        oilothers = $("#txtOilandOthers").val(),
+                        oilotherAmount = $("#txtAmount").val(),
+                        pump = $("dropDownPump").val();
+
+                    detailsTableBody = $("#tbl_DieselDetails tbody");
+                    var index = document.getElementById("tbl_DieselDetails").rows.length;
+                    var productItem = '<tr><td>' + index + '</td><td>' + date + '</td><td>' + pump + '</td><td>' + litre + '</td><td>' + rate + '</td><td>' + (parseFloat(litre) * parseInt(rate)) + '</td><td> ' + oilothers + '</td><td> ' + oilotherAmount + '</td><td> ' + parseFloat(parseFloat(litre) * parseInt(rate) + parseFloat(oilotherAmount)) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr > ';
+                    detailsTableBody.append(productItem);
+                    clearItem();
+                    UpdatePage();
+                    //var orderArr = [];
+                    //orderArr.length = 0;
+
+                    //$.each($("#tbl_DieselDetails tbody tr"), function () {
+                    //    orderArr.push({
+                    //        productName: $(this).find('td:eq(0)').html(),
+                    //        quantity: $(this).find('td:eq(1)').html(),
+                    //        price: $(this).find('td:eq(2)').html(),
+                    //        amount: $(this).find('td:eq(3)').html()
+                    //    });
+                    //});
+
+
+
+
+                    //$.when(saveOrder(data)).then(function (response) {
+                    //    console.log(response);
+                    //}).fail(function (err) {
+                    //    console.log(err);
+                    //});
+                });
+
+                $("#saveExpanseDetails").click(function (e) {
+                    e.preventDefault();
+
+                    if ($.trim($("#txtExpanseAmount").val()) == "" ) return;
+
+                    var amount = $("#txtExpanseAmount").val(),
+                        expanseHead = $("#dropDownExpanseHead").text();
+
+                    detailsTableBody = $("#tbl_ExpanseDetails tbody");
+                    var index = document.getElementById("tbl_ExpanseDetails").rows.length;
+
+                    var productItem = '<tr><td>' + index + '</td><td>' + expanseHead + '</td><td>' + amount + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr > ';
+                    detailsTableBody.append(productItem);
+                    clearExpanseItem();
+                    UpdatePage();
+                    //var orderArr = [];
+                    //orderArr.length = 0;
+
+                    //$.each($("#tbl_DieselDetails tbody tr"), function () {
+                    //    orderArr.push({
+                    //        productName: $(this).find('td:eq(0)').html(),
+                    //        quantity: $(this).find('td:eq(1)').html(),
+                    //        price: $(this).find('td:eq(2)').html(),
+                    //        amount: $(this).find('td:eq(3)').html()
+                    //    });
+                    //});
+
+
+                    //var data = JSON.stringify({
+                    //    name: $("#name").val(),
+                    //    address: $("#address").val(),
+                    //    order: orderArr
+                    //});
+
+                    //$.when(saveOrder(data)).then(function (response) {
+                    //    console.log(response);
+                    //}).fail(function (err) {
+                    //    console.log(err);
+                    //});
+                });
+
+                    function calculateTotalExpanse() {
+                        var totalExpanse = 0;
+                        $.each($("#tbl_ExpanseDetails tbody tr"), function () {
+                            totalExpanse = totalExpanse + parseInt($(this).find('td:eq(2)').html());
+                        });
+                        $("#totalExpanse").text(totalExpanse);
+                        $("#totalExpanse1").text(totalExpanse);
+                }
+                function calculateDieselValues() {
+                    var totalLitre = 0;
+                    var totalDiesel = 0;
+                    var oilAmount = $("#OilAmount").val();
+                    if (oilAmount == '' || isNAN(oilAmount))
+                        oilAmount = 0;
+
+                    $.each($("#tbl_DieselDetails tbody tr"), function () {
+                        totalLitre = totalLitre + parseInt($(this).find('td:eq(3)').html());
+                        totalDiesel = totalDiesel + parseInt($(this).find('td:eq(8)').html());
+                    });
+
+                    $("#TotalLitres").text(totalLitre);
+                    $("#TotalDiesel").text(totalDiesel);
+
+                    $("#TotalAmount").text(parseFloat(totalDiesel) + parseFloat(oilAmount));
+                    $("#TotalDiesel1").text(parseFloat(totalDiesel) + parseFloat(oilAmount));
+                    }
+
+                    function calculateTotalIncome() {
+
+                        var TotalIncome = 0;
+                        var DownAmount = $("#DownAmount").val();
+                        if (DownAmount == '' || isNaN(DownAmount)) {
+                            DownAmount = 0;
+                        }
+                        var UpAmount = $("#UpAmount").val();
+                        if (UpAmount == '' || isNaN(UpAmount)) {
+                            UpAmount = 0;
+                        }
+                        TotalIncome = parseFloat(DownAmount) + parseFloat(UpAmount);
+                        $("#TotalIncome").val(TotalIncome);
+                        $("#TotalIncome1").text(TotalIncome);
+
+                    }
+                    function calculateProfit() {
+
+                        var TotalProfit = 0;
+                        var amdan = $("#TotalIncome1").text();
+                        if (amdan == '' || isNaN(amdan)) {
+                            amdan = 0;
+                        }
+                        var diesel = $("#TotalDiesel1").text();
+                        if (diesel == '' || isNaN(diesel)) {
+                            diesel = 0;
+                        }
+                        var expanse = $("#totalExpanse1").text();
+                        if (expanse == '' || isNaN(expanse)) {
+                            expanse = 0;
+                        }
+                        TotalProfit = parseFloat(amdan) - (parseFloat(diesel) + parseFloat(expanse));
+                        $("#totalProfit").text(TotalProfit);
+                    }
+
+                    function UpdatePage() {
+                        calculateTotalExpanse();
+                        calculateDieselValues();
+                        calculateTotalIncome();
+                        calculateProfit();
+                    }
+                </script>
+        }
+
+        @if (!String.IsNullOrEmpty(ViewBag.error))
+        {
+            <div class="mt-2">
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.error
+                </div>
+            </div>
+        }
+
+        @if (!String.IsNullOrEmpty(ViewBag.result))
+        {
+            <div class="mt-2">
+                <div class="alert alert-success" role="alert">
+                    @ViewBag.result
+                </div>
+            </div>
+        }
+
+    </div>
+}
+

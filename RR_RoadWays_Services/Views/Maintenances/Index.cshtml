@@ -1,0 +1,71 @@
+﻿@model IEnumerable<RR_RoadWays_Services.Models.Maintenance>
+
+@{
+    ViewData["Title"] = "Maintenance";
+}
+
+
+<script>
+    $(document).ready(function () {
+        let userRole = "@String.Format(User.Claims.FirstOrDefault(x => x.Type.Contains("role")).Value)"
+        var table = $('#example').DataTable({
+            "ajax": "/Maintenances/getMaintenance",
+            "ordering": false,
+            "columns": [
+                { "data": "Id" },
+                { "data": "VehicleNumber" },
+                { "data": "MaintenanceDate" },
+                { "data": "Name" },
+                { "data": "DepartmentName" },
+                { "data": "Description" },
+                { "data": "Amount" },
+                { "data": "" },
+            ],
+            "columnDefs": [
+                {
+                    "data": null,
+                    "defaultContent": userRole == "Admin" ? "<button id='edit' class='btn btn-dark'>Edit</button> <button id='delete' class='btn btn-dark'>Delete</button>" : "N/A",
+                    "targets": -1,
+                    "orderable": false,
+                }
+            ],
+            error: function (error) {
+            alert(error);
+        }
+        });
+
+        $('#example tbody').on( 'click', '#edit', function () {
+            var data = table.row( $(this).parents('tr') ).data();
+            var url = '@Url.Action("Edit", "Maintenances", new { id = "__id__" })';
+            window.location.href = url.replace('__id__', data.Id);
+        });
+
+        $('#example tbody').on( 'click', '#delete', function () {
+            var data = table.row( $(this).parents('tr') ).data();
+            var url = '@Url.Action("Delete", "Maintenances", new { id = "__id__" })';
+            if (confirm("Please confirm to delete this record")) {
+                window.location.href = url.replace('__id__', data.Id);
+            }
+        });
+    });
+</script>
+
+<div>
+    <div class="m-2 float-right">
+        <input type="button" class="btn btn-dark" value="Add New" onclick="location.href='@Url.Action("Add", "Maintenances")'" />
+    </div>
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Vehicle</th>
+                <th>Maintenance Date</th>
+                <th>Station</th>
+                <th>Department</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>

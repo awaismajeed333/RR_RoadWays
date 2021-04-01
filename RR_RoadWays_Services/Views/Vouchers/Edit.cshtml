@@ -1,0 +1,104 @@
+﻿@model RR_RoadWays_Services.Models.Voucher
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Voucher</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="VehicleNumber" class="control-label"></label>
+                <select asp-for="VehicleNumber" class="form-control" asp-items="ViewBag.VehicleNumber"></select>
+                <span asp-validation-for="VehicleNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Month" class="control-label"></label>
+                <input asp-for="Month" class="form-control" />
+                <span asp-validation-for="Month" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpDate" class="control-label"></label>
+                <input asp-for="UpDate" class="form-control" />
+                <span asp-validation-for="UpDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpFrom" class="control-label"></label>
+                <select asp-for="UpFrom" class="form-control" asp-items="ViewBag.UpFrom"></select>
+                <span asp-validation-for="UpFrom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpTo" class="control-label"></label>
+                <select asp-for="UpTo" class="form-control" asp-items="ViewBag.UpTo"></select>
+                <span asp-validation-for="UpTo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpAmount" class="control-label"></label>
+                <input asp-for="UpAmount" class="form-control" />
+                <span asp-validation-for="UpAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DownReturnDate" class="control-label"></label>
+                <input asp-for="DownReturnDate" class="form-control" />
+                <span asp-validation-for="DownReturnDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DownFrom" class="control-label"></label>
+                <select asp-for="DownFrom" class="form-control" asp-items="ViewBag.DownFrom"></select>
+                <span asp-validation-for="DownFrom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DownTo" class="control-label"></label>
+                <select asp-for="DownTo" class="form-control" asp-items="ViewBag.DownTo"></select>
+                <span asp-validation-for="DownTo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DownDescription" class="control-label"></label>
+                <input asp-for="DownDescription" class="form-control" />
+                <span asp-validation-for="DownDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DownAmount" class="control-label"></label>
+                <input asp-for="DownAmount" class="form-control" />
+                <span asp-validation-for="DownAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedDate" class="control-label"></label>
+                <input asp-for="CreatedDate" class="form-control" />
+                <span asp-validation-for="CreatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedById" class="control-label"></label>
+                <select asp-for="CreatedById" class="form-control" asp-items="ViewBag.CreatedById"></select>
+                <span asp-validation-for="CreatedById" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OilShopId" class="control-label"></label>
+                <select asp-for="OilShopId" class="form-control" asp-items="ViewBag.OilShopId"></select>
+                <span asp-validation-for="OilShopId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

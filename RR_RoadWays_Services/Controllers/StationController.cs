@@ -47,6 +47,8 @@ namespace RR_RoadWays_Services.Controllers
             {
                 new SelectListItem { Selected = true, Text = "Pump", Value = "Pump"},
                 new SelectListItem { Selected = false, Text = "Oil Shop", Value = "OilShop"},
+                    new SelectListItem { Selected = false, Text = "Maintenance Shop", Value = "MaintenanceShop"},
+
             }, "Value", "Text");
             ViewBag.cities = new SelectList(context.City.ToList(), "Id", "Name");
             return View(new Station());
@@ -66,6 +68,7 @@ namespace RR_RoadWays_Services.Controllers
                 {
                     new SelectListItem { Selected = true, Text = "Pump", Value = "Pump"},
                     new SelectListItem { Selected = false, Text = "Oil Shop", Value = "OilShop"},
+                    new SelectListItem { Selected = false, Text = "Maintenance Shop", Value = "MaintenanceShop"},
                 }, "Value", "Text");
                 ViewBag.cities = new SelectList(context.City.ToList(), "Id", "Name");
                 ViewBag.result = "Record Saved Successfully!";

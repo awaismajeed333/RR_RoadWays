@@ -41,25 +41,53 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
+                        @*<li class="nav-item pl-2 pr-2">
+            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        </li>*@
                         <li class="nav-item pl-2 pr-2">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Vouchers" asp-action="Index">Voucher</a>
+                        </li>
+
+                        <li class="nav-item pl-2 pr-2">
+                            <a class="nav-link text-white" asp-area="" asp-controller="VehicleLoadingDetails" asp-action="Index">Vehicle Loadings</a>
+                        </li>
+
+                        <li class="nav-item pl-2 pr-2">
+                            <a class="nav-link text-white" asp-area="" asp-controller="FixedExpanses" asp-action="Index">Fixed Expanses</a>
                         </li>
                         <li class="nav-item pl-2 pr-2">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Vehicle" asp-action="Index">Vehicles</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Maintenances" asp-action="Index">Maintenance</a>
                         </li>
                         <li class="nav-item pl-2 pr-2">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Company" asp-action="Index">Companies</a>
+                            <div class="dropdown">
+                                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Insurance
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Installments" asp-action="Index">Installments</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="VehicleClaim" asp-action="Index">Claims</a>
+                                </div>
+                            </div>
                         </li>
                         <li class="nav-item pl-2 pr-2">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Station" asp-action="Index">Stations</a>
+                            <div class="dropdown">
+                                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Setup Pages
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Vehicle" asp-action="Index">Vehicles</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Station" asp-action="Index">Stations</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Company" asp-action="Index">Companies</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="ExpanseHeads" asp-action="Index">Expanse Heads</a>
+                                </div>
+                            </div>
                         </li>
-                        <li class="nav-item pl-2 pr-2">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+
                         <li class="nav-item pl-2 pr-2">
                             <a class="nav-link text-white" asp-area="" asp-controller="Login" asp-action="Signout">Signout</a>
                         </li>
                     </ul>
+                    
                 </div>
             </div>
         </nav>
