@@ -150,7 +150,7 @@ new { @class = "form-control", @type = "number", @min = "0", @step = "1", @value
                     <h4>Diesel Details</h4>
                 </div>
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-warning float-right" onclick="addDieselDetail()">Add Diesel Details</button>
+                    <button type="button" class="btn btn-warning float-right" id="addDieselDetail" >Add Diesel Details</button>
                 </div>
             </div>
             <hr />
@@ -230,7 +230,7 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange= "Updat
             <hr />
             <div class="row">
                 <div class="col-md-7">
-                    <button type="button" class="btn btn-warning float-right" onclick="addExpanseDetail()">Add Expanses</button>
+                    <button type="button" class="btn btn-warning float-right" id="addExpanseDetail">Add Expanses</button>
                 </div>
             </div>
             <div class="row">
@@ -426,164 +426,218 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange= "Updat
 
         @section scripts{
                 <script>
-                //Show Modal.
-                function addDieselDetail() {
-                    $("#newDieselModal").modal();
-                }
+                    //Show Modal.
+                    //function addDieselDetail() {
+                       
+                    //}
 
-                function addExpanseDetail() {
-                    $("#newExpanseModal").modal();
-                }
-                //Add Multiple Order.
-                //$("#addToList").click(function (e) {
-                //    e.preventDefault();
+                    $("#addDieselDetail").click(function (e) {
+                        $("#newDieselModal").modal();
+                    });
 
-                //    if ($.trim($("#productName").val()) == "" || $.trim($("#price").val()) == "" || $.trim($("#quantity").val()) == "") return;
+                    $("#addExpanseDetail").click(function (e) {
+                        $("#newExpanseModal").modal();
+                    });
 
-                //    var productName = $("#productName").val(),
-                //        price = $("#price").val(),
-                //        quantity = $("#quantity").val(),
-                //        detailsTableBody = $("#detailsTable tbody");
 
-                //    var productItem = '<tr><td>' + productName + '</td><td>' + quantity + '</td><td>' + price + '</td><td>' + (parseFloat(price) * parseInt(quantity)) + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
-                //    detailsTableBody.append(productItem);
-                //    clearItem();
-                //});
-                //After Add A New Order In The List, Clear Clean The Form For Add More Order.
-                function clearItem() {
-                    $("#txtdieseldate").val('');
-                    $("#txtLitre").val('');
-                    $("#txtRate").val('');
-                    $("#txtOilandOthers").val('');
-                    $("#txtAmount").val('');
-                }
+                    //function addExpanseDetail() {
+                    //    $("#newExpanseModal").modal();
+                    //}
+                    //Add Multiple Order.
+                    //$("#addToList").click(function (e) {
+                    //    e.preventDefault();
 
-                function clearExpanseItem() {
-                    $("#txtExpanseAmount").val('');
-                    $("#dropDownExpanseHead").val('');
-                }
+                    //    if ($.trim($("#productName").val()) == "" || $.trim($("#price").val()) == "" || $.trim($("#quantity").val()) == "") return;
 
-                // After Add A New Order In The List, If You Want, You Can Remove It.
-                $(document).on('click', 'a.deleteItem', function (e) {
-                    e.preventDefault();
-                    var $self = $(this);
-                    if ($(this).attr('data-itemId') == "0") {
-                        $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800, function () {
-                            $(this).remove();
-                            UpdatePage();
-                        });
+                    //    var productName = $("#productName").val(),
+                    //        price = $("#price").val(),
+                    //        quantity = $("#quantity").val(),
+                    //        detailsTableBody = $("#detailsTable tbody");
+
+                    //    var productItem = '<tr><td>' + productName + '</td><td>' + quantity + '</td><td>' + price + '</td><td>' + (parseFloat(price) * parseInt(quantity)) + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+                    //    detailsTableBody.append(productItem);
+                    //    clearItem();
+                    //});
+                    //After Add A New Order In The List, Clear Clean The Form For Add More Order.
+                    function clearItem() {
+                        $("#txtdieseldate").val('');
+                        $("#txtLitre").val('');
+                        $("#txtRate").val('');
+                        $("#txtOilandOthers").val('');
+                        $("#txtAmount").val('');
                     }
 
-                });
+                    function clearExpanseItem() {
+                        $("#txtExpanseAmount").val('');
+                        $("#dropDownExpanseHead").val('');
+                    }
 
+                    // After Add A New Order In The List, If You Want, You Can Remove It.
+                    $(document).on('click', 'a.deleteItem', function (e) {
+                        e.preventDefault();
+                        var $self = $(this);
+                        if ($(this).attr('data-itemId') == "0") {
+                            $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800, function () {
+                                $(this).remove();
+                                UpdatePage();
+                            });
+                        }
 
-
-                //After Click Save Button Pass All Data View To Controller For Save Database
-                    $("#btnSaveVoucher").click(function (e) {
-                        alert("ss");
-                        var data = JSON.stringify({
-                            name: $("#name").val(),
-                            address: $("#address").val(),
-                            order: orderArr
-                        });
-                        alert(data);
-                        return null;
-                        //$.ajax({
-                        //contentType: 'application/json; charset=utf-8',
-                        //dataType: 'json',
-                        //type: 'POST',
-                        //url: "/Orders/SaveOrder",
-                        //data: data,
-                        //success: function (result) {
-                        //    alert(result);
-                        //    location.reload();
-                        //},
-                        //error: function () {
-                        //    alert("Error!")
-                        //}
                     });
-                
-                //Collect Multiple Order List For Pass To Controller
-                $("#saveDieselDetails").click(function (e) {
-                    e.preventDefault();
-
-                    if ($.trim($("#txtdieseldate").val()) == "" || $.trim($("#txtLitre").val()) == "" || $.trim($("#txtRate").val()) == "") return;
-
-                    var date = $("#txtdieseldate").val(),
-                        litre = $("#txtLitre").val(),
-                        rate = $("#txtRate").val(),
-                        oilothers = $("#txtOilandOthers").val(),
-                        oilotherAmount = $("#txtAmount").val(),
-                        pump = $("dropDownPump").val();
-
-                    detailsTableBody = $("#tbl_DieselDetails tbody");
-                    var index = document.getElementById("tbl_DieselDetails").rows.length;
-                    var productItem = '<tr><td>' + index + '</td><td>' + date + '</td><td>' + pump + '</td><td>' + litre + '</td><td>' + rate + '</td><td>' + (parseFloat(litre) * parseInt(rate)) + '</td><td> ' + oilothers + '</td><td> ' + oilotherAmount + '</td><td> ' + parseFloat(parseFloat(litre) * parseInt(rate) + parseFloat(oilotherAmount)) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr > ';
-                    detailsTableBody.append(productItem);
-                    clearItem();
-                    UpdatePage();
-                    //var orderArr = [];
-                    //orderArr.length = 0;
-
-                    //$.each($("#tbl_DieselDetails tbody tr"), function () {
-                    //    orderArr.push({
-                    //        productName: $(this).find('td:eq(0)').html(),
-                    //        quantity: $(this).find('td:eq(1)').html(),
-                    //        price: $(this).find('td:eq(2)').html(),
-                    //        amount: $(this).find('td:eq(3)').html()
-                    //    });
-                    //});
 
 
 
+                    //After Click Save Button Pass All Data View To Controller For Save Database
+                    $("#btnSaveVoucher").click(function (e) {
 
-                    //$.when(saveOrder(data)).then(function (response) {
-                    //    console.log(response);
-                    //}).fail(function (err) {
-                    //    console.log(err);
-                    //});
-                });
+                        var expanseArr = [];
+                        var dieselArr = [];
 
-                $("#saveExpanseDetails").click(function (e) {
-                    e.preventDefault();
+                        $.each($("#tbl_ExpanseDetails tbody tr"), function () {
+                            expanseArr.push({
+                                VoucherId: "-1",
+                                ExpanseId: $(this).find('td:eq(1)').html(),
+                                Amount: $(this).find('td:eq(2)').html(),
+                                CreatedDate: new Date(),
+                                IsDeleted: 0
+                            });
+                        });
 
-                    if ($.trim($("#txtExpanseAmount").val()) == "" ) return;
+                        $.each($("#tbl_DieselDetails tbody tr"), function () {
+                            dieselArr.push({
+                                VoucherId: "-1",
+                                Date: $(this).find('td:eq(1)').html(),
+                                StationId: $(this).find('td:eq(2)').html(),
+                                Litre: $(this).find('td:eq(3)').html(),
+                                Rate: $(this).find('td:eq(4)').html(),
+                                OilAndOthers: $(this).find('td:eq(6)').html(),
+                                Amount: $(this).find('td:eq(7)').html(),
+                                CreatedDate: new Date(),
+                                IsDeleted: 0
+                            });
+                        });
+                                    var data = JSON.stringify({
 
-                    var amount = $("#txtExpanseAmount").val(),
-                        expanseHead = $("#dropDownExpanseHead").text();
-
-                    detailsTableBody = $("#tbl_ExpanseDetails tbody");
-                    var index = document.getElementById("tbl_ExpanseDetails").rows.length;
-
-                    var productItem = '<tr><td>' + index + '</td><td>' + expanseHead + '</td><td>' + amount + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr > ';
-                    detailsTableBody.append(productItem);
-                    clearExpanseItem();
-                    UpdatePage();
-                    //var orderArr = [];
-                    //orderArr.length = 0;
-
-                    //$.each($("#tbl_DieselDetails tbody tr"), function () {
-                    //    orderArr.push({
-                    //        productName: $(this).find('td:eq(0)').html(),
-                    //        quantity: $(this).find('td:eq(1)').html(),
-                    //        price: $(this).find('td:eq(2)').html(),
-                    //        amount: $(this).find('td:eq(3)').html()
-                    //    });
-                    //});
+                            VehicleNumber: $("#VehicleNumber").val(),
+                            Month: $("#Month").val(),
+                            UpDate: $("#UpDate").val(),
+                            UpFrom: $("#UpFrom").val(),
+                            UpTo: $("#UpTo").val(),
+                            UpAmount: $("#UpAmount").val(),
+                            DownReturnDate: $("#DownReturnDate").val(),
+                            DownFrom: $("#DownFrom").val(),
+                            DownTo: $("#DownTo").val(),
+                            DownDescription: $("#DownDescription").val(),
+                            DownAmount: $("#DownAmount").val(),
+                            CreatedDate: new Date(),
+                            IsDeleted: 0,
+                            CreatedById: 1,
+                            OilShopId: $("#OilShopId").val(),
+                            OilAmount: $("#OilAmount").val(),
+                            VoucherOthersExpenses: expanseArr,
+                            VoucherDieselDetails: dieselArr
 
 
-                    //var data = JSON.stringify({
-                    //    name: $("#name").val(),
-                    //    address: $("#address").val(),
-                    //    order: orderArr
-                    //});
+                            //order: orderArr
+                        });
+                    alert(data);
+                    return null;
+                                                        //$.ajax({
+                                                        //contentType: 'application/json; charset=utf-8',
+                                                        //dataType: 'json',
+                                                        //type: 'POST',
+                                                        //url: "/Orders/SaveOrder",
+                                                        //data: data,
+                                                        //success: function (result) {
+                                                        //    alert(result);
+                                                        //    location.reload();
+                                                        //},
+                                                        //error: function () {
+                                                        //    alert("Error!")
+                                                        //}
+                                                    });
 
-                    //$.when(saveOrder(data)).then(function (response) {
-                    //    console.log(response);
-                    //}).fail(function (err) {
-                    //    console.log(err);
-                    //});
-                });
+                    //Collect Multiple Order List For Pass To Controller
+                    $("#saveDieselDetails").click(function (e) {
+                        e.preventDefault();
+
+                        if ($.trim($("#txtdieseldate").val()) == "" || $.trim($("#txtLitre").val()) == "" || $.trim($("#txtRate").val()) == "") return;
+
+                        var date = $("#txtdieseldate").val(),
+                            litre = $("#txtLitre").val(),
+                            rate = $("#txtRate").val(),
+                            oilothers = $("#txtOilandOthers").val(),
+                            oilotherAmount = $("#txtAmount").val(),
+                            pump = $("dropDownPump").val();
+
+                        detailsTableBody = $("#tbl_DieselDetails tbody");
+                        var index = document.getElementById("tbl_DieselDetails").rows.length;
+                        var productItem = '<tr><td>' + index + '</td><td>' + date + '</td><td>' + pump + '</td><td>' + litre + '</td><td>' + rate + '</td><td>' + (parseFloat(litre) * parseInt(rate)) + '</td><td> ' + oilothers + '</td><td> ' + oilotherAmount + '</td><td> ' + parseFloat(parseFloat(litre) * parseInt(rate) + parseFloat(oilotherAmount)) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr > ';
+                        detailsTableBody.append(productItem);
+                        clearItem();
+                        UpdatePage();
+                        //var orderArr = [];
+                        //orderArr.length = 0;
+
+                        //$.each($("#tbl_DieselDetails tbody tr"), function () {
+                        //    orderArr.push({
+                        //        productName: $(this).find('td:eq(0)').html(),
+                        //        quantity: $(this).find('td:eq(1)').html(),
+                        //        price: $(this).find('td:eq(2)').html(),
+                        //        amount: $(this).find('td:eq(3)').html()
+                        //    });
+                        //});
+
+
+
+
+                        //$.when(saveOrder(data)).then(function (response) {
+                        //    console.log(response);
+                        //}).fail(function (err) {
+                        //    console.log(err);
+                        //});
+                    });
+
+                    $("#saveExpanseDetails").click(function (e) {
+                        e.preventDefault();
+
+                        if ($.trim($("#txtExpanseAmount").val()) == "") return;
+
+                        var amount = $("#txtExpanseAmount").val(),
+                            expanseHead = $("#dropDownExpanseHead").text();
+
+                        detailsTableBody = $("#tbl_ExpanseDetails tbody");
+                        var index = document.getElementById("tbl_ExpanseDetails").rows.length;
+
+                        var productItem = '<tr><td>' + index + '</td><td>' + expanseHead + '</td><td>' + amount + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr > ';
+                        detailsTableBody.append(productItem);
+                        clearExpanseItem();
+                        UpdatePage();
+                        //var orderArr = [];
+                        //orderArr.length = 0;
+
+                        //$.each($("#tbl_DieselDetails tbody tr"), function () {
+                        //    orderArr.push({
+                        //        productName: $(this).find('td:eq(0)').html(),
+                        //        quantity: $(this).find('td:eq(1)').html(),
+                        //        price: $(this).find('td:eq(2)').html(),
+                        //        amount: $(this).find('td:eq(3)').html()
+                        //    });
+                        //});
+
+
+                        //var data = JSON.stringify({
+                        //    name: $("#name").val(),
+                        //    address: $("#address").val(),
+                        //    order: orderArr
+                        //});
+
+                        //$.when(saveOrder(data)).then(function (response) {
+                        //    console.log(response);
+                        //}).fail(function (err) {
+                        //    console.log(err);
+                        //});
+                    });
 
                     function calculateTotalExpanse() {
                         var totalExpanse = 0;
@@ -592,24 +646,24 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange= "Updat
                         });
                         $("#totalExpanse").text(totalExpanse);
                         $("#totalExpanse1").text(totalExpanse);
-                }
-                function calculateDieselValues() {
-                    var totalLitre = 0;
-                    var totalDiesel = 0;
-                    var oilAmount = $("#OilAmount").val();
-                    if (oilAmount == '' || isNAN(oilAmount))
-                        oilAmount = 0;
+                    }
+                    function calculateDieselValues() {
+                        var totalLitre = 0;
+                        var totalDiesel = 0;
+                        var oilAmount = $("#OilAmount").val();
+                        if (oilAmount == '' || isNAN(oilAmount))
+                            oilAmount = 0;
 
-                    $.each($("#tbl_DieselDetails tbody tr"), function () {
-                        totalLitre = totalLitre + parseInt($(this).find('td:eq(3)').html());
-                        totalDiesel = totalDiesel + parseInt($(this).find('td:eq(8)').html());
-                    });
+                        $.each($("#tbl_DieselDetails tbody tr"), function () {
+                            totalLitre = totalLitre + parseInt($(this).find('td:eq(3)').html());
+                            totalDiesel = totalDiesel + parseInt($(this).find('td:eq(8)').html());
+                        });
 
-                    $("#TotalLitres").text(totalLitre);
-                    $("#TotalDiesel").text(totalDiesel);
+                        $("#TotalLitres").text(totalLitre);
+                        $("#TotalDiesel").text(totalDiesel);
 
-                    $("#TotalAmount").text(parseFloat(totalDiesel) + parseFloat(oilAmount));
-                    $("#TotalDiesel1").text(parseFloat(totalDiesel) + parseFloat(oilAmount));
+                        $("#TotalAmount").text(parseFloat(totalDiesel) + parseFloat(oilAmount));
+                        $("#TotalDiesel1").text(parseFloat(totalDiesel) + parseFloat(oilAmount));
                     }
 
                     function calculateTotalIncome() {
@@ -676,4 +730,3 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange= "Updat
 
     </div>
 }
-
