@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace RR_RoadWays_Services.Models
 {
@@ -27,6 +30,7 @@ namespace RR_RoadWays_Services.Models
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<Vehicle> Vehicle { get; set; }
         public virtual DbSet<VehicleClaim> VehicleClaim { get; set; }
+        public virtual DbSet<VehicleLoading> VehicleLoading { get; set; }
         public virtual DbSet<VehicleLoadingDetail> VehicleLoadingDetail { get; set; }
         public virtual DbSet<Voucher> Voucher { get; set; }
         public virtual DbSet<VoucherDieselDetails> VoucherDieselDetails { get; set; }
@@ -37,7 +41,12 @@ namespace RR_RoadWays_Services.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-KI4V3OT\\SQLEXPRESS;Database=RRRoadwaysDB;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Server=DESKTOP-KI4V3OT\\SQLEXPRESS;Database=RRRoadwaysDB;Trusted_Connection=True;");
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+              .SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
+              .AddJsonFile("appsettings.json")
+              .Build();
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("RRRDbConstr"));
             }
         }
 
@@ -262,24 +271,40 @@ namespace RR_RoadWays_Services.Models
                     .HasConstraintName("FK_VehicleClaim_Vehicle");
             });
 
-            modelBuilder.Entity<VehicleLoadingDetail>(entity =>
+            modelBuilder.Entity<VehicleLoading>(entity =>
             {
-                entity.Property(e => e.Description).IsUnicode(false);
-
                 entity.Property(e => e.EntryDate)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.LoadingDate).HasColumnType("date");
 
+                entity.HasOne(d => d.Vehicle)
+                    .WithMany(p => p.VehicleLoading)
+                    .HasForeignKey(d => d.VehicleId)
+                    .HasConstraintName("FK_VehicleLoadingDetail_Vehicle");
+            });
+
+            modelBuilder.Entity<VehicleLoadingDetail>(entity =>
+            {
+                entity.HasKey(e => new { e.Id, e.VloadingId })
+                    .HasName("PK__VehicleL__8B8F42457341171F");
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.VloadingId).HasColumnName("VLoadingId");
+
+                entity.Property(e => e.Description).IsUnicode(false);
+
                 entity.Property(e => e.VehicleName)
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.Vehicle)
+                entity.HasOne(d => d.Vloading)
                     .WithMany(p => p.VehicleLoadingDetail)
-                    .HasForeignKey(d => d.VehicleId)
-                    .HasConstraintName("FK_VehicleLoadingDetail_Vehicle");
+                    .HasForeignKey(d => d.VloadingId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_VehicleLoadingDetail_VehicleLoading");
             });
 
             modelBuilder.Entity<Voucher>(entity =>

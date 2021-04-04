@@ -33,7 +33,7 @@ namespace RR_RoadWays_Services.Controllers
                                             join v in vehicles on vchr.VehicleNumber equals v.Id
                                             select new
                                             {
-                                                vchr.Id,
+                                                vchr.VoucherNumber,
                                                 v.VehicleNumber,
                                                 CreatedDate = vchr.CreatedDate.GetValueOrDefault().ToString("dddd, dd MMMM yyyy"),
                                                 vchr.Month,
@@ -116,9 +116,14 @@ namespace RR_RoadWays_Services.Controllers
             try
             {
                 var context = new RRRoadwaysDBContext();
+                string count = (context.Voucher.ToList().Count + 1).ToString();
+                string voucherNumber = "VCHR" + count.PadLeft(4, '0');
+                data.VoucherNumber = voucherNumber;
+                data.CreatedDate = DateTime.Now.Date;
                 context.Add(data);
                 context.SaveChanges();
-                var id = data.Id;
+                
+                var id = data.VoucherNumber;
                 //ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
                 ViewBag.result = id+"**Record Saved Successfully!";
             }
@@ -128,8 +133,8 @@ namespace RR_RoadWays_Services.Controllers
                 ViewBag.error = e.Message;
             }
             ModelState.Clear();
-           // return Json(ViewBag.result , new Newtonsoft.Json.JsonSerializerSettings());
-            return RedirectToAction("Index", ViewBag.result);
+            return Json(ViewBag.result , new Newtonsoft.Json.JsonSerializerSettings());
+            //return RedirectToAction("Index", ViewBag.result);
 
         }
 

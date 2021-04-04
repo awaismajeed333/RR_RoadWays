@@ -1,4 +1,4 @@
-﻿@model RR_RoadWays_Services.Models.VehicleLoadingDetail;
+﻿@model RR_RoadWays_Services.Models.VehicleLoading;
 @{
     ViewData["Title"] = "Edit Loading Details";
 }
@@ -31,10 +31,8 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text width-100" id="inputGroup-sizing-sm">Voucher #</span>
                     </div>
-                    @Html.DropDownListFor(model => model.VoucherNumber, (IEnumerable<SelectListItem>)ViewBag.voucherId, new
-               {
-                   htmlAttributes = new { @class = "form-control", required = "required" }
-               })
+                    @Html.DropDownListFor(model => model.VoucherNumber, (IEnumerable<SelectListItem>)ViewBag.voucherId, new { @class = "form-control", required = "required" })
+
                 </div>
             </div>
             <div class="col-12 col-md-6">
@@ -48,19 +46,8 @@
                })
                 </div>
             </div>
-            <div class="col-12 col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Loading ID</span>
-                    </div>
-                    @Html.EditorFor(model => model.LoadingId, new
-                    {
-                        htmlAttributes =
-                        new { @class = "form-control", required = "required" }
-                    })
-                </div>
-            </div>
-            <div class="col-12 col-md-6">
+           
+            @*<div class="col-12 col-md-6">
                 <div class="input-group input-group-sm mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Name</span>
@@ -83,7 +70,7 @@
                         new { @class = "form-control" }
                     })
                 </div>
-            </div>
+            </div>*@
         </div>
 
         <div class="row">
