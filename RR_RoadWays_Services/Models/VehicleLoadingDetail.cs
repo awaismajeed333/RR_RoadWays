@@ -12,6 +12,7 @@ namespace RR_RoadWays_Services.Models
         public string VehicleName { get; set; }
         public string Description { get; set; }
         public DateTime? EntryDate { get; set; }
+        public int? VoucherNumber { get; set; }
 
         public virtual Vehicle Vehicle { get; set; }
     }

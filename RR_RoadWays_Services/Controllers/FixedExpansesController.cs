@@ -26,7 +26,7 @@ namespace RR_RoadWays_Services.Controllers
             //var dataFixedExpanses = context.FixedExpanse.ToList().OrderByDescending(x => x.Id);
 
             List<FixedExpanse> fixedExpanses = context.FixedExpanse.ToList();
-            List<Vehicle> vehicles = context.Vehicle.ToList();
+            List<Vehicle> vehicles = context.Vehicle.Where(x => x.IsDeleted == false).ToList();
 
             System.Globalization.DateTimeFormatInfo mfi = new System.Globalization.DateTimeFormatInfo();
 
@@ -43,8 +43,8 @@ namespace RR_RoadWays_Services.Controllers
             ViewBag.result = "";
             ViewBag.error = "";
 
-            ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
-
+            ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
+           
             return View(new FixedExpanse());
         }
 
@@ -54,11 +54,10 @@ namespace RR_RoadWays_Services.Controllers
             try
             {
                 var context = new RRRoadwaysDBContext();
-                data.EntryDate = DateTime.Now.Date;
                 context.Add(data);
                 context.SaveChanges();
 
-                ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
+                ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
                 ViewBag.result = "Record Saved Successfully!";
             }
             catch (Exception e)
@@ -74,7 +73,7 @@ namespace RR_RoadWays_Services.Controllers
         {
             var context = new RRRoadwaysDBContext();
             var std = context.FixedExpanse.Where(s => s.Id == Id).FirstOrDefault();
-            ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
+            ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
             return View(std);
         }
 
@@ -97,7 +96,7 @@ namespace RR_RoadWays_Services.Controllers
                 dbEntry.Property("ExtraExpenseDetails").IsModified = true;
                 
                 context.SaveChanges();
-                ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
+                ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
                 ViewBag.result = "Record Updated Successfully!";
             }
             catch (Exception e)

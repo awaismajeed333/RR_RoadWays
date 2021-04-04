@@ -26,7 +26,7 @@ namespace RR_RoadWays_Services.Controllers
            // var dataMaintenance = context.Maintenance.ToList().OrderByDescending(x => x.Id);
 
             List<Maintenance> maintenances = context.Maintenance.ToList();
-            List<Vehicle> vehicles = context.Vehicle.ToList();
+            List<Vehicle> vehicles = context.Vehicle.Where(x => x.IsDeleted == false).ToList();
             List<Department> departments = context.Department.ToList();
             List<Station> stations = context.Station.ToList();
 
@@ -51,7 +51,7 @@ namespace RR_RoadWays_Services.Controllers
             ViewBag.error = "";
 
             ViewBag.stationId = new SelectList(context.Station.Where(x => x.StationType == "MaintenanceShop").ToList(), "Id", "Name");
-            ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
+            ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
             ViewBag.departId = new SelectList(context.Department.ToList(), "Id", "DepartmentName");
 
             return View(new Maintenance());
@@ -68,7 +68,7 @@ namespace RR_RoadWays_Services.Controllers
                 context.SaveChanges();
 
                 ViewBag.stationId = new SelectList(context.Station.Where(x => x.StationType == "MaintenanceShop").ToList(), "Id", "Name");
-                ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
+                ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
                 ViewBag.departId = new SelectList(context.Department.ToList(), "Id", "DepartmentName");
                 ViewBag.result = "Record Saved Successfully!";
             }
@@ -86,7 +86,7 @@ namespace RR_RoadWays_Services.Controllers
             var context = new RRRoadwaysDBContext();
             var std = context.Maintenance.Where(s => s.Id == Id).FirstOrDefault();
             ViewBag.stationId = new SelectList(context.Station.Where(x => x.StationType == "MaintenanceShop").ToList(), "Id", "Name");
-            ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
+            ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
             ViewBag.departId = new SelectList(context.Department.ToList(), "Id", "DepartmentName");
             return View(std);
         }
@@ -107,7 +107,7 @@ namespace RR_RoadWays_Services.Controllers
 
                 context.SaveChanges();
                 ViewBag.stationId = new SelectList(context.Station.Where(x => x.StationType == "MaintenanceShop").ToList(), "Id", "Name");
-                ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
+                ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
                 ViewBag.departId = new SelectList(context.Department.ToList(), "Id", "DepartmentName");
                 ViewBag.result = "Record Updated Successfully!";
             }

@@ -10,7 +10,7 @@
         <h4>New Vehicle Loadings</h4>
         <hr />
         <div class="row">
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-5">
                 <div class="input-group input-group-sm mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle</span>
@@ -19,16 +19,37 @@
 
                 </div>
             </div>
+            <div class="col-12 col-md-1">
+                <div class="input-group input-group-sm mb-3">
+                    <a href='@Url.Action("Add", "Vehicle")' class="btn btn-dark" style="color: #ffc107">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Voucher #</span>
+                    </div>
+                    @Html.DropDownListFor(model => model.VoucherNumber, (IEnumerable<SelectListItem>)ViewBag.voucherId, new
+               {
+                   htmlAttributes = new { @class = "form-control", required = "required" }
+               })
+                </div>
+            </div>
 
             <div class="col-12 col-md-6">
                 <div class="input-group input-group-sm mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text width-100" id="inputGroup-sizing-sm">Loading Date</span>
                     </div>
-                    @Html.EditorFor(model => model.LoadingDate, new { @class = "form-control", required = "required" })
-
+                    @Html.EditorFor(model => model.LoadingDate, new
+               {
+                   htmlAttributes = new { @class = "form-control", required = "required" }
+               })
                 </div>
             </div>
+
             <div class="col-12 col-md-6">
                 <div class="input-group input-group-sm mb-3">
                     <div class="input-group-prepend">

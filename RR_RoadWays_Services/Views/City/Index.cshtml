@@ -1,22 +1,16 @@
-﻿@model IEnumerable<RR_RoadWays_Services.Models.VehicleLoadingDetail>
-
+﻿@model List<RR_RoadWays_Services.Models.City>;
 @{
-    ViewData["Title"] = "Loadings";
+    ViewData["Title"] = "Cities";
 }
 
 <script>
     $(document).ready(function () {
         let userRole = "@String.Format(User.Claims.FirstOrDefault(x => x.Type.Contains("role")).Value)"
         var table = $('#example').DataTable({
-            "ajax": "/VehicleLoadingDetails/getLoadingDetails",
+            "ajax": "/City/getCities",
             "ordering": false,
             "columns": [
-                { "data": "Id" },
-                { "data": "LoadingId" },
-                { "data": "VehicleNumber" },
-                { "data": "LoadingDate" },
-                { "data": "VehicleName" },
-                { "data": "Description" },
+                { "data": "Name"},
                 { "data": "" },
             ],
             "columnDefs": [
@@ -34,13 +28,13 @@
 
         $('#example tbody').on( 'click', '#edit', function () {
             var data = table.row( $(this).parents('tr') ).data();
-            var url = '@Url.Action("Edit", "VehicleLoadingDetails", new { id = "__id__" })';
+            var url = '@Url.Action("Edit", "City", new { id = "__id__" })';
             window.location.href = url.replace('__id__', data.Id);
         });
 
         $('#example tbody').on( 'click', '#delete', function () {
             var data = table.row( $(this).parents('tr') ).data();
-            var url = '@Url.Action("Delete", "VehicleLoadingDetails", new { id = "__id__" })';
+            var url = '@Url.Action("Delete", "City", new { id = "__id__" })';
             if (confirm("Please confirm to delete this record")) {
                 window.location.href = url.replace('__id__', data.Id);
             }
@@ -50,19 +44,15 @@
 
 <div>
     <div class="m-2 float-right">
-        <input type="button" class="btn btn-dark" value="Add New" onclick="location.href='@Url.Action("Add", "VehicleLoadingDetails")'" />
+        <input type="button" class="btn btn-dark" value="Add New" onclick="location.href='@Url.Action("Add", "City")'" />
     </div>
     <table id="example" class="display" style="width:100%">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Loading Id</th>
-                <th>Vehicle #</th>
-                <th>Loading Date</th>
-                <th>Vehicle Name</th>
-                <th>Description</th>
+                <th>City Name</th>
                 <th>Action</th>
             </tr>
         </thead>
     </table>
 </div>
+

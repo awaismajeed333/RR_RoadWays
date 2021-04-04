@@ -25,7 +25,7 @@ namespace RR_RoadWays_Services.Controllers
             //var dataVehicleLoadingDetail = context.VehicleLoadingDetail.ToList().OrderByDescending(x => x.Id);
 
             List<VehicleLoadingDetail> vehicleLoadings = context.VehicleLoadingDetail.ToList();
-            List<Vehicle> vehicles = context.Vehicle.ToList();
+            List<Vehicle> vehicles = context.Vehicle.Where(x => x.IsDeleted == false).ToList();
 
             var dataVehicleLoadingDetail = (from vl in vehicleLoadings
                                      join v in vehicles on vl.VehicleId equals v.Id
@@ -41,7 +41,9 @@ namespace RR_RoadWays_Services.Controllers
             ViewBag.result = "";
             ViewBag.error = "";
 
-            ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
+            ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
+            ViewBag.voucherId = new SelectList(context.Voucher.Where(x => x.IsDeleted == false).ToList(), "Id", "VoucherNumber");
+
 
             return View(new VehicleLoadingDetail());
         }
@@ -56,7 +58,9 @@ namespace RR_RoadWays_Services.Controllers
                 context.Add(data);
                 context.SaveChanges();
 
-                ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
+                ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
+                ViewBag.voucherId = new SelectList(context.Voucher.Where(x => x.IsDeleted == false).ToList(), "Id", "VoucherNumber");
+
                 ViewBag.result = "Record Saved Successfully!";
             }
             catch (Exception e)
@@ -73,7 +77,9 @@ namespace RR_RoadWays_Services.Controllers
         {
             var context = new RRRoadwaysDBContext();
             var std = context.VehicleLoadingDetail.Where(s => s.Id == Id).FirstOrDefault();
-            ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
+            ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
+            ViewBag.voucherId = new SelectList(context.Voucher.Where(x => x.IsDeleted == false).ToList(), "Id", "VoucherNumber");
+
             return View(std);
         }
 
@@ -90,7 +96,9 @@ namespace RR_RoadWays_Services.Controllers
                 dbEntry.Property("Description").IsModified = true;
 
                 context.SaveChanges();
-                ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
+                ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
+                ViewBag.voucherId = new SelectList(context.Voucher.Where(x => x.IsDeleted == false).ToList(), "Id", "VoucherNumber");
+
                 ViewBag.result = "Record Updated Successfully!";
             }
             catch (Exception e)

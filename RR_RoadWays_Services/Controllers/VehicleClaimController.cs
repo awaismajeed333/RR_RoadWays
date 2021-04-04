@@ -24,7 +24,7 @@ namespace RR_RoadWays_Services.Controllers
             var context = new RRRoadwaysDBContext();
             //var dataClaims= context.VehicleClaim.ToList().OrderByDescending(x => x.Id);
             List<VehicleClaim> claims = context.VehicleClaim.ToList();
-            List<Vehicle> vehicles = context.Vehicle.ToList();
+            List<Vehicle> vehicles = context.Vehicle.Where(x => x.IsDeleted == false).ToList();
 
 
             var dataClaims = (from c in claims
@@ -41,7 +41,7 @@ namespace RR_RoadWays_Services.Controllers
             ViewBag.result = "";
             ViewBag.error = "";
 
-            ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
+            ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
 
             return View(new VehicleClaim());
         }
@@ -56,7 +56,7 @@ namespace RR_RoadWays_Services.Controllers
                 context.Add(data);
                 context.SaveChanges();
 
-                ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
+                ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
                 ViewBag.result = "Record Saved Successfully!";
             }
             catch (Exception e)
@@ -72,7 +72,7 @@ namespace RR_RoadWays_Services.Controllers
         {
             var context = new RRRoadwaysDBContext();
             var std = context.VehicleClaim.Where(s => s.Id == Id).FirstOrDefault();
-            ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
+            ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
             return View(std);
         }
 
@@ -90,7 +90,7 @@ namespace RR_RoadWays_Services.Controllers
                 dbEntry.Property("Amount").IsModified = true;
 
                 context.SaveChanges();
-                ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
+                ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
                 ViewBag.result = "Record Updated Successfully!";
             }
             catch (Exception e)

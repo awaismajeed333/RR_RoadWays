@@ -23,11 +23,13 @@ namespace RR_RoadWays_Services.Models
         public int? DownTo { get; set; }
         public string DownDescription { get; set; }
         public decimal? DownAmount { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public bool IsDeleted { get; set; }
         public int? CreatedById { get; set; }
         public int? OilShopId { get; set; }
         public decimal? OilAmount { get; set; }
+        public string UpDescription { get; set; }
+        public string VoucherNumber { get; set; }
 
         public virtual Users CreatedBy { get; set; }
         public virtual City DownFromNavigation { get; set; }

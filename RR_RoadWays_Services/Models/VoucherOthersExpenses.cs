@@ -9,7 +9,7 @@ namespace RR_RoadWays_Services.Models
         public int? VoucherId { get; set; }
         public int? ExpanseId { get; set; }
         public decimal? Amount { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public bool IsDeleted { get; set; }
 
         public virtual ExpanseHead Expanse { get; set; }
