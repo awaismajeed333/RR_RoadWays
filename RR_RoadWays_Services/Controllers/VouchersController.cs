@@ -33,12 +33,13 @@ namespace RR_RoadWays_Services.Controllers
                                             join v in vehicles on vchr.VehicleNumber equals v.Id
                                             select new
                                             {
+                                                vchr.Id,
                                                 vchr.VoucherNumber,
                                                 v.VehicleNumber,
-                                                CreatedDate = vchr.CreatedDate.GetValueOrDefault().ToString("dddd, dd MMMM yyyy"),
+                                                CreatedDate = vchr.CreatedDate.GetValueOrDefault().ToString("MMMM dd, yyyy"),
                                                 vchr.Month,
-                                                UpDate = vchr.UpDate.GetValueOrDefault().ToString("dddd, dd MMMM yyyy"),
-                                                DownReturnDate = vchr.DownReturnDate.GetValueOrDefault().ToString("dddd, dd MMMM yyyy"),
+                                                UpDate = vchr.UpDate.GetValueOrDefault().ToString("MMMM dd, yyyy"),
+                                                DownReturnDate = vchr.DownReturnDate.GetValueOrDefault().ToString("MMMM dd, yyyy"),
                                                 vchr.UpAmount,
                                                 vchr.DownAmount
                                             }
@@ -90,26 +91,7 @@ namespace RR_RoadWays_Services.Controllers
             return View("Add");
         }
 
-        //[HttpPost]
-        //public IActionResult SaveVoucher([FromBody] Voucher data)
-        //{
-        //    try
-        //    {
-        //        var context = new RRRoadwaysDBContext();
-        //        context.Add(data);
-        //        context.SaveChanges();
-        //        var id = data.Id;
-        //        //ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
-        //        ViewBag.result = "Record Saved Successfully!";
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        var error = e;
-        //        ViewBag.error = e.Message;
-        //    }
-        //    ModelState.Clear();
-        //    return RedirectToAction("Index");
-        //}
+
 
         public ActionResult SaveVoucher([FromBody] Voucher data)
         {
@@ -136,6 +118,18 @@ namespace RR_RoadWays_Services.Controllers
             return Json(ViewBag.result , new Newtonsoft.Json.JsonSerializerSettings());
             //return RedirectToAction("Index", ViewBag.result);
 
+        }
+
+        public ActionResult Details(int Id)
+        {
+            var context = new RRRoadwaysDBContext();
+            var dataVoucher = context.Voucher
+        .Where(f => f.Id == Id)
+        .Include(f => f.VoucherDieselDetails)
+        .Include(f => f.VoucherOthersExpenses)
+        .FirstOrDefault();
+            ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
+            return View(dataVoucher);
         }
 
 
@@ -177,8 +171,12 @@ namespace RR_RoadWays_Services.Controllers
             try
             {
                 var context = new RRRoadwaysDBContext();
-                var dataVoucher = context.Voucher.Where(c => c.Id == id).FirstOrDefault();
-                context.Remove(dataVoucher);
+                var dataVoucher = context.Voucher
+        .Where(f => f.Id == id)
+        .Include(f => f.VoucherDieselDetails)
+        .Include(f => f.VoucherOthersExpenses)
+        .FirstOrDefault();
+                context.Voucher.Remove(dataVoucher);
                 context.SaveChanges();
             }
             catch (Exception e)

@@ -233,6 +233,7 @@ new { @class = "form-control", @type = "number", @min = "0", @step = "1", @value
                             <th>Amount</th>
                             <th>Total</th>
                             <th>Action</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -316,6 +317,7 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                             <th>Others Expense</th>
                             <th>Amount</th>
                             <th>Action</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -639,11 +641,12 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                     rate = $("#txtRate").val(),
                     oilothers = $("#txtOilandOthers").val().trim(),
                     oilotherAmount = $("#txtAmount").val().trim(),
-                    pump = $("#dropDownPump").val();
+                    pump = $("#dropDownPump").val(),
+                    pumpName = $("select#dropDownPump option:selected").text();
 
                 detailsTableBody = $("#tbl_DieselDetails tbody");
                 var index = document.getElementById("tbl_DieselDetails").rows.length;
-                var productItem = '<tr><td>' + index + '</td><td>' + date + '</td><td>' + pump + '</td><td>' + litre + '</td><td>' + rate + '</td><td>' + (parseFloat(litre) * parseInt(rate)) + '</td><td>' + oilothers + '</td><td>' + oilotherAmount + '</td><td>' + parseFloat(parseFloat(litre) * parseInt(rate) + parseFloat(oilotherAmount)) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr > ';
+                var productItem = '<tr><td>' + index + '</td><td>' + date + '</td><td>' + pumpName + '</td><td>' + litre + '</td><td>' + rate + '</td><td>' + (parseFloat(litre) * parseInt(rate)) + '</td><td>' + oilothers + '</td><td>' + oilotherAmount + '</td><td>' + parseFloat(parseFloat(litre) * parseInt(rate) + parseFloat(oilotherAmount)) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + pump + '</td></tr > ';
                 detailsTableBody.append(productItem);
                 clearItem();
                 UpdatePage();
@@ -655,12 +658,13 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                 if ($.trim($("#txtExpanseAmount").val()) == "") return;
 
                 var amount = $("#txtExpanseAmount").val(),
-                    expanseHead = $("#dropDownExpanseHead").val();
+                    expanseHead = $("#dropDownExpanseHead").val(),
+                    expanseHeadName = $("select#dropDownExpanseHead option:selected").text();
 
                 detailsTableBody = $("#tbl_ExpanseDetails tbody");
                 var index = document.getElementById("tbl_ExpanseDetails").rows.length;
 
-                var productItem = '<tr><td>' + index + '</td><td>' + expanseHead + '</td><td>' + amount + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr > ';
+                var productItem = '<tr><td>' + index + '</td><td>' + expanseHeadName + '</td><td>' + amount + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + expanseHead + '</td></tr > ';
                 detailsTableBody.append(productItem);
                 clearExpanseItem();
                 UpdatePage();

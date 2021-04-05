@@ -13,7 +13,6 @@
                 { "data": "VoucherNumber" },
                 { "data": "CreatedDate"},
                 { "data": "VehicleNumber"},
-                { "data": "Month" },
                 { "data": "UpDate" },
                 { "data": "DownReturnDate" },
                 { "data": "UpAmount" },
@@ -24,7 +23,8 @@
                 {
                     "data": null,
                     //"defaultContent": userRole == "Admin" ? "<button id='edit' class='btn btn-dark'>Edit</button> <button id='delete' class='btn btn-dark'>Delete</button>" : "N/A",
-                    "defaultContent": userRole == "Admin" ? "<button id='edit' class='btn btn-dark'>Edit</button> " : "N/A",
+                    //"defaultContent": userRole == "Admin" ? "<button id='edit' class='btn btn-dark'>Edit</button> <button id='delete' class='btn btn-dark'>Delete</button><button id='detailView' class='btn btn-dark'>View</button>" : "<button id='detailView' class='btn btn-dark'>View</button>",
+                    "defaultContent": userRole == "Admin" ? "<button id='edit' class='btn btn-dark'>Edit</button> <button id='delete' class='btn btn-dark'>Delete</button>" : "N/A",
                     "targets": -1,
                     "orderable": false,
                 }
@@ -40,13 +40,19 @@
             window.location.href = url.replace('__id__', data.Id);
         });
 
-        @*$('#example tbody').on( 'click', '#delete', function () {
+        $('#example tbody').on( 'click', '#delete', function () {
             var data = table.row( $(this).parents('tr') ).data();
-            var url = '@Url.Action("Delete", "Company", new { id = "__id__" })';
+            var url = '@Url.Action("Delete", "Vouchers", new { id = "__id__" })';
             if (confirm("Please confirm to delete this record")) {
                 window.location.href = url.replace('__id__', data.Id);
             }
-        });*@
+        });
+        $('#example tbody').on('click', '#detailView', function () {
+            var data = table.row( $(this).parents('tr') ).data();
+            var url = '@Url.Action("Details", "Vouchers", new { id = "__id__" })';
+            window.location.href = url.replace('__id__', data.Id);
+        });
+
     });
 </script>
 
@@ -60,7 +66,6 @@
                 <th>Voucher #</th>
                 <th>Voucher Date</th>
                 <th>Vehicle #</th>
-                <th>Month</th>
                 <th>Departure Date</th>
                 <th>Return Date</th>
                 <th>Up Amount</th>
