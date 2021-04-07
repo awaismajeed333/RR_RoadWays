@@ -136,7 +136,27 @@ namespace RR_RoadWays_Services.Controllers
         public ActionResult Edit(int Id)
         {
             var context = new RRRoadwaysDBContext();
+
+            ViewBag.result = "";
+            ViewBag.error = "";
+
+            ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
+            ViewBag.UpFrom = new SelectList(context.Company.ToList(), "Id", "Name");
+            ViewBag.UpTo = new SelectList(context.City.ToList(), "Id", "Name");
+
+            ViewBag.DownFrom = new SelectList(context.City.ToList(), "Id", "Name");
+            ViewBag.DownTo = new SelectList(context.City.ToList(), "Id", "Name");
+
+            ViewBag.PumpId = new SelectList(context.Station.Where(x => x.StationType.ToLower().Contains("pump")).ToList(), "Id", "Name");
+
+            ViewBag.ExpanseHead = new SelectList(context.ExpanseHead.ToList(), "Id", "HeadName");
+
+            ViewBag.OilShop = new SelectList(context.Station.Where(x => x.StationType.ToLower().Contains("oilshop")).ToList(), "Id", "Name");
+
+
             var std = context.Voucher.Where(s => s.Id == Id).FirstOrDefault();
+            std.VoucherDieselDetails = context.VoucherDieselDetails.Where(s => s.VoucherId == std.Id).ToList();
+            std.VoucherOthersExpenses = context.VoucherOthersExpenses.Where(s => s.VoucherId == std.Id).ToList();
             ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
             return View(std);
         }
