@@ -15,7 +15,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle</span>
                 </div>
-                @Html.DropDownListFor(model => model.VehicleId, (IEnumerable<SelectListItem>)ViewBag.vehicleId,"--- Select Vehicle ---", new { @class = "form-control", required = "required" })
+                @Html.DropDownListFor(model => model.VehicleId, (IEnumerable<SelectListItem>)ViewBag.vehicleId, "--- Select Vehicle ---", new { @class = "form-control", required = "required" })
             </div>
         </div>
         <div class="col-12 col-md-1">
@@ -43,7 +43,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text width-100" id="inputGroup-sizing-sm">Maintenance Shop</span>
                 </div>
-                @Html.DropDownListFor(model => model.StationId, (IEnumerable<SelectListItem>)ViewBag.stationId,"--- Select Shop ---", new { @class = "form-control", required = "required" })
+                @Html.DropDownListFor(model => model.StationId, (IEnumerable<SelectListItem>)ViewBag.stationId, "--- Select Shop ---", new { @class = "form-control", required = "required" })
 
             </div>
         </div>
@@ -59,7 +59,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text width-100" id="inputGroup-sizing-sm">Department</span>
                 </div>
-                @Html.DropDownListFor(model => model.DepartmentId, (IEnumerable<SelectListItem>)ViewBag.departId,"--- Select Department ---", new { @class = "form-control", required = "required" })
+                @Html.DropDownListFor(model => model.DepartmentId, (IEnumerable<SelectListItem>)ViewBag.departId, "--- Select Department ---", new { @class = "form-control", required = "required" })
             </div>
         </div>
         <div class="col-12 col-md-1">
@@ -79,6 +79,19 @@
                     htmlAttributes =
                     new { @class = "form-control" }
                 })
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Maintenance</span>
+                </div>
+                @Html.EditorFor(model => model.MaintenanceDesc, new
+           {
+               htmlAttributes =
+                       new { @class = "form-control" }
+           })
+
             </div>
         </div>
         <div class="col-12 col-md-6">

@@ -35,7 +35,7 @@ namespace RR_RoadWays_Services.Controllers
                                      join v in vehicles on m.VehicleId equals v.Id
                                      join d in departments on m.DepartmentId equals d.Id
                                      join s in stations on m.StationId equals s.Id
-                                     select new {m.Id, v.VehicleNumber, MaintenanceDate = m.MaintenanceDate.GetValueOrDefault().ToString("dddd, dd MMMM yyyy"), s.Name, d.DepartmentName, m.Description, m.Amount }
+                                     select new {m.Id, v.VehicleNumber, MaintenanceDate = m.MaintenanceDate.GetValueOrDefault().ToString("dddd, dd MMMM yyyy"), s.Name, d.DepartmentName, m.Description,m.MaintenanceDesc, m.Amount }
                                      ).ToList();
             
             //return View(maintenanceRecord);
@@ -103,6 +103,7 @@ namespace RR_RoadWays_Services.Controllers
                 dbEntry.Property("DepartmentId").IsModified = true;
                 dbEntry.Property("MaintenanceDate").IsModified = true;
                 dbEntry.Property("Description").IsModified = true;
+                dbEntry.Property("MaintenanceDesc").IsModified = true;
                 dbEntry.Property("Amount").IsModified = true;
 
                 context.SaveChanges();

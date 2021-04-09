@@ -13,6 +13,7 @@ namespace RR_RoadWays_Services.Models
         public string Description { get; set; }
         public int? Amount { get; set; }
         public DateTime? EntryDate { get; set; }
+        public string MaintenanceDesc { get; set; }
 
         public virtual Department Department { get; set; }
         public virtual Station Station { get; set; }
