@@ -16,12 +16,12 @@
                 { "data": "LoadingDate" },
                 { "data": "VehicleName" },
                 { "data": "Description" },
-                { "data": "" },
+                //{ "data": "" },
             ],
             "columnDefs": [
                 {
                     "data": null,
-                    "defaultContent": userRole == "Admin" ? "<button id='edit' class='btn btn-dark'>Edit</button> <button id='delete' class='btn btn-dark'>Delete</button>" : "N/A",
+                    //"defaultContent": userRole == "Admin" ? "<button id='edit' class='btn btn-dark'>Edit</button> <button id='delete' class='btn btn-dark'>Delete</button>" : "N/A",
                     "targets": -1,
                     "orderable": false,
                 }
@@ -48,9 +48,9 @@
 </script>
 
 <div>
-    <div class="m-2 float-right">
+    @*<div class="m-2 float-right">
         <input type="button" class="btn btn-dark" value="Add New" onclick="location.href='@Url.Action("Add", "VehicleLoading")'" />
-    </div>
+    </div>*@
     <table id="example" class="display" style="width:100%">
         <thead>
             <tr>
@@ -59,7 +59,7 @@
                 <th>Loading Date</th>
                 <th>Vehicle Name</th>
                 <th>Description</th>
-                <th>Action</th>
+                @*<th>Action</th>*@
             </tr>
         </thead>
     </table>

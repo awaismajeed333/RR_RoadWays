@@ -50,12 +50,6 @@
     <_ContentIncludedByDefault Remove="Views\ExpanseHeads\Add.cshtml" />
     <_ContentIncludedByDefault Remove="Views\FixedExpanses\Add.cshtml" />
   </ItemGroup>
-  
-   <ItemGroup>
-      <Content Update="appsettings.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-   </ItemGroup>
 
 
   <ItemGroup>
