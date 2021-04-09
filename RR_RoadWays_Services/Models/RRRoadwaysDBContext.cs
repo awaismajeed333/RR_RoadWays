@@ -1,9 +1,6 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 
 namespace RR_RoadWays_Services.Models
 {
@@ -41,12 +38,7 @@ namespace RR_RoadWays_Services.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                //optionsBuilder.UseSqlServer("Server=DESKTOP-KI4V3OT\\SQLEXPRESS;Database=RRRoadwaysDB;Trusted_Connection=True;");
-                IConfigurationRoot configuration = new ConfigurationBuilder()
-              .SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
-              .AddJsonFile("appsettings.json")
-              .Build();
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("RRRDbConstr"));
+                optionsBuilder.UseSqlServer("Server=DESKTOP-KI4V3OT\\SQLEXPRESS;Database=RRRoadwaysDB;Trusted_Connection=True;");
             }
         }
 
@@ -283,6 +275,11 @@ namespace RR_RoadWays_Services.Models
                     .WithMany(p => p.VehicleLoading)
                     .HasForeignKey(d => d.VehicleId)
                     .HasConstraintName("FK_VehicleLoadingDetail_Vehicle");
+
+                entity.HasOne(d => d.Voucher)
+                    .WithMany(p => p.VehicleLoading)
+                    .HasForeignKey(d => d.VoucherId)
+                    .HasConstraintName("FK_VehicleLoading_Voucher");
             });
 
             modelBuilder.Entity<VehicleLoadingDetail>(entity =>

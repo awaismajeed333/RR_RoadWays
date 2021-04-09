@@ -67,7 +67,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text width-100" id="inputGroup-sizing-sm">Station Type</span>
                 </div>
-                @Html.DropDownListFor(model => model.StationType, (IEnumerable<SelectListItem>)ViewBag.stationtypes, new { @class = "form-control", required = "required" })
+                @Html.DropDownListFor(model => model.StationType, (IEnumerable<SelectListItem>)ViewBag.stationtypes, "--- Select Station Type ---",new { @class = "form-control", required = "required" })
 
             </div>
         </div>
@@ -77,7 +77,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text width-100" id="inputGroup-sizing-sm">City</span>
                 </div>
-                @Html.DropDownListFor(model => model.CityId, (IEnumerable<SelectListItem>)ViewBag.cities, new { @class = "form-control", required = "required" })
+                @Html.DropDownListFor(model => model.CityId, (IEnumerable<SelectListItem>)ViewBag.cities,"--- Select City ---", new { @class = "form-control", required = "required" })
 
             </div>
         </div>

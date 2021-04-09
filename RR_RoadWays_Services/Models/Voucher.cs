@@ -7,6 +7,7 @@ namespace RR_RoadWays_Services.Models
     {
         public Voucher()
         {
+            VehicleLoading = new HashSet<VehicleLoading>();
             VoucherDieselDetails = new HashSet<VoucherDieselDetails>();
             VoucherOthersExpenses = new HashSet<VoucherOthersExpenses>();
         }
@@ -38,6 +39,7 @@ namespace RR_RoadWays_Services.Models
         public virtual Company UpFromNavigation { get; set; }
         public virtual City UpToNavigation { get; set; }
         public virtual Vehicle VehicleNumberNavigation { get; set; }
+        public virtual ICollection<VehicleLoading> VehicleLoading { get; set; }
         public virtual ICollection<VoucherDieselDetails> VoucherDieselDetails { get; set; }
         public virtual ICollection<VoucherOthersExpenses> VoucherOthersExpenses { get; set; }
     }

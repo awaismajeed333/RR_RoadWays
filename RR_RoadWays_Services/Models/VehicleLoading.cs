@@ -15,8 +15,10 @@ namespace RR_RoadWays_Services.Models
         public DateTime? LoadingDate { get; set; }
         public DateTime? EntryDate { get; set; }
         public int? VoucherNumber { get; set; }
+        public int? VoucherId { get; set; }
 
         public virtual Vehicle Vehicle { get; set; }
+        public virtual Voucher Voucher { get; set; }
         public virtual ICollection<VehicleLoadingDetail> VehicleLoadingDetail { get; set; }
     }
 }
