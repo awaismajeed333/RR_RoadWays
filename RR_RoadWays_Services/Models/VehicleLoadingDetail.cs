@@ -9,6 +9,7 @@ namespace RR_RoadWays_Services.Models
         public int VloadingId { get; set; }
         public string VehicleName { get; set; }
         public string Description { get; set; }
+        public bool? IsDeleted { get; set; }
 
         public virtual VehicleLoading Vloading { get; set; }
     }

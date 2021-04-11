@@ -41,12 +41,13 @@ namespace RR_RoadWays_Services.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-KI4V3OT\\SQLEXPRESS;Database=RRRServices_DB;Trusted_Connection=True;");
-     //           IConfigurationRoot configuration = new ConfigurationBuilder()
-     //.SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
-     //.AddJsonFile("appsettings.json")
-     //.Build();
-     //           optionsBuilder.UseSqlServer(configuration.GetConnectionString("RRRDbConstr"));
+                //optionsBuilder.UseSqlServer("Server=DESKTOP-KI4V3OT\\SQLEXPRESS;Database=RRRServices_DB;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Server = mssql4.websitelive.net; Database = AwaisMajeed_RRRWays; uid = AwaisMajeed_admin; password = Awais3576315!");
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+               .SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
+               .AddJsonFile("appsettings.json")
+               .Build();
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("RRRDbConstr"));
             }
         }
 
@@ -322,9 +323,7 @@ namespace RR_RoadWays_Services.Models
 
                 entity.Property(e => e.DownAmount).HasColumnType("decimal(18, 0)");
 
-                entity.Property(e => e.DownDescription)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.DownDescription).IsUnicode(false);
 
                 entity.Property(e => e.DownReturnDate).HasColumnType("date");
 
@@ -339,9 +338,7 @@ namespace RR_RoadWays_Services.Models
 
                 entity.Property(e => e.UpDate).HasColumnType("date");
 
-                entity.Property(e => e.UpDescription)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.UpDescription).IsUnicode(false);
 
                 entity.Property(e => e.VoucherNumber)
                     .HasMaxLength(20)

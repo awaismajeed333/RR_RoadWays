@@ -7,6 +7,7 @@
 {
     @Html.AntiForgeryToken()
 <div class="form-horizontal ">
+    @Html.Hidden("RedirectTo", Url.Action("Index", "Vouchers"));
     <div class="row">
         <div class="col-12 col-md-9">
             <h5>Voucher Details</h5>
@@ -570,6 +571,8 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
 
     @section scripts{
         <script>
+            var url = $("#RedirectTo").val();
+
             //Show Modal.
             //function addDieselDetail() {
 
@@ -646,6 +649,7 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                     loadingArrDetail.push({
                         VehicleName: $(this).find('td:eq(1)').html().trim(),
                         Description: $(this).find('td:eq(2)').html().trim(),
+                        IsDeleted: 0
                     })
                 });
 
@@ -656,75 +660,76 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                     EntryDate: $("#CreatedDate").val(),
                     VehicleLoadingDetail: loadingArrDetail
                 });
-                
 
-            $.each($("#tbl_ExpanseDetails tbody tr"), function () {
-                expanseArr.push({
-                    //VoucherId: "0",
-                    ExpanseId: $(this).find('td:eq(4)').html().trim(),
-                    Amount: $(this).find('td:eq(2)').html().trim(),
-                    CreatedDate: $("#CreatedDate").val(),
-                    IsDeleted: 0
+
+                $.each($("#tbl_ExpanseDetails tbody tr"), function () {
+                    expanseArr.push({
+                        //VoucherId: "0",
+                        ExpanseId: $(this).find('td:eq(4)').html().trim(),
+                        Amount: $(this).find('td:eq(2)').html().trim(),
+                        CreatedDate: $("#CreatedDate").val(),
+                        IsDeleted: 0
+                    });
                 });
-            });
 
-            $.each($("#tbl_DieselDetails tbody tr"), function () {
-                dieselArr.push({
-                    //VoucherId: "0",
-                    Date: $(this).find('td:eq(1)').html(),
-                    StationId: $(this).find('td:eq(10)').html(),
-                    Litre: $(this).find('td:eq(3)').html(),
-                    Rate: $(this).find('td:eq(4)').html(),
-                    OilAndOthers: $(this).find('td:eq(6)').html(),
-                    Amount: $(this).find('td:eq(7)').html(),
-                    CreatedDate: $("#CreatedDate").val(),
-                    IsDeleted: 0
+                $.each($("#tbl_DieselDetails tbody tr"), function () {
+                    dieselArr.push({
+                        //VoucherId: "0",
+                        Date: $(this).find('td:eq(1)').html(),
+                        StationId: $(this).find('td:eq(10)').html(),
+                        Litre: $(this).find('td:eq(3)').html(),
+                        Rate: $(this).find('td:eq(4)').html(),
+                        OilAndOthers: $(this).find('td:eq(6)').html(),
+                        Amount: $(this).find('td:eq(7)').html(),
+                        CreatedDate: $("#CreatedDate").val(),
+                        IsDeleted: 0
+                    });
                 });
-            });
 
-            var data = JSON.stringify({
-                VehicleNumber: $("#VehicleNumber").val(),
-                Month: $("#Month").val(),
-                UpDate: $("#UpDate").val(),
-                UpFrom: $("#UpFrom").val(),
-                UpTo: $("#UpTo").val(),
-                UpAmount: $("#UpAmount").val(),
-                UpDescription: $("#UpDescription").val(),
-                DownReturnDate: $("#DownReturnDate").val(),
-                DownFrom: $("#DownFrom").val(),
-                DownTo: $("#DownTo").val(),
-                DownDescription: $("#DownDescription").val(),
-                DownAmount: $("#DownAmount").val(),
-                CreatedDate: $("#CreatedDate").val(),
-                IsDeleted: 0,
-                CreatedById: 1,
-                OilShopId: $("#OilShopId").val(),
-                OilAmount: $("#OilAmount").val(),
-                VoucherOthersExpenses: expanseArr,
-                VoucherDieselDetails: dieselArr,
-                VehicleLoading: loadingArr
+                var data = JSON.stringify({
+                    VehicleNumber: $("#VehicleNumber").val(),
+                    Month: $("#Month").val(),
+                    UpDate: $("#UpDate").val(),
+                    UpFrom: $("#UpFrom").val(),
+                    UpTo: $("#UpTo").val(),
+                    UpAmount: $("#UpAmount").val(),
+                    UpDescription: $("#UpDescription").val(),
+                    DownReturnDate: $("#DownReturnDate").val(),
+                    DownFrom: $("#DownFrom").val(),
+                    DownTo: $("#DownTo").val(),
+                    DownDescription: $("#DownDescription").val(),
+                    DownAmount: $("#DownAmount").val(),
+                    CreatedDate: $("#CreatedDate").val(),
+                    IsDeleted: 0,
+                    CreatedById: 1,
+                    OilShopId: $("#OilShopId").val(),
+                    OilAmount: $("#OilAmount").val(),
+                    VoucherOthersExpenses: expanseArr,
+                    VoucherDieselDetails: dieselArr,
+                    VehicleLoading: loadingArr
 
 
-                //order: orderArr
-            });
-            $.ajax({
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                type: 'POST',
-                url: "/Vouchers/SaveVoucher",
-                data: data,
-                success: function (result) {
+                    //order: orderArr
+                });
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: "/Vouchers/SaveVoucher",
+                    data: data,
+                    success: function (result) {
 
-                    if (typeof result != "undefined" && result != null) {
-                        alert(result.split("**")[1]);
-                        $("#VoucherNumber").text(result.split("**")[0]);
+                        if (typeof result != "undefined" && result != null) {
+                            alert(result.split("**")[1]);
+                            $("#VoucherNumber").text(result.split("**")[0]);
+                            //location.href = url;
+                        }
+
+                    },
+                    error: function () {
+                        alert("Error!");
                     }
-                   
-                },
-                error: function () {
-                    alert("Error!");
-                }
-            });
+                });
             });
 
             //Collect Multiple Order List For Pass To Controller
@@ -743,7 +748,7 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
 
                 detailsTableBody = $("#tbl_DieselDetails tbody");
                 var index = document.getElementById("tbl_DieselDetails").rows.length;
-                var productItem = '<tr><td>' + index + '</td><td>' + date + '</td><td>' + pumpName + '</td><td>' + litre + '</td><td>' + rate + '</td><td>' + (parseFloat(litre) * parseFloat(rate)) + '</td><td>' + oilothers + '</td><td>' + oilotherAmount + '</td><td>' + parseFloat(parseFloat(litre) * parseInt(rate) + parseFloat(oilotherAmount)) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + pump + '</td></tr > ';
+                var productItem = '<tr><td>' + index + '</td><td>' + date + '</td><td>' + pumpName + '</td><td>' + litre + '</td><td>' + rate + '</td><td>' + (parseFloat(litre) * parseFloat(rate)) + '</td><td>' + oilothers + '</td><td>' + oilotherAmount + '</td><td>' + parseFloat(parseFloat(litre) * parseFloat(rate) + parseFloat(oilotherAmount)) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + pump + '</td></tr > ';
                 detailsTableBody.append(productItem);
                 clearItem();
                 UpdatePage();
@@ -776,7 +781,7 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                 var name = $("#txtnewVehicleName").val();
                 var desc = $("#txtnewVehicleDesc").val();
 
-                    vehicleLoadingBody = $("#tbl_VehicleLoading tbody");
+                vehicleLoadingBody = $("#tbl_VehicleLoading tbody");
                 var index = document.getElementById("tbl_VehicleLoading").rows.length;
 
                 var productItem = '<tr><td>' + index + '</td><td>' + name + '</td><td>' + desc + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr > ';
@@ -789,7 +794,7 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
             function calculateTotalExpanse() {
                 var totalExpanse = 0;
                 $.each($("#tbl_ExpanseDetails tbody tr"), function () {
-                    totalExpanse = totalExpanse + parseInt($(this).find('td:eq(2)').html());
+                    totalExpanse = totalExpanse + parseFloat($(this).find('td:eq(2)').html());
                 });
                 $("#totalExpanse").text(totalExpanse);
                 $("#totalExpanse1").text(totalExpanse);
@@ -802,7 +807,7 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                     oilAmount = 0;
 
                 $.each($("#tbl_DieselDetails tbody tr"), function () {
-                    totalLitre = totalLitre + parseInt($(this).find('td:eq(3)').html());
+                    totalLitre = totalLitre + parseFloat($(this).find('td:eq(3)').html());
                     totalDiesel = totalDiesel + parseFloat($(this).find('td:eq(8)').html());
                 });
 
