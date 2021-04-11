@@ -570,7 +570,7 @@
         </div>
 
         @section scripts{
-            <script>
+                <script>
             //Show Modal.
             //function addDieselDetail() {
 
@@ -586,38 +586,7 @@
             $("#AddVehicleLoading").click(function (e) {
                 $("#newVehicleLoadingModal").modal();
             });
-            var expensehead = @Html.Raw(Json.Serialize(ViewBag.ExpanseHead));
-            var model = @Html.Raw(Json.Serialize(Model));
 
-                if (model.voucherOthersExpenses.length > 0) {
-                    for (var i = 0; i < model.voucherOthersExpenses.length; i++) {
-                        let detailsTableBody = $("#tbl_ExpanseDetails tbody");
-                        var index = document.getElementById("tbl_ExpanseDetails").rows.length;
-                        var productItem = '<tr><td>' + index + '</td><td>' + model.voucherOthersExpenses[i].expanse.headName + '</td><td>' + model.voucherOthersExpenses[i].amount + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + model.voucherOthersExpenses[i].expanse.id + '</td></tr > ';
-                        detailsTableBody.append(productItem);
-                        UpdatePage();
-                    }
-                }
-
-                if (model.voucherDieselDetails.length > 0) {
-                    for (var i = 0; i < model.voucherDieselDetails.length; i++) {
-                        let detailsTableBody = $("#tbl_DieselDetails tbody");
-                        var index = document.getElementById("tbl_DieselDetails").rows.length;
-                        var productItem = '<tr><td>' + index + '</td><td>' + new Date(model.voucherDieselDetails[i].date).toLocaleDateString() + '</td><td>' + model.voucherDieselDetails[i].station.name + '</td><td>' + model.voucherDieselDetails[i].litre + '</td><td>' + model.voucherDieselDetails[i].rate + '</td><td>' + (parseFloat(model.voucherDieselDetails[i].litre) * parseInt(model.voucherDieselDetails[i].rate)) + '</td><td>' + model.voucherDieselDetails[i].oilAndOthers + '</td><td>' + model.voucherDieselDetails[i].amount + '</td><td>' + parseFloat(parseFloat(model.voucherDieselDetails[i].litre) * parseInt(model.voucherDieselDetails[i].rate) + parseFloat(model.voucherDieselDetails[i].amount)) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + model.voucherDieselDetails[i].station.id + '</td></tr > ';
-                        detailsTableBody.append(productItem);
-                        UpdatePage();
-                    }
-            }
-
-            if (model.vehicleLoadingBody.length > 0) {
-                for (var i = 0; i < model.vehicleLoadingBody.length; i++) {
-                    let detailsTableBody = $("#tbl_VehicleLoading tbody");
-                    var index = document.getElementById("tbl_VehicleLoading").rows.length;
-                    var productItem = '<tr><td>' + index + '</td><td>' + new Date(model.vehicleLoadingBody[i].VehicleName) + '</td><td>' + model.vehicleLoadingBody[i].Description + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + model.vehicleLoadingBody[i].id + '</td></tr > ';
-                    detailsTableBody.append(productItem);
-                }
-                UpdatePage();
-            }
 
 
             //function addExpanseDetail() {
@@ -744,7 +713,7 @@
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 type: 'POST',
-                url: "/Vouchers/SaveVoucher",
+                url: "/Vouchers/Edit",
                 data: data,
                 success: function (result) {
                     alert(result.split("**")[1]);
@@ -891,10 +860,48 @@
 
             $(document).ready(
                 function () {
+                    var expensehead = @Html.Raw(Json.Serialize(ViewBag.ExpanseHead));
+                    var model = @Html.Raw(Json.Serialize(Model));
+                    console.log(model);
+
+                if (model.voucherOthersExpenses.length > 0) {
+                    for (var i = 0; i < model.voucherOthersExpenses.length; i++) {
+                        let detailsTableBody = $("#tbl_ExpanseDetails tbody");
+                        var index = document.getElementById("tbl_ExpanseDetails").rows.length;
+                        var productItem = '<tr><td>' + index + '</td><td>' + model.voucherOthersExpenses[i].expanse.headName + '</td><td>' + model.voucherOthersExpenses[i].amount + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + model.voucherOthersExpenses[i].expanse.id + '</td></tr > ';
+                        detailsTableBody.append(productItem);
+                        UpdatePage();
+                    }
+                }
+
+                if (model.voucherDieselDetails.length > 0) {
+                    for (var i = 0; i < model.voucherDieselDetails.length; i++) {
+                        let detailsTableBody = $("#tbl_DieselDetails tbody");
+                        var index = document.getElementById("tbl_DieselDetails").rows.length;
+                        var productItem = '<tr><td>' + index + '</td><td>' + new Date(model.voucherDieselDetails[i].date).toLocaleDateString() + '</td><td>' + model.voucherDieselDetails[i].station.name + '</td><td>' + model.voucherDieselDetails[i].litre + '</td><td>' + model.voucherDieselDetails[i].rate + '</td><td>' + (parseFloat(model.voucherDieselDetails[i].litre) * parseInt(model.voucherDieselDetails[i].rate)) + '</td><td>' + model.voucherDieselDetails[i].oilAndOthers + '</td><td>' + model.voucherDieselDetails[i].amount + '</td><td>' + parseFloat(parseFloat(model.voucherDieselDetails[i].litre) * parseInt(model.voucherDieselDetails[i].rate) + parseFloat(model.voucherDieselDetails[i].amount)) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + model.voucherDieselDetails[i].station.id + '</td></tr > ';
+                        detailsTableBody.append(productItem);
+                        UpdatePage();
+                    }
+            }
+
+            //if (model.VehicleLoading.length > 0) {
+            //    for (var i = 0; i < model.VehicleLoadingDetail.length; i++) {
+            //        alert(model.VehicleLoadingDetail[i].VehicleName)
+            //        //if (model.VehicleLoadingDetail.length > 0) {
+            //        //    for (var i = 0; i < model.VehicleLoadingDetail.length; i++) {
+            //        //        let detailsTableBody = $("#tbl_VehicleLoading tbody");
+            //        //        var index = document.getElementById("tbl_VehicleLoading").rows.length;
+            //        //        var productItem = '<tr><td>' + index + '</td><td>' + new Date(model.VehicleLoadingDetail[i].VehicleName) + '</td><td>' + model.VehicleLoadingDetail[i].Description + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + model.VehicleLoadingDetail[i].id + '</td></tr > ';
+            //        //        detailsTableBody.append(productItem);
+            //        //    }
+            //        //}
+            //    }
+            //    UpdatePage();
+            //}
                     UpdatePage();
                 });
 
-            </script>
+                </script>
         }
 
         @if (!String.IsNullOrEmpty(ViewBag.error))

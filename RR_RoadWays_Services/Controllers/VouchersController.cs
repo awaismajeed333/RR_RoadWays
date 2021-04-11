@@ -113,7 +113,7 @@ namespace RR_RoadWays_Services.Controllers
             catch (Exception e)
             {
                 var error = e;
-                ViewBag.error = e.Message;
+                ViewBag.error = "0**"+e.Message;
             }
             ModelState.Clear();
             return Json(ViewBag.result , new Newtonsoft.Json.JsonSerializerSettings());
@@ -197,7 +197,7 @@ namespace RR_RoadWays_Services.Controllers
                 dbEntry.Property("VehicleId").IsModified = true;
                 dbEntry.Property("VehicleName").IsModified = true;
                 dbEntry.Property("Description").IsModified = true;
-
+                
                 context.SaveChanges();
                 ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
                 ViewBag.result = "Record Updated Successfully!";
@@ -217,10 +217,11 @@ namespace RR_RoadWays_Services.Controllers
             {
                 var context = new RRRoadwaysDBContext();
                 var dataVoucher = context.Voucher
-        .Where(f => f.Id == id)
-        .Include(f => f.VoucherDieselDetails)
-        .Include(f => f.VoucherOthersExpenses)
-        .FirstOrDefault();
+       .Where(f => f.Id == id)
+       .Include(vdd => vdd.VoucherDieselDetails)
+       .Include(voe => voe.VoucherOthersExpenses)
+       .Include(vl => vl.VehicleLoading).ThenInclude(vld => vld.VehicleLoadingDetail)
+       .FirstOrDefault();
                 context.Voucher.Remove(dataVoucher);
                 context.SaveChanges();
             }

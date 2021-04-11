@@ -429,7 +429,8 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                                         <div class="input-group-prepend">
                                             <span class="input-group-text width-100" id="inputGroup-sizing-sm">Date</span>
                                         </div>
-                                        <input type="date" id="txtdieseldate" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        <input class="form-control text-box single-line" id="txtdieseldate" name="txtdieseldate" required="required" type="datetime-local" value="">
+                                        @*<input type="date" id="txtdieseldate" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">*@
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -713,8 +714,12 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                 url: "/Vouchers/SaveVoucher",
                 data: data,
                 success: function (result) {
-                    alert(result.split("**")[1]);
-                    $("#VoucherNumber").text(result.split("**")[0]);
+
+                    if (typeof result != "undefined" && result != null) {
+                        alert(result.split("**")[1]);
+                        $("#VoucherNumber").text(result.split("**")[0]);
+                    }
+                   
                 },
                 error: function () {
                     alert("Error!");
@@ -738,7 +743,7 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
 
                 detailsTableBody = $("#tbl_DieselDetails tbody");
                 var index = document.getElementById("tbl_DieselDetails").rows.length;
-                var productItem = '<tr><td>' + index + '</td><td>' + date + '</td><td>' + pumpName + '</td><td>' + litre + '</td><td>' + rate + '</td><td>' + (parseFloat(litre) * parseInt(rate)) + '</td><td>' + oilothers + '</td><td>' + oilotherAmount + '</td><td>' + parseFloat(parseFloat(litre) * parseInt(rate) + parseFloat(oilotherAmount)) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + pump + '</td></tr > ';
+                var productItem = '<tr><td>' + index + '</td><td>' + date + '</td><td>' + pumpName + '</td><td>' + litre + '</td><td>' + rate + '</td><td>' + (parseFloat(litre) * parseFloat(rate)) + '</td><td>' + oilothers + '</td><td>' + oilotherAmount + '</td><td>' + parseFloat(parseFloat(litre) * parseInt(rate) + parseFloat(oilotherAmount)) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + pump + '</td></tr > ';
                 detailsTableBody.append(productItem);
                 clearItem();
                 UpdatePage();
@@ -791,14 +796,14 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
             }
             function calculateDieselValues() {
                 var totalLitre = 0;
-                var totalDiesel = 0;
+                var totalDiesel = 0.0;
                 var oilAmount = $("#OilAmount").val();
                 if (oilAmount == '')
                     oilAmount = 0;
 
                 $.each($("#tbl_DieselDetails tbody tr"), function () {
                     totalLitre = totalLitre + parseInt($(this).find('td:eq(3)').html());
-                    totalDiesel = totalDiesel + parseInt($(this).find('td:eq(8)').html());
+                    totalDiesel = totalDiesel + parseFloat($(this).find('td:eq(8)').html());
                 });
 
                 $("#TotalLitres").text(totalLitre);
