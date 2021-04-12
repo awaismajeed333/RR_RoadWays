@@ -10,7 +10,7 @@ namespace RR_RoadWays_Services.Models
         public int? StationId { get; set; }
         public int? Litre { get; set; }
         public decimal? Rate { get; set; }
-        public decimal? OilAndOthers { get; set; }
+        public string OilAndOthers { get; set; }
         public decimal? Amount { get; set; }
         public DateTime? CreatedDate { get; set; }
         public bool IsDeleted { get; set; }
