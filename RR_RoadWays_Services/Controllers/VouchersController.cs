@@ -194,114 +194,117 @@ namespace RR_RoadWays_Services.Controllers
                 var context = new RRRoadwaysDBContext();
                 var dbEntry = context.Entry(data);
 
-                List<int> previousExpanseIds = context.VoucherOthersExpenses
-                           .Where(ep => ep.VoucherId == data.Id)
-                           .Select(ep => ep.Id)
-                           .ToList();
-
-                //List<int> previousLoadingIds = context.VehicleLoading
-                //    .Where(v => v.VoucherId == data.Id)
-                //    .Include(vl => vl.VehicleLoadingDetail)
-                //           .Select(vl => vl.Id)
+                //List<int> previousExpanseIds = context.VoucherOthersExpenses
+                //           .Where(ep => ep.VoucherId == data.Id)
+                //           .Select(ep => ep.Id)
                 //           .ToList();
 
-                List<int> previousDieselIds = context.VoucherDieselDetails
-                       .Where(vl => vl.VoucherId == data.Id)
-                      .Select(vl => vl.Id)
-                      .ToList();
+                List<int> previousLoadingIds = context.VehicleLoading
+                    .Where(v => v.VoucherId == data.Id)
+                    .Include(vl => vl.VehicleLoadingDetail)
+                           .Select(vl => vl.Id)
+                           .ToList();
 
-                //List<VehicleLoading> currentLoadingIds = data.VehicleLoading.ToList();
-                //List<VehicleLoadingDetail> currentLoadingDetsIds = new List<VehicleLoadingDetail>();
-                //foreach (var item in currentLoadingIds)
+                //List<int> previousDieselIds = context.VoucherDieselDetails
+                //       .Where(vl => vl.VoucherId == data.Id)
+                //      .Select(vl => vl.Id)
+                //      .ToList();
+
+                List<VehicleLoading> currentLoadingIds = data.VehicleLoading.ToList();
+                List<int> currentLoadingDetailIds = new List<int>();
+                foreach (var item in currentLoadingIds)
+                {
+                    //VehicleLoading deletedVehicleLoading = item.VehicleLoading.Where(od => od.VoucherId == data.Id && od.Id == deleteLoadingDetailId).Single();
+                    List<int> deletedVehicleLoadingDetail = item.VehicleLoadingDetail.Where(od => od.VloadingId == item.Id).Select(od => od.Id).ToList();
+                    currentLoadingDetailIds.AddRange(deletedVehicleLoadingDetail);
+                }
+
+
+                //List<int> currentExpanseIds = data.VoucherOthersExpenses.Select(o => o.Id).ToList();
+
+                //List<int> currentDieselIds = data.VoucherDieselDetails.Select(o => o.Id).ToList();
+
+                //List<int> deletedExpanseIds = previousExpanseIds.Except(currentExpanseIds).ToList();
+                //List<int> deletedDieselIds = previousDieselIds.Except(currentDieselIds).ToList();
+                List<int> deletedLoadingDetailIds = previousLoadingIds.Except(currentLoadingDetailIds).ToList();
+
+
+
+                //foreach (var deletedExpanseId in deletedExpanseIds)
                 //{
-                //    currentLoadingDetsIds.AddRange(item.VehicleLoadingDetail.Where(o => o.VloadingId == item.Id).ToList());
+                //    VoucherOthersExpenses deletedExpanse = context.VoucherOthersExpenses.Where(od => od.VoucherId == data.Id && od.Id == deletedExpanseId).Single();
+                //    context.Entry(deletedExpanse).State = EntityState.Deleted;
                 //}
-                //List<int> currentLoadingDetailIds = currentLoadingDetsIds.Select(o => o.Id).ToList();
 
-
-                List<int> currentExpanseIds = data.VoucherOthersExpenses.Select(o => o.Id).ToList();
-                
-                List<int> currentDieselIds = data.VoucherDieselDetails.Select(o => o.Id).ToList();
-
-                List<int> deletedExpanseIds = previousExpanseIds.Except(currentExpanseIds).ToList();
-                List<int> deletedDieselIds = previousDieselIds.Except(currentDieselIds).ToList();
-                //List<int> deletedLoadingDetailIds = previousLoadingIds.Except(currentLoadingDetailIds).ToList();
-
-
-
-                foreach (var deletedExpanseId in deletedExpanseIds)
-                {
-                    VoucherOthersExpenses deletedExpanse = context.VoucherOthersExpenses.Where(od => od.VoucherId == data.Id && od.Id == deletedExpanseId).Single();
-                    context.Entry(deletedExpanse).State = EntityState.Deleted;
-                }
-
-                foreach (var ExpanseDetail in data.VoucherOthersExpenses)
-                {
-                    if (ExpanseDetail.Id == 0)
-                    {
-                        context.Entry(ExpanseDetail).State = EntityState.Added;
-                        ExpanseDetail.VoucherId = data.Id;
-                    }
-                    else
-                    {
-       
-                        context.Entry(ExpanseDetail).State = EntityState.Modified;
-                        ExpanseDetail.VoucherId = data.Id;
-                    }
-                }
-
-                foreach (var deleteDieselId in deletedDieselIds)
-                {
-                    VoucherDieselDetails deletedDiesel = context.VoucherDieselDetails.Where(od => od.VoucherId == data.Id && od.Id == deleteDieselId).Single();
-                    context.Entry(deletedDiesel).State = EntityState.Deleted;
-                }
-
-                foreach (var DieselDetail in data.VoucherDieselDetails)
-                {
-                    if (DieselDetail.Id == 0)
-                    {
-                        context.Entry(DieselDetail).State = EntityState.Added;
-                        DieselDetail.VoucherId = data.Id;
-                    }
-                    else
-                    {
-                        context.Entry(DieselDetail).State = EntityState.Modified;
-                        DieselDetail.VoucherId = data.Id;
-                    }
-                }
-
-                //foreach (var deleteLoadingDetailId in deletedLoadingDetailIds)
+                //foreach (var ExpanseDetail in data.VoucherOthersExpenses)
                 //{
+                //    if (ExpanseDetail.Id == 0)
+                //    {
+                //        context.Entry(ExpanseDetail).State = EntityState.Added;
+                //        ExpanseDetail.VoucherId = data.Id;
+                //    }
+                //    else
+                //    {
 
+                //        context.Entry(ExpanseDetail).State = EntityState.Modified;
+                //        ExpanseDetail.VoucherId = data.Id;
+                //    }
+                //}
+
+                //foreach (var deleteDieselId in deletedDieselIds)
+                //{
                 //    VoucherDieselDetails deletedDiesel = context.VoucherDieselDetails.Where(od => od.VoucherId == data.Id && od.Id == deleteDieselId).Single();
                 //    context.Entry(deletedDiesel).State = EntityState.Deleted;
                 //}
 
-                //foreach (var Loading in data.VehicleLoading)
+                //foreach (var DieselDetail in data.VoucherDieselDetails)
                 //{
-                //    if (Loading.Id == 0)
+                //    if (DieselDetail.Id == 0)
                 //    {
-                //        context.Entry(Loading).State = EntityState.Added;
-                //        Loading.VoucherId = data.Id;
+                //        context.Entry(DieselDetail).State = EntityState.Added;
+                //        DieselDetail.VoucherId = data.Id;
                 //    }
                 //    else
                 //    {
-                //        context.Entry(Loading).State = EntityState.Modified;
-                //        Loading.VoucherId = data.Id;
+                //        context.Entry(DieselDetail).State = EntityState.Modified;
+                //        DieselDetail.VoucherId = data.Id;
                 //    }
-                //    foreach (var LoadingDetail in Loading.VehicleLoadingDetail)
-                //    {
-                //        if (LoadingDetail.Id == 0)
-                //        {
-                //            context.Entry(LoadingDetail).State = EntityState.Added;
-                //        }
-                //        else
-                //        {
-                //            context.Entry(LoadingDetail).State = EntityState.Modified;
-                //        }
-                //    }
-
                 //}
+
+                //foreach (var deleteLoadingDetailId in deletedLoadingDetailIds)
+                //{
+
+                //    VehicleLoading deletedVehicleLoading = context.VehicleLoading.Where(od => od.VoucherId == data.Id && od.Id == deleteLoadingDetailId).Single();
+                //    VehicleLoadingDetail deletedVehicleLoadingDetail = context.VehicleLoadingDetail.Where(od => od.VloadingId == deletedVehicleLoading.Id && od.Id == deleteLoadingDetailId).Single();
+
+                //    context.Entry(deletedVehicleLoadingDetail).State = EntityState.Deleted;
+                //}
+
+                foreach (var Loading in data.VehicleLoading)
+                {
+                    if (Loading.Id == 0)
+                    {
+                        context.Entry(Loading).State = EntityState.Added;
+                        Loading.VoucherId = data.Id;
+                    }
+                    else
+                    {
+                        context.Entry(Loading).State = EntityState.Modified;
+                        Loading.VoucherId = data.Id;
+                    }
+                    foreach (var LoadingDetail in Loading.VehicleLoadingDetail)
+                    {
+                        if (LoadingDetail.Id == 0)
+                        {
+                            context.Entry(LoadingDetail).State = EntityState.Added;
+                        }
+                        else
+                        {
+                            context.Entry(LoadingDetail).State = EntityState.Modified;
+                        }
+                    }
+
+                }
                 context.Entry(data).State = EntityState.Modified;
                 context.SaveChanges();
                 ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");

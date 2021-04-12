@@ -748,7 +748,7 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
 
                 detailsTableBody = $("#tbl_DieselDetails tbody");
                 var index = document.getElementById("tbl_DieselDetails").rows.length;
-                var productItem = '<tr><td>' + index + '</td><td>' + date + '</td><td>' + pumpName + '</td><td>' + litre + '</td><td>' + rate + '</td><td>' + (parseFloat(litre) * parseFloat(rate)) + '</td><td>' + oilothers + '</td><td>' + oilotherAmount + '</td><td>' + parseFloat(parseFloat(litre) * parseFloat(rate) + parseFloat(oilotherAmount)) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + pump + '</td></tr > ';
+                var productItem = '<tr><td>' + index + '</td><td>' + date + '</td><td>' + pumpName + '</td><td>' + litre + '</td><td>' + rate + '</td><td>' + (parseFloat(litre) * parseFloat(rate)).toFixed(2) + '</td><td>' + oilothers + '</td><td>' + oilotherAmount + '</td><td>' + parseFloat(parseFloat(litre) * parseFloat(rate) + parseFloat(oilotherAmount)).toFixed(2) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + pump + '</td></tr > ';
                 detailsTableBody.append(productItem);
                 clearItem();
                 UpdatePage();
@@ -796,8 +796,8 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                 $.each($("#tbl_ExpanseDetails tbody tr"), function () {
                     totalExpanse = totalExpanse + parseFloat($(this).find('td:eq(2)').html());
                 });
-                $("#totalExpanse").text(totalExpanse);
-                $("#totalExpanse1").text(totalExpanse);
+                $("#totalExpanse").text(totalExpanse.toFixed(2));
+                $("#totalExpanse1").text(totalExpanse.toFixed(2));
             }
             function calculateDieselValues() {
                 var totalLitre = 0;
@@ -811,11 +811,11 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                     totalDiesel = totalDiesel + parseFloat($(this).find('td:eq(8)').html());
                 });
 
-                $("#TotalLitres").text(totalLitre);
-                $("#TotalDiesel").text(totalDiesel);
+                $("#TotalLitres").text(totalLitre.toFixed(2));
+                $("#TotalDiesel").text(totalDiesel.toFixed(2));
 
-                $("#TotalAmount").text(parseFloat(totalDiesel) + parseFloat(oilAmount));
-                $("#TotalDiesel1").text(parseFloat(totalDiesel) + parseFloat(oilAmount));
+                $("#TotalAmount").text(parseFloat(parseFloat(totalDiesel) + parseFloat(oilAmount)).toFixed(2));
+                $("#TotalDiesel1").text(parseFloat(parseFloat(totalDiesel) + parseFloat(oilAmount)).toFixed(2));
             }
 
             function calculateTotalIncome() {
@@ -850,7 +850,7 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                     expanse = 0;
                 }
                 TotalProfit = parseFloat(amdan) - (parseFloat(diesel) + parseFloat(expanse));
-                $("#totalProfit").text(TotalProfit);
+                $("#totalProfit").text(TotalProfit.toFixed(2));
             }
 
             function UpdatePage() {
