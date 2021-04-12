@@ -7,12 +7,15 @@
 {
     @Html.AntiForgeryToken()
 <div class="form-horizontal ">
-    @Html.Hidden("RedirectTo", Url.Action("Index", "Vouchers"));
+    @Html.Hidden("RedirectTo", Url.Action("Index", "Vouchers"))
+   
     <div style="display:none">
         @Html.EditorFor(model => model.Id, new
      {
          htmlAttributes = new { @class = "form-control", required = "required", @disabled = "disabled" }
      })
+        <input type="text" id="VehicleLoadingNumber" class="form-control" readonly="readonly" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+
     </div>
     <div class="row">
         <div class="col-12 col-md-9">
@@ -20,6 +23,7 @@
 
             <h5>Edit Voucher Details</h5>
             <hr />
+           
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="input-group input-group-sm mb-3">
@@ -60,7 +64,7 @@
                         </div>
                         @Html.EditorFor(model => model.CreatedDate, new
                    {
-                       htmlAttributes = new { @class = "form-control", required = "required" }
+                       htmlAttributes = new { @class = "form-control", required = "required", @disabled = "disabled" }
                    })
                     </div>
                 </div>
@@ -314,10 +318,10 @@
                 </div>
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.OilAmount, new
-               {
-                   htmlAttributes =
-new { @class = "form-control", @type = "number", @value = "0", @onchange = "UpdatePage()" }
-               })
+                    {
+                    htmlAttributes =
+                    new { @class = "form-control", @type = "number", @value = "0", @onchange = "UpdatePage()" }
+                    })
                     @*<input type="text" id="OilShopAmount" class="form-control" value="98,476" aria-label="Small" aria-describedby="inputGroup-sizing-sm">*@
                 </div>
             </div>
@@ -658,12 +662,15 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                         loadingArrDetail.push({
                             VehicleName: $(this).find('td:eq(1)').html().trim(),
                             Description: $(this).find('td:eq(2)').html().trim(),
-                            Id: $(this).find('td:eq(4)').html(),
+                            Id: $(this).find('td:eq(4)').html()
+
                         })
                     });
 
 
                     loadingArr.push({
+                        Id: $("#VehicleLoadingNumber").val(),
+                        VoucherId: $("#Id").val(),
                         VehicleId: $("#VehicleNumber").val(),
                         LoadingDate: $("#CreatedDate").val(),
                         EntryDate: $("#CreatedDate").val(),
@@ -898,8 +905,9 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                             }
                         }
                         if (model.vehicleLoading.length > 0) {
+                            //$("#VehicleLoadingNumber").val(model.vehicleLoading.id);
                             for (var i = 0; i < model.vehicleLoading.length; i++) {
-
+                                $("#VehicleLoadingNumber").val(model.vehicleLoading[i].id);
                                 if (model.vehicleLoading[i].vehicleLoadingDetail.length > 0) {
                                     for (var j = 0; j < model.vehicleLoading[i].vehicleLoadingDetail.length; j++) {
                                         let detailsTableBody = $("#tbl_VehicleLoading tbody");
