@@ -92,8 +92,6 @@ namespace RR_RoadWays_Services.Controllers
             return View("Add");
         }
 
-
-
         public ActionResult SaveVoucher([FromBody] Voucher data)
         {
             try
@@ -102,7 +100,7 @@ namespace RR_RoadWays_Services.Controllers
                 string count = (context.Voucher.ToList().Count + 1).ToString();
                 string voucherNumber = "VCHR" + count.PadLeft(4, '0');
                 data.VoucherNumber = voucherNumber;
-                data.CreatedDate = DateTime.Now.Date;
+                //data.CreatedDate = DateTime.Now.Date;
                 context.Add(data);
                 context.SaveChanges();
                 

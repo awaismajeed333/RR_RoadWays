@@ -7,6 +7,7 @@ namespace RR_RoadWays_Services.Models
     {
         public Vehicle()
         {
+            Advance = new HashSet<Advance>();
             FixedExpanse = new HashSet<FixedExpanse>();
             Installment = new HashSet<Installment>();
             Maintenance = new HashSet<Maintenance>();
@@ -22,6 +23,7 @@ namespace RR_RoadWays_Services.Models
         public DateTime CreatedDate { get; set; }
         public bool IsDeleted { get; set; }
 
+        public virtual ICollection<Advance> Advance { get; set; }
         public virtual ICollection<FixedExpanse> FixedExpanse { get; set; }
         public virtual ICollection<Installment> Installment { get; set; }
         public virtual ICollection<Maintenance> Maintenance { get; set; }

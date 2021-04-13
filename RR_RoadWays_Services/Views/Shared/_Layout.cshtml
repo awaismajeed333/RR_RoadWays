@@ -27,6 +27,18 @@
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" href="~/css/site.css" />
+
+    <style>
+        .navbar-light .navbar-toggler-icon {
+            background-color: #ffc107;
+        }
+
+        .navbar-light .navbar-toggler {
+            color: #ffc107;
+            border-color: #ffc107;
+            background-color: #ffc107;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -61,6 +73,8 @@
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" asp-area="" asp-controller="Installments" asp-action="Index">Installments</a>
                                     <a class="dropdown-item" asp-area="" asp-controller="VehicleClaim" asp-action="Index">Claims</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Advance" asp-action="Index">Cash Advance</a>
+
                                 </div>
                             </div>
                         </li>

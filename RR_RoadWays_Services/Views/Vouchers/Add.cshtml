@@ -766,7 +766,7 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                 detailsTableBody = $("#tbl_ExpanseDetails tbody");
                 var index = document.getElementById("tbl_ExpanseDetails").rows.length;
 
-                var productItem = '<tr><td>' + index + '</td><td>' + expanseHeadName + '</td><td>' + amount + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + expanseHead + '</td></tr > ';
+                var productItem = '<tr><td>' + index + '</td><td>' + expanseHeadName + '</td><td>' + parseFloat(amount).toFixed(2) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + expanseHead + '</td></tr > ';
                 detailsTableBody.append(productItem);
                 clearExpanseItem();
                 UpdatePage();
@@ -830,8 +830,8 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
                     UpAmount = 0;
                 }
                 TotalIncome = parseFloat(DownAmount) + parseFloat(UpAmount);
-                $("#TotalIncome").val(TotalIncome);
-                $("#TotalIncome1").text(TotalIncome);
+                $("#TotalIncome").val(TotalIncome.toFixed(2));
+                $("#TotalIncome1").text(TotalIncome.toFixed(2));
 
             }
             function calculateProfit() {
