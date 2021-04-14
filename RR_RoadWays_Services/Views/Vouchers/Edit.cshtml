@@ -125,7 +125,7 @@
                         @Html.EditorFor(model => model.UpAmount, new
                    {
                        htmlAttributes =
-        new { @class = "form-control", @type = "number", @min = "0", @step = "1", @value = "0", @onchange = "UpdatePage()" }
+        new { @class = "form-control", @type = "number", @onchange = "UpdatePage()" }
                    })
                     </div>
                 </div>
@@ -209,7 +209,7 @@
                         @Html.EditorFor(model => model.DownAmount, new
                    {
                        htmlAttributes =
-        new { @class = "form-control", @type = "number", @min = "0", @step = "1", @value = "0", @onchange = "UpdatePage()" }
+        new { @class = "form-control", @type = "number", @onchange = "UpdatePage()" }
         })
                     </div>
                 </div>
@@ -585,10 +585,7 @@
     @section scripts{
         <script>
             var url = $("#RedirectTo").val();
-            //Show Modal.
-            //function addDieselDetail() {
-
-            //}
+           
             $("#addDieselDetail").click(function (e) {
                 $("#newDieselModal").modal();
             });
@@ -601,26 +598,6 @@
                 $("#newVehicleLoadingModal").modal();
             });
 
-
-
-            //function addExpanseDetail() {
-            //    $("#newExpanseModal").modal();
-            //}
-            //Add Multiple Order.
-            //$("#addToList").click(function (e) {
-            //    e.preventDefault();
-
-            //    if ($.trim($("#productName").val()) == "" || $.trim($("#price").val()) == "" || $.trim($("#quantity").val()) == "") return;
-
-            //    var productName = $("#productName").val(),
-            //        price = $("#price").val(),
-            //        quantity = $("#quantity").val(),
-            //        detailsTableBody = $("#detailsTable tbody");
-
-            //    var productItem = '<tr><td>' + productName + '</td><td>' + quantity + '</td><td>' + price + '</td><td>' + (parseFloat(price) * parseInt(quantity)) + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
-            //    detailsTableBody.append(productItem);
-            //    clearItem();
-            //});
             //After Add A New Order In The List, Clear Clean The Form For Add More Order.
             function clearItem() {
                 $("#txtdieseldate").val('');
@@ -648,8 +625,6 @@
 
             });
 
-
-
             //After Click Save Button Pass All Data View To Controller For Save Database
                 $("#btnSaveVoucher").click(function (e) {
 
@@ -667,7 +642,6 @@
                         })
                     });
 
-
                     loadingArr.push({
                         Id: $("#VehicleLoadingNumber").val(),
                         VoucherId: $("#Id").val(),
@@ -676,7 +650,6 @@
                         EntryDate: $("#CreatedDate").val(),
                         VehicleLoadingDetail: loadingArrDetail
                     });
-
 
                     $.each($("#tbl_ExpanseDetails tbody tr"), function () {
                         expanseArr.push({
@@ -731,6 +704,7 @@
 
                         //order: orderArr
                     });
+
                     $.ajax({
                         contentType: 'application/json; charset=utf-8',
                         dataType: 'json',
@@ -764,7 +738,7 @@
 
                 detailsTableBody = $("#tbl_DieselDetails tbody");
                 var index = document.getElementById("tbl_DieselDetails").rows.length;
-                var productItem = '<tr><td>' + index + '</td><td>' + date + '</td><td>' + pumpName + '</td><td>' + litre + '</td><td>' + rate + '</td><td>' + (parseFloat(litre) * parseFloat(rate)) + '</td><td>' + oilothers + '</td><td>' + oilotherAmount + '</td><td>' + parseFloat(parseFloat(litre) * parseFloat(rate) + parseFloat(oilotherAmount)) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + pump + '</td></tr > ';
+                var productItem = '<tr><td>' + index + '</td><td>' + date + '</td><td>' + pumpName + '</td><td>' + litre + '</td><td>' + rate + '</td><td>' + parseFloat(parseFloat(litre) * parseFloat(rate)).toFixed(2) + '</td><td>' + oilothers + '</td><td>' + oilotherAmount + '</td><td>' + parseFloat(parseFloat(litre) * parseFloat(rate) + parseFloat(oilotherAmount)).toFixed(2) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + pump + '</td></tr > ';
                 detailsTableBody.append(productItem);
                 clearItem();
                 UpdatePage();
@@ -815,6 +789,7 @@
                 $("#totalExpanse").text(totalExpanse);
                 $("#totalExpanse1").text(totalExpanse);
             }
+
             function calculateDieselValues() {
                 var totalLitre = 0;
                 var totalDiesel = 0;
@@ -827,11 +802,11 @@
                     totalDiesel = totalDiesel + parseFloat($(this).find('td:eq(8)').html());
                 });
 
-                $("#TotalLitres").text(totalLitre);
-                $("#TotalDiesel").text(totalDiesel);
+                $("#TotalLitres").text(parseFloat(totalLitre).toFixed(2));
+                $("#TotalDiesel").text(parseFloat(totalDiesel).toFixed(2));
 
-                $("#TotalAmount").text(parseFloat(totalDiesel) + parseFloat(oilAmount));
-                $("#TotalDiesel1").text(parseFloat(totalDiesel) + parseFloat(oilAmount));
+                $("#TotalAmount").text(parseFloat(parseFloat(totalDiesel) + parseFloat(oilAmount)).toFixed(2));
+                $("#TotalDiesel1").text(parseFloat(parseFloat(totalDiesel) + parseFloat(oilAmount)).toFixed(2));
             }
 
             function calculateTotalIncome() {
@@ -850,6 +825,7 @@
                 $("#TotalIncome1").text(TotalIncome);
 
             }
+
             function calculateProfit() {
 
                 var TotalProfit = 0;
@@ -866,7 +842,7 @@
                     expanse = 0;
                 }
                 TotalProfit = parseFloat(amdan) - (parseFloat(diesel) + parseFloat(expanse));
-                $("#totalProfit").text(TotalProfit);
+                $("#totalProfit").text(parseFloat(TotalProfit).toFixed(2));
             }
 
             function UpdatePage() {
@@ -900,7 +876,7 @@
                             for (var i = 0; i < model.voucherDieselDetails.length; i++) {
                                 let detailsTableBody = $("#tbl_DieselDetails tbody");
                                 var index = document.getElementById("tbl_DieselDetails").rows.length;
-                                var productItem = '<tr><td>' + index + '</td><td>' + new Date(model.voucherDieselDetails[i].date).toLocaleDateString() + '</td><td>' + model.voucherDieselDetails[i].station.name + '</td><td>' + model.voucherDieselDetails[i].litre + '</td><td>' + model.voucherDieselDetails[i].rate + '</td><td>' + (parseFloat(model.voucherDieselDetails[i].litre) * parseFloat(model.voucherDieselDetails[i].rate)) + '</td><td>' + model.voucherDieselDetails[i].oilAndOthers + '</td><td>' + model.voucherDieselDetails[i].amount + '</td><td>' + parseFloat(parseFloat(model.voucherDieselDetails[i].litre) * parseFloat(model.voucherDieselDetails[i].rate) + parseFloat(model.voucherDieselDetails[i].amount)) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + model.voucherDieselDetails[i].station.id + '</td><td style="visibility:hidden;">' + model.voucherDieselDetails[i].id + '</td></tr > ';
+                                var productItem = '<tr><td>' + index + '</td><td>' + new Date(model.voucherDieselDetails[i].date).toLocaleDateString() + '</td><td>' + model.voucherDieselDetails[i].station.name + '</td><td>' + model.voucherDieselDetails[i].litre + '</td><td>' + model.voucherDieselDetails[i].rate + '</td><td>' + parseFloat(parseFloat(model.voucherDieselDetails[i].litre) * parseFloat(model.voucherDieselDetails[i].rate)).toFixed(2) + '</td><td>' + model.voucherDieselDetails[i].oilAndOthers + '</td><td>' + model.voucherDieselDetails[i].amount + '</td><td>' + parseFloat(parseFloat(model.voucherDieselDetails[i].litre) * parseFloat(model.voucherDieselDetails[i].rate) + parseFloat(model.voucherDieselDetails[i].amount)).toFixed(2) + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + model.voucherDieselDetails[i].station.id + '</td><td style="visibility:hidden;">' + model.voucherDieselDetails[i].id + '</td></tr > ';
                                 detailsTableBody.append(productItem);
                             }
                         }

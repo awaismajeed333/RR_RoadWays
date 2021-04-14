@@ -174,6 +174,7 @@ new { @class = "form-control", @disabled = "disabled" }
                         @{
                             decimal TotalAmdan = 0;
                             TotalAmdan = Convert.ToDecimal(Model.DownAmount) + Convert.ToDecimal(Model.UpAmount);
+                            TotalAmdan = Decimal.Parse(TotalAmdan.ToString("0.00"));
                         }
                         <input type="number" id="TotalIncome" class="form-control" readonly="readonly" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="@TotalAmdan">
                     </div>
@@ -255,8 +256,10 @@ new { @class = "form-control", @disabled = "disabled" }
                             @foreach (var item in Model.VoucherDieselDetails)
                             {
                                 fuelAmount = Convert.ToDecimal(@item.Rate) * Convert.ToDecimal(@item.Litre);
-                                rowAmount = fuelAmount + Convert.ToDecimal(@item.Amount);
+                                fuelAmount = Decimal.Parse(fuelAmount.ToString("0.00"));
 
+                                rowAmount = fuelAmount + Convert.ToDecimal(@item.Amount);
+                                rowAmount = Decimal.Parse(rowAmount.ToString("0.00"));
 
                                 <tr>
                                     <td>@DieselIdAI</td>
@@ -277,6 +280,7 @@ new { @class = "form-control", @disabled = "disabled" }
                             }
                             @{
                                 AllTotal = Convert.ToDecimal(gridDieselAmount) + Convert.ToDecimal(oilandotherAmount);
+                                AllTotal = Decimal.Parse(AllTotal.ToString("0.00"));
                             }
                         </tbody>
                     </table>
@@ -359,6 +363,7 @@ new { @class = "form-control", @disabled = "disabled" }
                                 </tr>
                                 ExpanseIdAI++;
                                 TotalExpanseCalc += Convert.ToDecimal(@item.Amount);
+                                TotalExpanseCalc = Decimal.Parse(TotalExpanseCalc.ToString("0.00"));
                             }
                         </tbody>
                     </table>
@@ -405,6 +410,7 @@ new { @class = "form-control", @disabled = "disabled" }
                         @{
                             decimal totalProfit = 0;
                             totalProfit = Convert.ToDecimal(TotalAmdan) - (Convert.ToDecimal(AllTotal) + Convert.ToDecimal(TotalExpanseCalc));
+                            totalProfit = Decimal.Parse(totalProfit.ToString("0.00"));
                         }
                         <div class="col-md-12  text-center">
                             <h5 id="totalProfit">@totalProfit</h5>

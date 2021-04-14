@@ -42,10 +42,11 @@ namespace RR_RoadWays_Services.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                //optionsBuilder.UseSqlServer("Server=DESKTOP-KI4V3OT\\SQLEXPRESS;Database=RRRoadwaysDB;Trusted_Connection=True;");
                 IConfigurationRoot configuration = new ConfigurationBuilder()
-              .SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
-              .AddJsonFile("appsettings.json")
-              .Build();
+                   .SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
+                   .AddJsonFile("appsettings.json")
+                   .Build();
                 optionsBuilder.UseSqlServer(configuration.GetConnectionString("RRRDbConstr"));
             }
         }
@@ -341,7 +342,7 @@ namespace RR_RoadWays_Services.Models
             {
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.DownAmount).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.DownAmount).HasColumnType("numeric(18, 2)");
 
                 entity.Property(e => e.DownDescription).IsUnicode(false);
 
@@ -354,7 +355,7 @@ namespace RR_RoadWays_Services.Models
 
                 entity.Property(e => e.OilAmount).HasColumnType("decimal(9, 0)");
 
-                entity.Property(e => e.UpAmount).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.UpAmount).HasColumnType("numeric(18, 2)");
 
                 entity.Property(e => e.UpDate).HasColumnType("date");
 
@@ -402,17 +403,19 @@ namespace RR_RoadWays_Services.Models
 
             modelBuilder.Entity<VoucherDieselDetails>(entity =>
             {
-                entity.Property(e => e.Amount).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.Amount).HasColumnType("numeric(18, 2)");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Date).HasColumnType("date");
 
+                entity.Property(e => e.Litre).HasColumnType("numeric(18, 2)");
+
                 entity.Property(e => e.OilAndOthers)
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Rate).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.Rate).HasColumnType("numeric(18, 2)");
 
                 entity.HasOne(d => d.Station)
                     .WithMany(p => p.VoucherDieselDetails)
@@ -427,7 +430,7 @@ namespace RR_RoadWays_Services.Models
 
             modelBuilder.Entity<VoucherOthersExpenses>(entity =>
             {
-                entity.Property(e => e.Amount).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.Amount).HasColumnType("numeric(18, 2)");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
