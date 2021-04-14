@@ -1,6 +1,6 @@
-﻿@model RR_RoadWays_Services.Models.PumpModel;
+﻿@model RR_RoadWays_Services.Models.MaintenanceModel;
 @{
-    ViewData["Title"] = "Pump";
+    ViewData["Title"] = "Maintenance";
 }
 <script>
     $(document).ready(function () {
@@ -81,19 +81,14 @@
             <div class="col-12 col-md-6">
                 <div class="input-group input-group-sm mb-3">
                     <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Pump</span>
-                    </div>
-                    @Html.DropDownListFor(model => model.PumpId, (IEnumerable<SelectListItem>)ViewBag.PumpId, "--- Select Pump ---", new { @class = "form-control", id = "PumpDropDown", required = "required" })
-                </div>
-            </div>
-            <div class="col-12 col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
                         <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Number</span>
                     </div>
                     @Html.DropDownListFor(model => model.VehicleNumber, (IEnumerable<SelectListItem>)ViewBag.vehicleId, "--- Select Vehicle ---", new { @class = "form-control", id = "VehicleDropDown", required = "required" })
 
                 </div>
+            </div>
+            <div class="col-12 col-md-6">
+                
             </div>
             <div class="col-12 col-md-6">
                 <div class="input-group input-group-sm mb-3">
@@ -125,90 +120,62 @@
             </div>
         </div>
     }
-<div class="row" id="reportprint">
-    <div class="col-12 col-md-12 text-center">
-        <h2>Pump Report</h2>
-    </div>
-    <div class="col-12 col-md-6">
-        <div class="input-group input-group-sm mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text width-100" id="inputGroup-sizing-sm">Pump Name</span>
-            </div>
-            <div id="PumpName" class="ml-3 mt-1 font-weight-bold">
+    <div class="row" id="reportprint">
+        <div class="col-12 col-md-12 text-center">
+            <h2>Maintenance Report</h2>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Number</span>
+                </div>
+                <div id="VehicleName" class="ml-3 mt-1 font-weight-bold">
 
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-12 col-md-12">
-        <table id="example" class="display" style="width:100%">
-            <thead>
-                <tr>
-                    <th>S.No</th>
-                    <th>Date</th>
-                    <th>Vehicle Number</th>
-                    <th>Litre</th>
-                    <th>Rate</th>
-                    <th>Amount</th>
-                    <th>Oil & Others</th>
-                    <th>Amount</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-    <div class="col-12 col-md-8 mt-3">&nbsp;</div>
-    <div class="col-12 col-md-4 mt-3">
-        <div class="row">
-            <div class="col-12 col-md-12 mt-1">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Litres</span>
-                    </div>
-                    <div id="totalLitre" class="ml-3 mt-1 font-weight-bold">
-                        0
-                    </div>
+        <div class="col-12 col-md-12">
+            <table id="example" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Date</th>
+                        <th>Maintenance Shop</th>
+                        <th>Department</th>
+                        <th>Description</th>
+                        <th>Maintenance</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col-12 col-md-6 mt-3"></div>
+        <div class="col-12 col-md-6 mt-3">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Amount</span>
                 </div>
-            </div>
-            <div class="col-12 col-md-12 mt-1">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Amount Diesel</span>
-                    </div>
-                    <div id="totalDiesel" class="ml-3 mt-1 font-weight-bold">
-                        0
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-12 mt-1">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Amount</span>
-                    </div>
-                    <div id="totalAmount" class="ml-3 mt-1 font-weight-bold">
-                        0
-                    </div>
+                <div id="totalAmount" class="ml-3 mt-1 font-weight-bold">
+                    0
                 </div>
             </div>
         </div>
     </div>
-    
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#PumpDropDown').change(function () {
-            var catText = $('#PumpDropDown option:selected').text();
-            $('#PumpName').html(catText);
+        $('#VehicleDropDown').change(function () {
+            var catText = $('#VehicleDropDown option:selected').text();
+            $('#VehicleName').html(catText);
         });
         $('#printbutton').click(function () {
             $('#reportprint').printThis();
         });
         $('#searchbutton').click(function () {
-            if ($('#PumpDropDown option:selected').val()
-                && $('#VehicleDropDown option:selected').val()
+            if ($('#VehicleDropDown option:selected').val()
                 && $('#startdate').val()
                 && $('#enddate').val()) {
                 var data = {
-                    PumpId: $('#PumpDropDown option:selected').val(),
                     StartDate: new Date($('#startdate').val()).toLocaleDateString('en-GB'),
                     EndDate: new Date($('#enddate').val()).toLocaleDateString('en-GB'),
                     VehicleNumber: $('#VehicleDropDown option:selected').val(),
@@ -219,16 +186,12 @@
                     "paging": false,
                     "info": false,
                     "ajax": {
-                        "url": "/Reports/getPumpData",
+                        "url": "/Reports/getMaintenanceData",
                         "type": "post",
                         "data": data,
                         "dataSrc": function (json) {
                             //Make your callback here.
-                            let amount = json.data.reduce((a, b) => a + (b['Total'] || 0), 0);
-                            let litres = json.data.reduce((a, b) => a + (b['Litre'] || 0), 0);
-                            let diesel = json.data.reduce((a, b) => a + (b['Amount'] || 0), 0);
-                            $('#totalLitre').html(litres.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-                            $('#totalDiesel').html(diesel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                            let amount = json.data.reduce((a, b) => a + (b['Amount'] || 0), 0);
                             $('#totalAmount').html(amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                             return json.data;
                         }
@@ -237,13 +200,11 @@
                     "columns": [
                         { "data": "SerialNo" },
                         { "data": "Date" },
-                        { "data": "Vehicle" },
-                        { "data": "Litre" },
-                        { "data": "Rate" },
+                        { "data": "MaintenanceShop" },
+                        { "data": "Department" },
+                        { "data": "Description" },
+                        { "data": "Maintenance" },
                         { "data": "Amount" },
-                        { "data": "OilAndOther" },
-                        { "data": "OilAmount" },
-                        { "data": "Total" },
                     ],
                     error: function (error) {
                         alert(error);
@@ -251,11 +212,12 @@
                 });
             }
             else {
-                alert('Please enter mandatory fields (Pump, Vehicle Number, Start Date and End Date)');
+                alert('Please enter mandatory fields (Vehicle Number, Start Date and End Date)');
             }
 
         });
     });
 
 </script>
+
 

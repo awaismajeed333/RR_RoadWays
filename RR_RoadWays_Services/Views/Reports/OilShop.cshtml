@@ -175,6 +175,7 @@
         });
         $('#searchbutton').click(function () {
             if ($('#OilShopDropDown option:selected').val()
+                && $('#VehicleDropDown option:selected').val()
                 && $('#startdate').val()
                 && $('#enddate').val()) {
                 var data = {
