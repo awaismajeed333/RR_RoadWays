@@ -191,6 +191,7 @@ namespace RR_RoadWays_Services.Controllers
             {
                 var context = new RRRoadwaysDBContext();
                 var dbEntry = context.Entry(data);
+                context.Entry(data).State = EntityState.Modified;
 
                 List<int> previousExpanseIds = context.VoucherOthersExpenses
                            .Where(ep => ep.VoucherId == data.Id)
@@ -315,7 +316,7 @@ namespace RR_RoadWays_Services.Controllers
                     //context.Entry(Loading).State = EntityState.Modified;
                     //Loading.VoucherId = data.Id;
                 }
-                context.Entry(data).State = EntityState.Detached;
+                
                 context.SaveChanges();
                 ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
                 ViewBag.result = "**Record Updated Successfully!";
