@@ -444,5 +444,172 @@ namespace RR_RoadWays_Services.Controllers
             }
             return Json(new { data = griddata }, new Newtonsoft.Json.JsonSerializerSettings());
         }
+        
+        public IActionResult Claim()
+        {
+            var context = new RRRoadwaysDBContext();
+            List<Vehicle> vehiclelist = context.Vehicle.Where(x => x.IsDeleted == false).ToList();
+            vehiclelist.Insert(0, new Vehicle() { Id = -1, VehicleNumber = "All" });
+            ViewBag.vehicleId = new SelectList(vehiclelist, "Id", "VehicleNumber");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult getClaimsData(ClaimModel data)
+        {
+            var context = new RRRoadwaysDBContext();
+            int vehicleNumber = Convert.ToInt32(data.VehicleNumber);
+            List<ClaimReport> griddata = new List<ClaimReport>();
+            if (data.VehicleNumber == "-1")
+            {
+                var claims = context.VehicleClaim
+                    .Join(context.Vehicle, vc => vc.VehicleId, v => v.Id, (vc, v) => new
+                    {
+                        Date = vc.ClaimDate,
+                        VechicleNumber = v.VehicleNumber,
+                        Claim = vc.Claim,
+                        Description = vc.Description,
+                        Amount = vc.Amount
+                    }).Where(c => c.Date.Value.Date >= data.StartDate.Date
+                    && c.Date.Value.Date <= data.EndDate.Date).ToList();
+
+                if (claims.Count > 0)
+                {
+                    foreach (var item in claims)
+                    {
+                        ClaimReport obj = new ClaimReport()
+                        {
+                            SerialNo = griddata.Count + 1,
+                            Date = item.Date.Value.Date,
+                            VehicleNumber = item.VechicleNumber,
+                            Claim = item.Claim,
+                            Description = item.Description,
+                            Amount = item.Amount,
+                        };
+
+                        griddata.Add(obj);
+                    }
+                }
+
+            }
+            else
+            {
+                var claims = context.VehicleClaim
+                    .Join(context.Vehicle, vc => vc.VehicleId, v => v.Id, (vc, v) => new
+                    {
+                        Date = vc.ClaimDate,
+                        Vechicle = vc.VehicleId,
+                        VechicleNumber = v.VehicleNumber,
+                        Claim = vc.Claim,
+                        Description = vc.Description,
+                        Amount = vc.Amount
+                    }).Where(c => c.Vechicle == vehicleNumber
+                    && c.Date.Value.Date >= data.StartDate.Date
+                    && c.Date.Value.Date <= data.EndDate.Date).ToList();
+
+                if (claims.Count > 0)
+                {
+                    foreach (var item in claims)
+                    {
+                        ClaimReport obj = new ClaimReport()
+                        {
+                            SerialNo = griddata.Count + 1,
+                            Date = item.Date.Value.Date,
+                            VehicleNumber = item.VechicleNumber,
+                            Claim = item.Claim,
+                            Description = item.Description,
+                            Amount = item.Amount,
+                        };
+
+                        griddata.Add(obj);
+                    }
+                }
+            }
+            return Json(new { data = griddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        public IActionResult Installments()
+        {
+            var context = new RRRoadwaysDBContext();
+            List<Vehicle> vehiclelist = context.Vehicle.Where(x => x.IsDeleted == false).ToList();
+            vehiclelist.Insert(0, new Vehicle() { Id = -1, VehicleNumber = "All" });
+            ViewBag.vehicleId = new SelectList(vehiclelist, "Id", "VehicleNumber");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult getInstallmentsData(InstallmentModel data)
+        {
+            var context = new RRRoadwaysDBContext();
+            int vehicleNumber = Convert.ToInt32(data.VehicleNumber);
+            List<InstallmentReport> griddata = new List<InstallmentReport>();
+            if (data.VehicleNumber == "-1")
+            {
+                var installments = context.Installment
+                    .Join(context.Vehicle, vc => vc.VehicleId, v => v.Id, (vc, v) => new
+                    {
+                        Date = vc.InstallmentDate,
+                        VechicleNumber = v.VehicleNumber,
+                        Month = vc.InstallmentsMonth,
+                        Details = vc.InstallmentDetail,
+                        Amount = vc.Amount
+                    }).Where(c => c.Date.Value.Date >= data.StartDate.Date
+                    && c.Date.Value.Date <= data.EndDate.Date).ToList();
+
+                if (installments.Count > 0)
+                {
+                    foreach (var item in installments)
+                    {
+                        InstallmentReport obj = new InstallmentReport()
+                        {
+                            SerialNo = griddata.Count + 1,
+                            Date = item.Date.Value.Date,
+                            VehicleNumber = item.VechicleNumber,
+                            InstallmentMonth = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(Convert.ToInt32(item.Month)),
+                            InstallmentDetails = item.Details,
+                            Amount = item.Amount,
+                        };
+
+                        griddata.Add(obj);
+                    }
+                }
+
+            }
+            else
+            {
+                var installments = context.Installment
+                    .Join(context.Vehicle, vc => vc.VehicleId, v => v.Id, (vc, v) => new
+                    {
+                        Date = vc.InstallmentDate,
+                        Vechicle = vc.VehicleId,
+                        VechicleNumber = v.VehicleNumber,
+                        Month = vc.InstallmentsMonth,
+                        Details = vc.InstallmentDetail,
+                        Amount = vc.Amount
+                    }).Where(c => c.Vechicle == vehicleNumber
+                    && c.Date.Value.Date >= data.StartDate.Date
+                    && c.Date.Value.Date <= data.EndDate.Date).ToList();
+
+                if (installments.Count > 0)
+                {
+                    foreach (var item in installments)
+                    {
+                        InstallmentReport obj = new InstallmentReport()
+                        {
+                            SerialNo = griddata.Count + 1,
+                            Date = item.Date.Value.Date,
+                            VehicleNumber = item.VechicleNumber,
+                            InstallmentMonth = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(Convert.ToInt32(item.Month)),
+                            InstallmentDetails = item.Details,
+                            Amount = item.Amount,
+                        };
+
+                        griddata.Add(obj);
+                    }
+                }
+            }
+            return Json(new { data = griddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
     }
 }
