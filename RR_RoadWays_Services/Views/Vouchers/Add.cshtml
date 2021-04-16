@@ -639,7 +639,7 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
 
             //After Click Save Button Pass All Data View To Controller For Save Database
             $("#btnSaveVoucher").click(function (e) {
-
+                $("#btnSaveVoucher").attr("disabled", true);
                 var expanseArr = [];
                 var dieselArr = [];
                 var loadingArr = [];
@@ -727,6 +727,7 @@ new { @class = "form-control", @type = "number", @value = "0", @onchange = "Upda
 
                     },
                     error: function () {
+                        $("#btnSaveVoucher").attr("disabled", false);
                         alert("Error!");
                     }
                 });
