@@ -1,9 +1,9 @@
-﻿@model RR_RoadWays_Services.Models.OilShopModel;
+﻿@model RR_RoadWays_Services.Models.InstallmentModel;
 @{
-    ViewData["Title"] = "OilShop";
+    ViewData["Title"] = "Fixed Expanse";
 }
 <script>
-    $(document).ready(function () { 
+    $(document).ready(function () {
         (function ($) {
         var opt;
 
@@ -81,19 +81,14 @@
             <div class="col-12 col-md-6">
                 <div class="input-group input-group-sm mb-3">
                     <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Oil Shop</span>
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Number</span>
                     </div>
-                    @Html.DropDownListFor(model => model.OilShopId, (IEnumerable<SelectListItem>)ViewBag.OilShop, "--- Select Oil Shop ---", new { @class = "form-control", id = "OilShopDropDown", required = "required" })
+                    @Html.DropDownListFor(model => model.VehicleNumber, (IEnumerable<SelectListItem>)ViewBag.vehicleId, "--- Select Vehicle ---", new { @class = "form-control", id = "VehicleDropDown", required = "required" })
+
                 </div>
             </div>
             <div class="col-12 col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Number</span>
-                    </div>
-                    @Html.DropDownListFor(model => model.VehicleNumber, (IEnumerable<SelectListItem>)ViewBag.vehicleId, "--- Select Vehicle ---", new { @class = "form-control",id = "VehicleDropDown", required = "required" })
 
-                </div>
             </div>
             <div class="col-12 col-md-6">
                 <div class="input-group input-group-sm mb-3">
@@ -127,14 +122,14 @@
     }
     <div class="row" id="reportprint">
         <div class="col-12 col-md-12 text-center">
-            <h2>Oil Shop Report</h2>
+            <h2>Fixed Expanse Report</h2>
         </div>
         <div class="col-12 col-md-6">
             <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Oil Shop Name</span>
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Number</span>
                 </div>
-                <div id="OilShopName" class="ml-3 mt-1 font-weight-bold">
+                <div id="VehicleName" class="ml-3 mt-1 font-weight-bold">
 
                 </div>
             </div>
@@ -143,9 +138,12 @@
             <table id="example" class="display" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Voucher No</th>
+                        <th>S.No</th>
                         <th>Date</th>
                         <th>Vehicle Number</th>
+                        <th>Month</th>
+                        <th>Staff Salary</th>
+                        <th>Bhatta</th>
                         <th>Amount</th>
                     </tr>
                 </thead>
@@ -153,12 +151,36 @@
         </div>
         <div class="col-12 col-md-6 mt-3"></div>
         <div class="col-12 col-md-6 mt-3">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Amount</span>
+            <div class="row">
+                <div class="col-12 col-md-12 mt-1">
+                    <div class="input-group input-group-sm mb-1">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Staff Salary</span>
+                        </div>
+                        <div id="totalStaffSalary" class="ml-3 mt-1 font-weight-bold">
+                            0
+                        </div>
+                    </div>
                 </div>
-                <div id="totalAmount" class="ml-3 mt-1 font-weight-bold">
-                    0
+                <div class="col-12 col-md-12 mt-1">
+                    <div class="input-group input-group-sm mb-1">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Staff Bhatta</span>
+                        </div>
+                        <div id="totalStaffBhatta" class="ml-3 mt-1 font-weight-bold">
+                            0
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 mt-1">
+                    <div class="input-group input-group-sm mb-1">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Amount</span>
+                        </div>
+                        <div id="totalAmount" class="ml-3 mt-1 font-weight-bold">
+                            0
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -166,20 +188,18 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#OilShopDropDown').change(function () {
-            var catText = $('#OilShopDropDown option:selected').text();
-            $('#OilShopName').html(catText);
+        $('#VehicleDropDown').change(function () {
+            var catText = $('#VehicleDropDown option:selected').text();
+            $('#VehicleName').html(catText);
         });
         $('#printbutton').click(function () {
             $('#reportprint').printThis();
         });
         $('#searchbutton').click(function () {
-            if ($('#OilShopDropDown option:selected').val()
-                && $('#VehicleDropDown option:selected').val()
+            if ($('#VehicleDropDown option:selected').val()
                 && $('#startdate').val()
                 && $('#enddate').val()) {
                 var data = {
-                    OilShopId: $('#OilShopDropDown option:selected').val(),
                     StartDate: new Date($('#startdate').val()).toLocaleDateString('en-GB'),
                     EndDate: new Date($('#enddate').val()).toLocaleDateString('en-GB'),
                     VehicleNumber: $('#VehicleDropDown option:selected').val(),
@@ -190,21 +210,28 @@
                     "paging": false,
                     "info": false,
                     "ajax": {
-                        "url": "/Reports/getOilShopData",
+                        "url": "/Reports/getFixedExpenseData",
                         "type": "post",
                         "data": data,
                         "dataSrc": function (json) {
                             //Make your callback here.
+                            let staffSalary = json.data.reduce((a, b) => a + (b['StaffSalary'] || 0), 0);
+                            let staffBhatta = json.data.reduce((a, b) => a + (b['StaffBhatta'] || 0), 0);
                             let amount = json.data.reduce((a, b) => a + (b['Amount'] || 0), 0);
+                            $('#totalStaffSalary').html(staffSalary.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                            $('#totalStaffBhatta').html(staffBhatta.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                             $('#totalAmount').html(amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                             return json.data;
                         }
                     },
                     "ordering": false,
                     "columns": [
-                        { "data": "VoucherNo" },
+                        { "data": "SerialNo" },
                         { "data": "Date" },
                         { "data": "VehicleNumber" },
+                        { "data": "Month" },
+                        { "data": "StaffSalary" },
+                        { "data": "StaffBhatta" },
                         { "data": "Amount" },
                     ],
                     error: function (error) {
@@ -213,11 +240,10 @@
                 });
             }
             else {
-                alert('Please enter mandatory fields (Oil shop, Start Date and End Date)');
+                alert('Please enter mandatory fields (Vehicle Number, Start Date and End Date)');
             }
-            
+
         });
     });
 
 </script>
-

@@ -88,7 +88,13 @@
                 </div>
             </div>
             <div class="col-12 col-md-6">
-                
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Department</span>
+                    </div>
+                    @Html.DropDownListFor(model => model.VehicleNumber, (IEnumerable<SelectListItem>)ViewBag.departmentId, "--- Select Department ---", new { @class = "form-control", id = "departmentDropDown", required = "required" })
+
+                </div>
             </div>
             <div class="col-12 col-md-6">
                 <div class="input-group input-group-sm mb-3">
@@ -139,6 +145,7 @@
                 <thead>
                     <tr>
                         <th>S.No</th>
+                        <th>Vehicler Number</th>
                         <th>Date</th>
                         <th>Maintenance Shop</th>
                         <th>Department</th>
@@ -179,6 +186,7 @@
                     StartDate: new Date($('#startdate').val()).toLocaleDateString('en-GB'),
                     EndDate: new Date($('#enddate').val()).toLocaleDateString('en-GB'),
                     VehicleNumber: $('#VehicleDropDown option:selected').val(),
+                    DepartmentId: $('#departmentDropDown option:selected').val()
                 }
                 var table = $('#example').DataTable({
                     "destroy": true,
@@ -199,6 +207,7 @@
                     "ordering": false,
                     "columns": [
                         { "data": "SerialNo" },
+                        { "data": "VehicleNumber"},
                         { "data": "Date" },
                         { "data": "MaintenanceShop" },
                         { "data": "Department" },

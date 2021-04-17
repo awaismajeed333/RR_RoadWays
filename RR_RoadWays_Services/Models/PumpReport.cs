@@ -16,6 +16,7 @@ namespace RR_RoadWays_Services.Models
     public class PumpReport
     {
         public int SerialNo { get; set; }
+        public string VoucherNumber { get; set; }
         public string Vehicle { get; set; }
         public DateTime? Date { get; set; }
         public decimal? Litre { get; set; }

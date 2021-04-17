@@ -8,6 +8,7 @@ namespace RR_RoadWays_Services.Models
     public class MaintenanceModel
     {
         public string VehicleNumber { get; set; }
+        public string DepartmentId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
     }
@@ -15,6 +16,7 @@ namespace RR_RoadWays_Services.Models
     public class MaintenanceReport {
         public int SerialNo { get; set; }
         public DateTime? Date { get; set; }
+        public string VehicleNumber { get; set; }
         public string MaintenanceShop { get; set; }
         public string Department { get; set; }
         public string Description { get; set; }
