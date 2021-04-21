@@ -718,7 +718,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text width-100" id="inputGroup-sizing-sm">Company Name</span>
                                         </div>
-                                        <input type="text" id="modalComapnyName" name="modalComapnyName" placeholder="Company Name" class="form-control" />
+                                        <input type="text" id="modalCompanyName" name="modalComapnyName" placeholder="Company Name" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -767,6 +767,7 @@
                     success: function (result) {
                         if (result.Id) {
                             alert("Record Saved Successfully!")
+                            $("#modalExpanseHeadName").val('');
                             var ddl = $('#dropDownExpanseHead');
                             $(document.createElement('option'))
                                 .attr('value', result.Id)
@@ -809,6 +810,9 @@
                     success: function (result) {
                         if (result.Id) {
                             alert("Record Saved Successfully!")
+                            $("#modalVehicleNumber").val('');
+                            $("#modalOwnerName").val('');
+                            $("#modalOwnerContactNumber").val('');
                             var ddl = $('#VehicleNumber');
                             $(document.createElement('option'))
                                 .attr('value', result.Id)
@@ -859,6 +863,9 @@
                     success: function (result) {
                         if (result.Id) {
                             alert("Record Saved Successfully!")
+                            $("#modalCompanyName").val('');
+                            $("#modalContactPerson").val('');
+                            $("#modalContactNumber").val('');
                             var ddl = $('#UpFrom');
                             $(document.createElement('option'))
                                 .attr('value', result.Id)
@@ -912,11 +919,22 @@
                     success: function (result) {
                         if (result.Id) {
                             alert("Record Saved Successfully!")
-                            var ddl = $('#CityId');
+                            $("#modalCityName").val('');
+                            var ddl1 = $('#UpTo');
                             $(document.createElement('option'))
                                 .attr('value', result.Id)
                                 .text(result.Name)
-                                .appendTo(ddl)
+                                .appendTo(ddl1)
+                            var ddl2 = $('#DownFrom');
+                            $(document.createElement('option'))
+                                .attr('value', result.Id)
+                                .text(result.Name)
+                                .appendTo(ddl2)
+                            var ddl3 = $('#DownTo');
+                            $(document.createElement('option'))
+                                .attr('value', result.Id)
+                                .text(result.Name)
+                                .appendTo(ddl3)
                         }
                     },
                     error: function () {

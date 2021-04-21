@@ -118,6 +118,27 @@ namespace RR_RoadWays_Services.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public IActionResult SaveVehicle(Vehicle data)
+        {
+            try
+            {
+                var context = new RRRoadwaysDBContext();
+                data.CreatedDate = DateTime.Now.Date;
+                data.IsDeleted = false;
+                context.Add(data);
+                context.SaveChanges();
+                ViewBag.result = "Record Saved Successfully!";
+            }
+            catch (Exception e)
+            {
+                var error = e;
+                ViewBag.error = e.Message;
+            }
+            ModelState.Clear();
+            return Json(data, new Newtonsoft.Json.JsonSerializerSettings());
+        }
     }
 
 }

@@ -84,11 +84,11 @@
 
         <div class="col-12 col-md-1">
             <div class="input-group input-group-sm mb-3">
-                <button style="margin-right:10px" class="btn btn-dark pull-right" onclick="addNewCity()">+</button>
-                @*<a href='@Url.Action("Add", "City")'
-                   class="btn btn-dark" style="color: #ffc107">
+                @*<button style="margin-right:10px" class="btn btn-dark pull-right" onclick="addNewCity()">+</button>*@
+                <a id="AddNewCity" class="btn btn-dark" style="color: #ffc107">
+
                     <i class="fa fa-plus"></i>
-                </a>*@
+                </a>
             </div>
         </div>
 
@@ -138,9 +138,9 @@
     @section scripts{
         <script>
                 //Show Modal.
-            function addNewCity() {
-                    $("#newCityModal").modal();
-                }
+            $("#AddNewCity").click(function (e) {
+                $("#newCityModal").modal();
+            });
 
             function saveCity(data) {
                 return $.ajax({
@@ -150,6 +150,7 @@
                     success: function (result) {
                         if (result.Id) {
                             alert("Record Saved Successfully!")
+                            $("#modalCityName").val('');
                             var ddl = $('#CityId');
                             $(document.createElement('option'))
                                 .attr('value', result.Id)

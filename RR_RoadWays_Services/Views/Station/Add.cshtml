@@ -86,7 +86,7 @@
                 @*<button style="margin-right:10px" class="btn btn-dark pull-right" onclick="addNewCity()">+</button>*@
                 <a id="AddNewCity" class="btn btn-dark" style="color: #ffc107">
 
-                    <i class="fa fa-plus"></i>  Expanse Head
+                    <i class="fa fa-plus"></i>
                 </a>
             </div>
         </div>
@@ -151,6 +151,7 @@
                     success: function (result) {
                         if (result.Id) {
                             alert("Record Saved Successfully!")
+                            $("#modalCityName").val('');
                             var ddl = $('#CityId');
                             $(document.createElement('option'))
                                 .attr('value', result.Id)
