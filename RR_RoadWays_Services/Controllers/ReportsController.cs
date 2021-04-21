@@ -339,6 +339,61 @@ namespace RR_RoadWays_Services.Controllers
             return Json(new { data = griddata }, new Newtonsoft.Json.JsonSerializerSettings());
         }
 
+        public IActionResult CashAdvance()
+        {
+            var context = new RRRoadwaysDBContext();
+            List<Vehicle> vehiclelist = context.Vehicle.Where(x => x.IsDeleted == false).ToList();
+            vehiclelist.Insert(0, new Vehicle() { Id = -1, VehicleNumber = "All" });
+            List<Station> pickuplist = context.Station.Where(x => x.StationType.ToLower().Contains("PickupPoint")).ToList();
+            pickuplist.Insert(0, new Station() { Id = -1, Name = "All" });
+
+            ViewBag.vehicleId = new SelectList(vehiclelist, "Id", "VehicleNumber");
+            ViewBag.pickupId = new SelectList(pickuplist, "Id", "Name");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult getCashAdvanceData(CashAdvanceModel data)
+        {
+            var context = new RRRoadwaysDBContext();
+            int vehicleNumber = Convert.ToInt32(data.VehicleNumber);
+            int pickpupPointId = Convert.ToInt32(data.PickupPointId);
+            List<CashAdvanceReport> griddata = new List<CashAdvanceReport>();
+            var cashAdnacceList = context.Advance
+                    .Join(context.Vehicle, a => a.VehicleId, v => v.Id, (a, v) => new { a, v })
+                    .Join(context.Station, d => d.a.StationId, s => s.Id, (d, s) => new
+                    {
+                        Date = d.a.AdvanceDate,
+                        Vechicle = d.a.VehicleId,
+                        VechicleNumber = d.v.VehicleNumber,
+                        PickupPointId = d.a.StationId,
+                        PickupPointName = s.Name,
+                        Description = d.a.Description,
+                        Amount = d.a.Amount
+                        }).Where(c => c.Date.Value.Date >= data.StartDate.Date)
+                    .Where(c => c.Date.Value.Date <= data.EndDate.Date)
+                    .Where(c => data.PickupPointId != "-1" ? c.PickupPointId == pickpupPointId : 1 == 1)
+                    .Where(c => data.VehicleNumber != "-1" ? c.Vechicle == vehicleNumber : 1 == 1).ToList();
+
+            if (cashAdnacceList.Count > 0)
+            {
+                foreach (var item in cashAdnacceList)
+                {
+                    CashAdvanceReport obj = new CashAdvanceReport()
+                    {
+                        SerialNo = griddata.Count + 1,
+                        Date = item.Date.Value.Date,
+                        VehicleNumber = item.VechicleNumber,
+                        PickupPoint = item.PickupPointName,
+                        Description = item.Description,
+                        Amount = item.Amount,
+                    };
+
+                    griddata.Add(obj);
+                }
+            }
+            return Json(new { data = griddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
 
     }
 }
