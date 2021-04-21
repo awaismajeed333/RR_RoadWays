@@ -55,14 +55,14 @@ namespace RR_RoadWays_Services.Controllers
             ViewBag.result = "";
             ViewBag.error = "";
 
-            ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x=> x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
+            ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
             ViewBag.UpFrom = new SelectList(context.Company.ToList(), "Id", "Name");
             ViewBag.UpTo = new SelectList(context.City.ToList(), "Id", "Name");
 
             ViewBag.DownFrom = new SelectList(context.City.ToList(), "Id", "Name");
             ViewBag.DownTo = new SelectList(context.City.ToList(), "Id", "Name");
 
-            ViewBag.PumpId = new SelectList(context.Station.Where(x=>x.StationType.ToLower().Contains("pump")).ToList(), "Id", "Name");
+            ViewBag.PumpId = new SelectList(context.Station.Where(x => x.StationType.ToLower().Contains("pump")).ToList(), "Id", "Name");
 
             ViewBag.ExpanseHead = new SelectList(context.ExpanseHead.ToList(), "Id", "HeadName");
 
@@ -97,25 +97,25 @@ namespace RR_RoadWays_Services.Controllers
             try
             {
                 var context = new RRRoadwaysDBContext();
-                int val = context.Voucher.OrderByDescending(v => v.Id).Select(v=>v.Id).ToList()[0];
+                int val = context.Voucher.OrderByDescending(v => v.Id).Select(v => v.Id).ToList()[0];
                 string count = (val + 1).ToString();
                 string voucherNumber = "VCHR" + count.PadLeft(4, '0');
                 data.VoucherNumber = voucherNumber;
                 //data.CreatedDate = DateTime.Now.Date;
                 context.Add(data);
                 context.SaveChanges();
-                
+
                 var id = data.VoucherNumber;
                 //ViewBag.vehicleId = new SelectList(context.Vehicle.ToList(), "Id", "VehicleNumber");
-                ViewBag.result = id+"**Record Saved Successfully!";
+                ViewBag.result = id + "**Record Saved Successfully!";
             }
             catch (Exception e)
             {
                 var error = e;
-                ViewBag.error = "0**"+e.Message;
+                ViewBag.error = "0**" + e.Message;
             }
             ModelState.Clear();
-            return Json(ViewBag.result , new Newtonsoft.Json.JsonSerializerSettings());
+            return Json(ViewBag.result, new Newtonsoft.Json.JsonSerializerSettings());
             //return RedirectToAction("Index", ViewBag.result);
 
         }
@@ -210,7 +210,7 @@ namespace RR_RoadWays_Services.Controllers
                                                 {
                                                     vld.Id
                                                 }
-                         ).Select(o=>o.Id).ToList();
+                         ).Select(o => o.Id).ToList();
 
 
                 List<int> previousDieselIds = context.VoucherDieselDetails
@@ -223,10 +223,10 @@ namespace RR_RoadWays_Services.Controllers
                 //foreach (VehicleLoading itemx in data.VehicleLoading.ElementAt(0))
                 //{
                 VehicleLoading itemx = data.VehicleLoading.ElementAt(0);
-                    foreach (VehicleLoadingDetail item in itemx.VehicleLoadingDetail)
-                    {
-                        currentLoadingDetailIds.Add(item.Id);
-                    }
+                foreach (VehicleLoadingDetail item in itemx.VehicleLoadingDetail)
+                {
+                    currentLoadingDetailIds.Add(item.Id);
+                }
                 //}
 
 
@@ -237,8 +237,8 @@ namespace RR_RoadWays_Services.Controllers
                 List<int> deletedExpanseIds = previousExpanseIds.Except(currentExpanseIds).ToList();
                 List<int> deletedDieselIds = previousDieselIds.Except(currentDieselIds).ToList();
                 List<int> deletedLoadingDetailIds = previousLoadingIds.Except(currentLoadingDetailIds).ToList();
-                
-                
+
+
                 foreach (var ExpanseDetail in data.VoucherOthersExpenses)
                 {
                     if (ExpanseDetail.Id == 0)
@@ -260,7 +260,7 @@ namespace RR_RoadWays_Services.Controllers
                 }
                 context.SaveChanges();
 
-                
+
                 foreach (var DieselDetail in data.VoucherDieselDetails)
                 {
                     if (DieselDetail.Id == 0)
@@ -287,32 +287,32 @@ namespace RR_RoadWays_Services.Controllers
                 VehicleLoading Loading = data.VehicleLoading.ElementAt(0);
                 //foreach (var Loading in data.VehicleLoading)
                 //{
-                    if (Loading.Id == 0)
+                if (Loading.Id == 0)
+                {
+                    Loading.VoucherId = data.Id;
+                    context.Entry(Loading).State = EntityState.Added;
+                }
+                else
+                {
+                    Loading.VoucherId = data.Id;
+                    context.Entry(Loading).State = EntityState.Detached;
+                }
+                foreach (var LoadingDetail in Loading.VehicleLoadingDetail)
+                {
+                    if (LoadingDetail.Id == 0)
                     {
-                        Loading.VoucherId = data.Id;
-                        context.Entry(Loading).State = EntityState.Added;
+                        LoadingDetail.VloadingId = Loading.Id;
+                        context.Entry(LoadingDetail).State = EntityState.Added;
                     }
                     else
                     {
-                        Loading.VoucherId = data.Id;
-                        context.Entry(Loading).State = EntityState.Detached;
+                        LoadingDetail.VloadingId = Loading.Id;
+                        context.Entry(LoadingDetail).State = EntityState.Detached;
                     }
-                    foreach (var LoadingDetail in Loading.VehicleLoadingDetail)
-                    {
-                        if (LoadingDetail.Id == 0)
-                        {
-                            LoadingDetail.VloadingId = Loading.Id;
-                            context.Entry(LoadingDetail).State = EntityState.Added;
-                        }
-                        else
-                        {
-                            LoadingDetail.VloadingId = Loading.Id;
-                            context.Entry(LoadingDetail).State = EntityState.Detached;
-                        }
 
-                    }
-                    //context.Entry(Loading).State = EntityState.Modified;
-                    //Loading.VoucherId = data.Id;
+                }
+                //context.Entry(Loading).State = EntityState.Modified;
+                //Loading.VoucherId = data.Id;
                 //}
                 foreach (var deleteLoadingDetailId in deletedLoadingDetailIds)
                 {
@@ -355,6 +355,86 @@ namespace RR_RoadWays_Services.Controllers
                 ViewBag.error = e.Message;
             }
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult SaveExpanseHead(ExpanseHead data)
+        {
+            try
+            {
+                var context = new RRRoadwaysDBContext();
+                context.Add(data);
+                context.SaveChanges();
+                ViewBag.result = "Record Saved Successfully!";
+            }
+            catch (Exception e)
+            {
+                var error = e;
+                ViewBag.error = e.Message;
+            }
+            ModelState.Clear();
+            return Json(data, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [HttpPost]
+        public IActionResult SaveVehicle(Vehicle data)
+        {
+            try
+            {
+                var context = new RRRoadwaysDBContext();
+                data.CreatedDate = DateTime.Now.Date;
+                data.IsDeleted = false;
+                context.Add(data);
+                context.SaveChanges();
+                ViewBag.result = "Record Saved Successfully!";
+            }
+            catch (Exception e)
+            {
+                var error = e;
+                ViewBag.error = e.Message;
+            }
+            ModelState.Clear();
+            return Json(data, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [HttpPost]
+        public IActionResult SaveCompany(Company data)
+        {
+            try
+            {
+                var context = new RRRoadwaysDBContext();
+                data.CreatedDate = DateTime.Now.Date;
+                data.IsDeleted = false;
+                context.Add(data);
+                context.SaveChanges();
+                ViewBag.result = "Record Saved Successfully!";
+            }
+            catch (Exception e)
+            {
+                var error = e;
+                ViewBag.error = e.Message;
+            }
+            ModelState.Clear();
+            return Json(data, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [HttpPost]
+        public IActionResult SaveCity(City data)
+        {
+            try
+            {
+                var context = new RRRoadwaysDBContext();
+                context.Add(data);
+                context.SaveChanges();
+                ViewBag.result = "Record Saved Successfully!";
+            }
+            catch (Exception e)
+            {
+                var error = e;
+                ViewBag.error = e.Message;
+            }
+            ModelState.Clear();
+            return Json(data, new Newtonsoft.Json.JsonSerializerSettings());
         }
     }
 }

@@ -8,7 +8,7 @@
     @Html.AntiForgeryToken()
 <div class="form-horizontal ">
     @Html.Hidden("RedirectTo", Url.Action("Index", "Vouchers"))
-   
+
     <div style="display:none">
         @Html.EditorFor(model => model.Id, new
      {
@@ -23,7 +23,7 @@
 
             <h5>Edit Voucher Details</h5>
             <hr />
-           
+
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="input-group input-group-sm mb-3">
@@ -44,7 +44,7 @@
                 </div>
                 <div class="col-12 col-md-1">
                     <div class="input-group input-group-sm mb-3">
-                        <a href='@Url.Action("Add", "Vehicle")' class="btn btn-dark" style="color: #ffc107">
+                        <a id="AddNewVehicle" class="btn btn-dark" style="color: #ffc107">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -96,7 +96,7 @@
                 </div>
                 <div class="col-12 col-md-1">
                     <div class="input-group input-group-sm mb-3">
-                        <a href='@Url.Action("Add", "Company")' class="btn btn-dark" style="color: #ffc107">
+                        <a id="AddNewUpFrom" class="btn btn-dark" style="color: #ffc107">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -112,7 +112,7 @@
                 </div>
                 <div class="col-12 col-md-1">
                     <div class="input-group input-group-sm mb-3">
-                        <a href='@Url.Action("Add", "City")' class="btn btn-dark" style="color: #ffc107">
+                        <a id="AddNewUpto" class="btn btn-dark" style="color: #ffc107">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -168,7 +168,7 @@
                 </div>
                 <div class="col-12 col-md-1">
                     <div class="input-group input-group-sm mb-3">
-                        <a href='@Url.Action("Add", "City")' class="btn btn-dark" style="color: #ffc107">
+                        <a id="AddNewDownFrom" class="btn btn-dark" style="color: #ffc107">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -184,7 +184,7 @@
                 </div>
                 <div class="col-12 col-md-1">
                     <div class="input-group input-group-sm mb-3">
-                        <a href='@Url.Action("Add", "City")' class="btn btn-dark" style="color: #ffc107">
+                        <a id="AddNewDownTo" class="btn btn-dark" style="color: #ffc107">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -341,7 +341,7 @@
     <div class="row">
         <div class="col-12 col-md-1">
             <div class="input-group input-group-sm mb-3">
-                <a href='@Url.Action("Add", "ExpanseHeads")' class="btn btn-dark" style="color: #ffc107">
+                <a id="AddNewExpanseHead" class="btn btn-dark" style="color: #ffc107">
 
                     <i class="fa fa-plus"></i>  Expanse Head
                 </a>
@@ -582,10 +582,367 @@
         </div>
     </div>
 
+
+    <div class="modal fade" id="NewExpanseHead">
+        <div class="modal-dialog modal-lg" style=" width :900px !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    @*<h4>Add New City</h4>*@
+                </div>
+
+                <form id="NewExpanseHeadForm">
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Expanse Head Name</span>
+                                        </div>
+                                        <input type="text" id="modalExpanseHeadName" name="modalExpanseHeadName" placeholder="Expanse Head Name" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button id="saveNewExpanseHead" type="submit" class="btn btn-dark">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="NewVehicle">
+        <div class="modal-dialog modal-lg" style=" width :900px !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    @*<h4>Add New City</h4>*@
+                </div>
+
+                <form id="NewVehicleForm">
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Number</span>
+                                        </div>
+                                        <input type="text" id="modalVehicleNumber" name="modalVehicleNumber" placeholder="Vehicle Number" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Owner Name</span>
+                                        </div>
+                                        <input type="text" id="modalOwnerName" name="modalOwnerName" placeholder="Owner Name" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Owner Contact Number</span>
+                                        </div>
+                                        <input type="text" id="modalOwnerContactNumber" name="modalOwnerContactNumber" placeholder="Owner Contact Number" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button id="saveNewVehicle" type="submit" class="btn btn-dark">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="newCityModal">
+        <div class="modal-dialog modal-lg" style=" width :900px !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    @*<h4>Add New City</h4>*@
+                </div>
+
+                <form id="NewCityForm">
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">City Name</span>
+                                        </div>
+                                        <input type="text" id="modalCityName" name="modalCityName" placeholder="City Name" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button id="saveCity" type="submit" class="btn btn-dark">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="NewCompany">
+        <div class="modal-dialog modal-lg" style=" width :900px !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    @*<h4>Add New City</h4>*@
+                </div>
+
+                <form id="NewCompanyForm">
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Company Name</span>
+                                        </div>
+                                        <input type="text" id="modalComapnyName" name="modalComapnyName" placeholder="Company Name" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Contact Person</span>
+                                        </div>
+                                        <input type="text" id="modalContactPerson" name="modalContactPerson" placeholder="Contact Person" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Contact Number</span>
+                                        </div>
+                                        <input type="text" id="modalContactNumber" name="modalContactNumber" placeholder="Contact Number" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button id="saveNewCompany" type="submit" class="btn btn-dark">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     @section scripts{
         <script>
             var url = $("#RedirectTo").val();
-           
+
+            $("#AddNewExpanseHead").click(function (e) {
+                $("#NewExpanseHead").modal();
+            });
+
+            function saveNewExpanseHead(data) {
+                return $.ajax({
+                    type: 'POST',
+                    url: "/Vouchers/SaveExpanseHead",
+                    data: data,
+                    success: function (result) {
+                        if (result.Id) {
+                            alert("Record Saved Successfully!")
+                            var ddl = $('#dropDownExpanseHead');
+                            $(document.createElement('option'))
+                                .attr('value', result.Id)
+                                .text(result.HeadName)
+                                .appendTo(ddl)
+                        }
+                    },
+                    error: function () {
+                        alert("Error!")
+                    }
+                });
+            }
+            //Collect Multiple Order List For Pass To Controller
+            $("#saveNewExpanseHead").click(function (e) {
+                e.preventDefault();
+
+                var headName = $("#modalExpanseHeadName").val();
+
+                var data = {
+                    HeadName: headName
+                };
+
+                $.when(saveNewExpanseHead(data)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+
+            });
+
+            $("#AddNewVehicle").click(function (e) {
+                $("#NewVehicle").modal();
+            });
+
+            function saveNewVehicle(data) {
+                return $.ajax({
+                    type: 'POST',
+                    url: "/Vouchers/SaveVehicle",
+                    data: data,
+                    success: function (result) {
+                        if (result.Id) {
+                            alert("Record Saved Successfully!")
+                            var ddl = $('#VehicleNumber');
+                            $(document.createElement('option'))
+                                .attr('value', result.Id)
+                                .text(result.VehicleNumber)
+                                .appendTo(ddl)
+                        }
+                    },
+                    error: function () {
+                        alert("Error!")
+                    }
+                });
+            }
+            //Collect Multiple Order List For Pass To Controller
+            $("#saveNewVehicle").click(function (e) {
+                e.preventDefault();
+
+                var VehicleNumber = $("#modalVehicleNumber").val();
+                var OwnerName = $("#modalOwnerName").val();
+                var OwnerContactNumber = $("#modalOwnerContactNumber").val();
+
+                var data = {
+                    VehicleNumber: VehicleNumber,
+                    OwnerName: OwnerName,
+                    OwnerContactNumber: OwnerContactNumber
+                };
+
+                $.when(saveNewVehicle(data)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+
+            });
+
+            $("#AddNewVehicle").click(function (e) {
+                $("#NewVehicle").modal();
+            });
+
+            $("#AddNewUpFrom").click(function (e) {
+                $("#NewCompany").modal();
+            });
+
+            function saveNewCompany(data) {
+                return $.ajax({
+                    type: 'POST',
+                    url: "/Vouchers/SaveCompany",
+                    data: data,
+                    success: function (result) {
+                        if (result.Id) {
+                            alert("Record Saved Successfully!")
+                            var ddl = $('#UpFrom');
+                            $(document.createElement('option'))
+                                .attr('value', result.Id)
+                                .text(result.Name)
+                                .appendTo(ddl)
+                        }
+                    },
+                    error: function () {
+                        alert("Error!")
+                    }
+                });
+            }
+            //Collect Multiple Order List For Pass To Controller
+            $("#saveNewCompany").click(function (e) {
+                e.preventDefault();
+
+                var CompanyName = $("#modalCompanyName").val();
+                var ContactPerson = $("#modalContactPerson").val();
+                var ContactNumber = $("#modalContactNumber").val();
+
+                var data = {
+                    Name: CompanyName,
+                    ContactPerson: ContactPerson,
+                    ContactNumber: ContactNumber
+                };
+
+                $.when(saveNewCompany(data)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+
+            });
+
+
+            $("#AddNewUpto").click(function (e) {
+                $("#newCityModal").modal();
+            });
+            $("#AddNewDownFrom").click(function (e) {
+                $("#newCityModal").modal();
+            });
+            $("#AddNewDownTo").click(function (e) {
+                $("#newCityModal").modal();
+            });
+
+            function saveCity(data) {
+                return $.ajax({
+                    type: 'POST',
+                    url: "/Vouchers/SaveCity",
+                    data: data,
+                    success: function (result) {
+                        if (result.Id) {
+                            alert("Record Saved Successfully!")
+                            var ddl = $('#CityId');
+                            $(document.createElement('option'))
+                                .attr('value', result.Id)
+                                .text(result.Name)
+                                .appendTo(ddl)
+                        }
+                    },
+                    error: function () {
+                        alert("Error!")
+                    }
+                });
+            }
+            //Collect Multiple Order List For Pass To Controller
+            $("#saveCity").click(function (e) {
+                e.preventDefault();
+
+                var cityName = $("#modalCityName").val();
+
+                var data = {
+                    Name: cityName
+                };
+
+                $.when(saveCity(data)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+
+            });
+
+
             $("#addDieselDetail").click(function (e) {
                 $("#newDieselModal").modal();
             });
