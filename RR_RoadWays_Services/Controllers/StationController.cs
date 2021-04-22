@@ -154,5 +154,25 @@ namespace RR_RoadWays_Services.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public IActionResult SaveCity(City data)
+        {
+            try
+            {
+                var context = new RRRoadwaysDBContext();
+                context.Add(data);
+                context.SaveChanges();
+                ViewBag.result = "Record Saved Successfully!";
+                ViewBag.cities = new SelectList(context.City.ToList(), "Id", "Name");
+            }
+            catch (Exception e)
+            {
+                var error = e;
+                ViewBag.error = e.Message;
+            }
+            ModelState.Clear();
+            return Json(data , new Newtonsoft.Json.JsonSerializerSettings());
+        }
     }
 }
