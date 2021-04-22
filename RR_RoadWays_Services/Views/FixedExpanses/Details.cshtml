@@ -1,0 +1,265 @@
+﻿@model RR_RoadWays_Services.Models.FixedExpanse;
+@{
+    ViewData["Title"] = "View Fixed Expanse";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <h4>View Fixed Expanses</h4>
+    <hr />
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle</span>
+                </div>
+                @Html.DropDownListFor(model => model.VehicleId, (IEnumerable<SelectListItem>)ViewBag.vehicleId, "--- Select Vehicle ---", new { @class = "form-control", required = "required", @disabled = "disabled" })
+
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Month</span>
+                </div>
+                @Html.DropDownListFor(model => model.ExpanseMonth, Enumerable.Range(1, 12).Select(x => new SelectListItem { Value = x.ToString(), Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(x) }), "--- Select Month ---", new { @class = "form-control", @disabled = "disabled" })
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Staff Salary</span>
+                </div>
+                @Html.EditorFor(model => model.StaffSalary, new
+           {
+               htmlAttributes =
+                       new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+           })
+
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Staff Bhatta</span>
+                </div>
+                @Html.EditorFor(model => model.StaffBhatta, new
+           {
+               htmlAttributes =
+                       new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+           })
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Bhatta Details</span>
+                </div>
+                @Html.EditorFor(model => model.BhattaDetails, new
+           {
+               htmlAttributes =
+                      new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+           })
+
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Donations</span>
+                </div>
+                @Html.EditorFor(model => model.Donation, new
+           {
+               htmlAttributes =
+                    new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+           })
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Driver's Room Rent</span>
+                </div>
+                @Html.EditorFor(model => model.DriverRoomRent, new
+           {
+               htmlAttributes =
+                    new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+           })
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Forman Salary + Account	</span>
+                </div>
+                @Html.EditorFor(model => model.FormanSalary, new
+           {
+               htmlAttributes =
+                    new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+           })
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Extra Driver's Salary</span>
+                </div>
+                @Html.EditorFor(model => model.ExtraDriversSalary, new
+           {
+               htmlAttributes =
+                    new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+           })
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Extra Expense</span>
+                </div>
+                @Html.EditorFor(model => model.ExtraExpense, new
+           {
+               htmlAttributes =
+                    new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+           })
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Extra Expense Details</span>
+                </div>
+                @Html.EditorFor(model => model.ExtraExpenseDetails, new
+           {
+               htmlAttributes =
+                  new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+           })
+            </div>
+        </div>
+        <div class="col-12 col-md-6  text-center">
+            Total <h5 id="Totals">0</h5>
+        </div>
+    </div>
+    @section scripts{
+        <script>
+            $("#AddNewVehicle").click(function (e) {
+                $("#NewVehicle").modal();
+            });
+
+            function saveNewVehicle(data) {
+                return $.ajax({
+                    type: 'POST',
+                    url: "/FixedExpanses/SaveVehicle",
+                    data: data,
+                    success: function (result) {
+                        if (result.Id) {
+                            alert("Record Saved Successfully!")
+                            $("#modalVehicleNumber").val('');
+                            $("#modalOwnerName").val('');
+                            $("#modalOwnerContactNumber").val('');
+                            var ddl = $('#VehicleId');
+                            $(document.createElement('option'))
+                                .attr('value', result.Id)
+                                .text(result.VehicleNumber)
+                                .appendTo(ddl)
+                        }
+                    },
+                    error: function () {
+                        alert("Error!")
+                    }
+                });
+            }
+            //Collect Multiple Order List For Pass To Controller
+            $("#saveNewVehicle").click(function (e) {
+                e.preventDefault();
+
+                var VehicleNumber = $("#modalVehicleNumber").val();
+                var OwnerName = $("#modalOwnerName").val();
+                var OwnerContactNumber = $("#modalOwnerContactNumber").val();
+
+                var data = {
+                    VehicleNumber: VehicleNumber,
+                    OwnerName: OwnerName,
+                    OwnerContactNumber: OwnerContactNumber
+                };
+
+                $.when(saveNewVehicle(data)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+
+            });
+
+            $(document).ready(
+                function () {
+                    UpdatePage();
+                }
+            );
+            function UpdatePage() {
+
+                var Total = 0;
+                var StaffSalary = $("#StaffSalary").val();
+                if (StaffSalary == '' || isNaN(StaffSalary)) {
+                    StaffSalary = 0;
+                }
+                var StaffBhatta = $("#StaffBhatta").val();
+                if (StaffBhatta == '' || isNaN(StaffBhatta)) {
+                    StaffBhatta = 0;
+                }
+                var Donation = $("#Donation").val();
+                if (Donation == '' || isNaN(Donation)) {
+                    Donation = 0;
+                }
+                var DriverRoomRent = $("#DriverRoomRent").val();
+                if (DriverRoomRent == '' || isNaN(DriverRoomRent)) {
+                    DriverRoomRent = 0;
+                }
+                var FormanSalary = $("#FormanSalary").val();
+                if (FormanSalary == '' || isNaN(FormanSalary)) {
+                    FormanSalary = 0;
+                }
+                var ExtraDriversSalary = $("#ExtraDriversSalary").val();
+                if (ExtraDriversSalary == '' || isNaN(ExtraDriversSalary)) {
+                    ExtraDriversSalary = 0;
+                }
+                var ExtraExpense = $("#ExtraExpense").val();
+                if (ExtraExpense == '' || isNaN(ExtraExpense)) {
+                    ExtraExpense = 0;
+                }
+
+                Total = parseFloat(StaffSalary) + parseFloat(StaffBhatta) + parseFloat(Donation) + parseFloat(DriverRoomRent) + parseFloat(FormanSalary) +
+                    parseFloat(ExtraDriversSalary) + parseFloat(ExtraExpense)
+                $("#Totals").text(Total);
+            }
+        </script>
+    }
+    <a asp-action="Index">Back to List</a>
+
+    @if (!String.IsNullOrEmpty(ViewBag.error))
+    {
+        <div class="mt-2">
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.error
+            </div>
+        </div>
+    }
+
+    @if (!String.IsNullOrEmpty(ViewBag.result))
+    {
+        <div class="mt-2">
+            <div class="alert alert-success" role="alert">
+                @ViewBag.result
+            </div>
+        </div>
+    }
+</div>
+}

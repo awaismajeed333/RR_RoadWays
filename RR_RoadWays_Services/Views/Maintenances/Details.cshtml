@@ -1,0 +1,211 @@
+﻿@model RR_RoadWays_Services.Models.Maintenance;
+@{
+    ViewData["Title"] = "View Maintenance";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <h4>View Maintenance</h4>
+    <hr />
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle</span>
+                </div>
+                @Html.DropDownListFor(model => model.VehicleId, (IEnumerable<SelectListItem>)ViewBag.vehicleId, "--- Select Vehicle ---", new { @class = "form-control", required = "required", @disabled = "disabled" })
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Maintenance Date</span>
+                </div>
+                @Html.EditorFor(model => model.MaintenanceDate, new
+               {
+                   htmlAttributes =
+                           new { @class = "form-control", required = "required", @disabled = "disabled" }
+               })
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Maintenance Shop</span>
+                </div>
+                @Html.DropDownListFor(model => model.StationId, (IEnumerable<SelectListItem>)ViewBag.stationId, "--- Select Shop ---", new { @class = "form-control", required = "required", @disabled = "disabled" })
+
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Department</span>
+                </div>
+                @Html.DropDownListFor(model => model.DepartmentId, (IEnumerable<SelectListItem>)ViewBag.departId, "--- Select Department ---", new { @class = "form-control", required = "required", @disabled = "disabled" })
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Description</span>
+                </div>
+                @Html.EditorFor(model => model.Description, new
+                {
+                    htmlAttributes =
+                    new { @class = "form-control", @disabled = "disabled" }
+                })
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Maintenance</span>
+                </div>
+                @Html.EditorFor(model => model.MaintenanceDesc, new
+           {
+               htmlAttributes =
+                       new { @class = "form-control", @disabled = "disabled" }
+           })
+
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Amount</span>
+                </div>
+                @Html.EditorFor(model => model.Amount, new
+                {
+                    htmlAttributes =
+                    new { @class = "form-control", required = "required", @disabled = "disabled" }
+                })
+            </div>
+        </div>
+
+    </div>
+
+    <a asp-action="Index">Back to List</a>
+
+    @section scripts{
+        <script>
+            $("#AddNewVehicle").click(function (e) {
+                $("#NewVehicle").modal();
+            });
+
+            function saveNewVehicle(data) {
+                return $.ajax({
+                    type: 'POST',
+                    url: "/Maintenance/SaveVehicle",
+                    data: data,
+                    success: function (result) {
+                        if (result.Id) {
+                            alert("Record Saved Successfully!")
+                            $("#modalVehicleNumber").val('');
+                            $("#modalOwnerName").val('');
+                            $("#modalOwnerContactNumber").val('');
+                            var ddl = $('#VehicleId');
+                            $(document.createElement('option'))
+                                .attr('value', result.Id)
+                                .text(result.VehicleNumber)
+                                .appendTo(ddl)
+                        }
+                    },
+                    error: function () {
+                        alert("Error!")
+                    }
+                });
+            }
+            //Collect Multiple Order List For Pass To Controller
+            $("#saveNewVehicle").click(function (e) {
+                e.preventDefault();
+
+                var VehicleNumber = $("#modalVehicleNumber").val();
+                var OwnerName = $("#modalOwnerName").val();
+                var OwnerContactNumber = $("#modalOwnerContactNumber").val();
+
+                var data = {
+                    VehicleNumber: VehicleNumber,
+                    OwnerName: OwnerName,
+                    OwnerContactNumber: OwnerContactNumber
+                };
+
+                $.when(saveNewVehicle(data)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+
+            });
+
+
+            $("#AddNewDepartment").click(function (e) {
+                $("#newDepartmentModal").modal();
+            });
+            function saveDepartment(data) {
+                return $.ajax({
+                    type: 'POST',
+                    url: "/Maintenances/SaveDepartment",
+                    data: data,
+                    success: function (result) {
+                        if (result.Id) {
+                            alert("Record Saved Successfully!")
+                            $("#modalDepartmentName").val('');
+                            var ddl = $('#DepartmentId');
+                            $(document.createElement('option'))
+                                .attr('value', result.Id)
+                                .text(result.DepartmentName)
+                                .appendTo(ddl)
+                        }
+                    },
+                    error: function () {
+                        alert("Error!")
+                    }
+                });
+            }
+            //Collect Multiple Order List For Pass To Controller
+            $("#savDepartment").click(function (e) {
+                e.preventDefault();
+
+                var departmentName = $("#modalDepartmentName").val();
+
+                var data = {
+                    DepartmentName: departmentName
+                };
+
+                $.when(saveDepartment(data)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+
+            });
+        </script>
+    }
+
+    @if (!String.IsNullOrEmpty(ViewBag.error))
+    {
+        <div class="mt-2">
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.error
+            </div>
+        </div>
+    }
+
+    @if (!String.IsNullOrEmpty(ViewBag.result))
+    {
+        <div class="mt-2">
+            <div class="alert alert-success" role="alert">
+                @ViewBag.result
+            </div>
+        </div>
+    }
+
+</div>
+}
