@@ -129,12 +129,32 @@
     <div class="col-12 col-md-12 text-center">
         <h2>Pump Report</h2>
     </div>
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-4">
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text width-100" id="inputGroup-sizing-sm">Pump Name</span>
             </div>
             <div id="PumpName" class="ml-3 mt-1 font-weight-bold">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text width-100" id="inputGroup-sizing-sm">Start Date</span>
+            </div>
+            <div id="StartDateValue" class="ml-3 mt-1 font-weight-bold">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text width-100" id="inputGroup-sizing-sm">End Date</span>
+            </div>
+            <div id="EndDateValue" class="ml-3 mt-1 font-weight-bold">
 
             </div>
         </div>
@@ -191,13 +211,21 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#PumpDropDown').change(function () {
             var catText = $('#PumpDropDown option:selected').text();
             $('#PumpName').html(catText);
+        });
+        $('#startdate').change(function () {
+             var catText = new Date($('#startdate').val()).toLocaleDateString('en-GB');
+            $('#StartDateValue').html(catText);
+         });
+        $('#enddate').change(function () {
+            var catText = new Date($('#enddate').val()).toLocaleDateString('en-GB');
+            $('#EndDateValue').html(catText);
         });
         $('#printbutton').click(function () {
             $('#reportprint').printThis();

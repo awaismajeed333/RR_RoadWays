@@ -120,77 +120,105 @@
             </div>
         </div>
     }
-    <div class="row" id="reportprint">
-        <div class="col-12 col-md-12 text-center">
-            <h2>Fixed Expanse Report</h2>
-        </div>
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Number</span>
-                </div>
-                <div id="VehicleName" class="ml-3 mt-1 font-weight-bold">
+<div class="row" id="reportprint">
+    <div class="col-12 col-md-12 text-center">
+        <h2>Fixed Expanse Report</h2>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Number</span>
+            </div>
+            <div id="VehicleName" class="ml-3 mt-1 font-weight-bold">
 
-                </div>
             </div>
         </div>
-        <div class="col-12 col-md-12">
-            <table id="example" class="display" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>S.No</th>
-                        <th>Date</th>
-                        <th>Vehicle Number</th>
-                        <th>Month</th>
-                        <th>Staff Salary</th>
-                        <th>Bhatta</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-            </table>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text width-100" id="inputGroup-sizing-sm">Start Date</span>
+            </div>
+            <div id="StartDateValue" class="ml-3 mt-1 font-weight-bold">
+
+            </div>
         </div>
-        <div class="col-12 col-md-6 mt-3"></div>
-        <div class="col-12 col-md-6 mt-3">
-            <div class="row">
-                <div class="col-12 col-md-12 mt-1">
-                    <div class="input-group input-group-sm mb-1">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Staff Salary</span>
-                        </div>
-                        <div id="totalStaffSalary" class="ml-3 mt-1 font-weight-bold">
-                            0
-                        </div>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text width-100" id="inputGroup-sizing-sm">End Date</span>
+            </div>
+            <div id="EndDateValue" class="ml-3 mt-1 font-weight-bold">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-12">
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Date</th>
+                    <th>Vehicle Number</th>
+                    <th>Month</th>
+                    <th>Staff Salary</th>
+                    <th>Bhatta</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="col-12 col-md-6 mt-3"></div>
+    <div class="col-12 col-md-6 mt-3">
+        <div class="row">
+            <div class="col-12 col-md-12 mt-1">
+                <div class="input-group input-group-sm mb-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Staff Salary</span>
+                    </div>
+                    <div id="totalStaffSalary" class="ml-3 mt-1 font-weight-bold">
+                        0
                     </div>
                 </div>
-                <div class="col-12 col-md-12 mt-1">
-                    <div class="input-group input-group-sm mb-1">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Staff Bhatta</span>
-                        </div>
-                        <div id="totalStaffBhatta" class="ml-3 mt-1 font-weight-bold">
-                            0
-                        </div>
+            </div>
+            <div class="col-12 col-md-12 mt-1">
+                <div class="input-group input-group-sm mb-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Staff Bhatta</span>
+                    </div>
+                    <div id="totalStaffBhatta" class="ml-3 mt-1 font-weight-bold">
+                        0
                     </div>
                 </div>
-                <div class="col-12 col-md-12 mt-1">
-                    <div class="input-group input-group-sm mb-1">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Amount</span>
-                        </div>
-                        <div id="totalAmount" class="ml-3 mt-1 font-weight-bold">
-                            0
-                        </div>
+            </div>
+            <div class="col-12 col-md-12 mt-1">
+                <div class="input-group input-group-sm mb-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Amount</span>
+                    </div>
+                    <div id="totalAmount" class="ml-3 mt-1 font-weight-bold">
+                        0
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#VehicleDropDown').change(function () {
             var catText = $('#VehicleDropDown option:selected').text();
             $('#VehicleName').html(catText);
+        });
+        $('#startdate').change(function () {
+             var catText = new Date($('#startdate').val()).toLocaleDateString('en-GB');
+            $('#StartDateValue').html(catText);
+         });
+        $('#enddate').change(function () {
+            var catText = new Date($('#enddate').val()).toLocaleDateString('en-GB');
+            $('#EndDateValue').html(catText);
         });
         $('#printbutton').click(function () {
             $('#reportprint').printThis();

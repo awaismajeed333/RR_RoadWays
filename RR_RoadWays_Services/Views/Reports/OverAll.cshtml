@@ -1,6 +1,6 @@
-﻿@model RR_RoadWays_Services.Models.MaintenanceModel;
+﻿@model RR_RoadWays_Services.Models.OverallModel;
 @{
-    ViewData["Title"] = "Maintenance";
+    ViewData["Title"] = "Overall";
 }
 <script>
     $(document).ready(function () {
@@ -77,70 +77,52 @@
 <div>
     @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "searchform" }))
     {
-    <div class="row mt-2">
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Number</span>
+        <div class="row mt-2">
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Number</span>
+                    </div>
+                    @Html.DropDownListFor(model => model.VehicleNumber, (IEnumerable<SelectListItem>)ViewBag.vehicleId, "--- Select Vehicle ---", new { @class = "form-control", id = "VehicleDropDown", required = "required" })
+
                 </div>
-                @Html.DropDownListFor(model => model.VehicleNumber, (IEnumerable<SelectListItem>)ViewBag.vehicleId, "--- Select Vehicle ---", new { @class = "form-control", id = "VehicleDropDown", required = "required" })
+            </div>
+            <div class="col-12 col-md-6">
 
             </div>
-        </div>
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Department</span>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Start Date</span>
+                    </div>
+                    @Html.EditorFor(model => model.StartDate, new
+                {
+                    htmlAttributes = new { @class = "form-control", id = "startdate", required = "required" }
+                })
                 </div>
-                @Html.DropDownListFor(model => model.VehicleNumber, (IEnumerable<SelectListItem>)ViewBag.departmentId, "--- Select Department ---", new { @class = "form-control", id = "departmentDropDown", required = "required" })
-
             </div>
-        </div>
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Maintenance Shop</span>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">End Date</span>
+                    </div>
+                    @Html.EditorFor(model => model.EndDate, new
+                {
+                    htmlAttributes = new { @class = "form-control", id = "enddate", required = "required" }
+                })
                 </div>
-                @Html.DropDownListFor(model => model.StationId, (IEnumerable<SelectListItem>)ViewBag.stationId, "--- Select Maintenance Shop ---", new { @class = "form-control", id = "maintenanceShopDropDown", required = "required" })
-
             </div>
-        </div>
-        <div class="col-12 col-md-6">
-            
-        </div>
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Start Date</span>
+            <div class="col-12 col-md-12">
+                <div class="m-2 float-right">
+                    <input type="button" id="searchbutton" class="btn btn-dark" value="Search" />
+                    <input type="button" id="printbutton" class="btn btn-dark" value="Print" />
                 </div>
-                @Html.EditorFor(model => model.StartDate, new
-            {
-                htmlAttributes = new { @class = "form-control", id = "startdate", required = "required" }
-            })
             </div>
         </div>
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">End Date</span>
-                </div>
-                @Html.EditorFor(model => model.EndDate, new
-            {
-                htmlAttributes = new { @class = "form-control", id = "enddate", required = "required" }
-            })
-            </div>
-        </div>
-        <div class="col-12 col-md-12">
-            <div class="m-2 float-right">
-                <input type="button" id="searchbutton" class="btn btn-dark" value="Search" />
-                <input type="button" id="printbutton" class="btn btn-dark" value="Print" />
-            </div>
-        </div>
-    </div>
     }
 <div class="row" id="reportprint">
     <div class="col-12 col-md-12 text-center">
-        <h2>Maintenance Report</h2>
+        <h2>Overall Report</h2>
     </div>
     <div class="col-12 col-md-4">
         <div class="input-group input-group-sm mb-3">
@@ -172,27 +154,55 @@
             </div>
         </div>
     </div>
-    <div class="col-12 col-md-12">
-        <table id="example" class="display" style="width:100%">
-            <thead>
-                <tr>
-                    <th>S.No</th>
-                    <th>Vehicler Number</th>
-                    <th>Date</th>
-                    <th>Maintenance Shop</th>
-                    <th>Department</th>
-                    <th>Description</th>
-                    <th>Maintenance</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-        </table>
+    <div class="col-1 col-md-1"></div>
+    <div class="col-10 col-md-10">
+        <div class="row mt-2 mb-2">
+            <div class="col-6 col-md-6 border border-secondary text-center">
+                Profit
+            </div>
+            <div id="profit" class="col-6 col-md-6 border border-secondary text-center">
+                0
+            </div>
+        </div>
+        <div class="row mt-2 mb-2">
+            <div class="col-6 col-md-6 border border-secondary text-center">
+                Claim
+            </div>
+            <div id="claim" class="col-6 col-md-6 border border-secondary text-center">
+                0
+            </div>
+        </div>
+        <div class="row mt-2 mb-2">
+            <div class="col-6 col-md-6 border border-secondary text-center">
+                Maintenance
+            </div>
+            <div id="maintenance" class="col-6 col-md-6 border border-secondary text-center">
+                0
+            </div>
+        </div>
+        <div class="row mt-2 mb-2">
+            <div class="col-6 col-md-6 border border-secondary text-center">
+                Fixed Expense
+            </div>
+            <div id="fixedExpanse" class="col-6 col-md-6 border border-secondary text-center">
+                0
+            </div>
+        </div>
+        <div class="row mt-2 mb-2">
+            <div class="col-6 col-md-6 border border-secondary text-center">
+                Installment
+            </div>
+            <div id="installment" class="col-6 col-md-6 border border-secondary text-center">
+                0
+            </div>
+        </div>
     </div>
+    <div class="col-1 col-md-1"></div>
     <div class="col-12 col-md-6 mt-3"></div>
     <div class="col-12 col-md-6 mt-3">
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Amount</span>
+                <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total Remaining</span>
             </div>
             <div id="totalAmount" class="ml-3 mt-1 font-weight-bold">
                 0
@@ -220,46 +230,30 @@
         });
         $('#searchbutton').click(function () {
             if ($('#VehicleDropDown option:selected').val()
-                && $('#departmentDropDown option:selected').val()
-                && $('#maintenanceShopDropDown option:selected').val()
                 && $('#startdate').val()
                 && $('#enddate').val()) {
                 var data = {
                     StartDate: new Date($('#startdate').val()).toLocaleDateString('en-GB'),
                     EndDate: new Date($('#enddate').val()).toLocaleDateString('en-GB'),
                     VehicleNumber: $('#VehicleDropDown option:selected').val(),
-                    DepartmentId: $('#departmentDropDown option:selected').val(),
-                    StationId: $('#maintenanceShopDropDown option:selected').val(),
                 }
-                var table = $('#example').DataTable({
-                    "destroy": true,
-                    "searching": false,
-                    "paging": false,
-                    "info": false,
-                    "ajax": {
-                        "url": "/Reports/getMaintenanceData",
-                        "type": "post",
-                        "data": data,
-                        "dataSrc": function (json) {
-                            //Make your callback here.
-                            let amount = json.data.reduce((a, b) => a + (b['Amount'] || 0), 0);
-                            $('#totalAmount').html(amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-                            return json.data;
-                        }
+
+                $.ajax({
+                    type: 'post',
+                    url: "/Reports/getOverallReportData",
+                    data: data,
+                    success: function (result) {
+                        var res = result.data;
+                        $('#profit').html(res.Profit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                        $('#claim').html(res.Claim.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                        $('#maintenance').html(res.Maintenance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                        $('#fixedExpanse').html(res.FixedExpanse.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                        $('#installment').html(res.Installment.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                        $('#totalAmount').html(res.TotalRemaining.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+
                     },
-                    "ordering": false,
-                    "columns": [
-                        { "data": "SerialNo" },
-                        { "data": "VehicleNumber"},
-                        { "data": "Date" },
-                        { "data": "MaintenanceShop" },
-                        { "data": "Department" },
-                        { "data": "Description" },
-                        { "data": "Maintenance" },
-                        { "data": "Amount" },
-                    ],
-                    error: function (error) {
-                        alert(error);
+                    error: function () {
+                        alert("Error!")
                     }
                 });
             }

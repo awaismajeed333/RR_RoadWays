@@ -401,5 +401,88 @@ namespace RR_RoadWays_Services.Controllers
             return Json(new { data = griddata }, new Newtonsoft.Json.JsonSerializerSettings());
         }
 
+        public IActionResult OverAll()
+        {
+            var context = new RRRoadwaysDBContext();
+            List<Vehicle> vehiclelist = context.Vehicle.Where(x => x.IsDeleted == false).ToList();
+            vehiclelist.Insert(0, new Vehicle() { Id = -1, VehicleNumber = "All" });
+
+            ViewBag.vehicleId = new SelectList(vehiclelist, "Id", "VehicleNumber");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult getOverallReportData(OverallModel data)
+        {
+            var context = new RRRoadwaysDBContext();
+            int vehicleNumber = Convert.ToInt32(data.VehicleNumber);
+            OverallReport reportdata = new OverallReport();
+            List<FixedExpanse> expanseList = new List<FixedExpanse>();
+            reportdata.Claim = context.VehicleClaim.Where(c => c.ClaimDate.Value.Date >= data.StartDate.Date)
+                    .Where(c => c.ClaimDate.Value.Date <= data.EndDate.Date)
+                    .Where(c => data.VehicleNumber != "-1" ? c.VehicleId == vehicleNumber : 1 == 1).ToList().Sum(x => x.Amount);
+
+            reportdata.Maintenance = context.Maintenance.Where(c => c.MaintenanceDate.Value.Date >= data.StartDate.Date)
+                    .Where(c => c.MaintenanceDate.Value.Date <= data.EndDate.Date)
+                    .Where(c => data.VehicleNumber != "-1" ? c.VehicleId == vehicleNumber : 1 == 1).ToList().Sum(x => x.Amount);
+
+            expanseList = context.FixedExpanse.Where(c => c.EntryDate.Value.Date >= data.StartDate.Date)
+                    .Where(c => c.EntryDate.Value.Date <= data.EndDate.Date)
+                    .Where(c => data.VehicleNumber != "-1" ? c.VehicleId == vehicleNumber : 1 == 1).ToList();
+            reportdata.FixedExpanse = 0;
+            if (expanseList.Count > 0) {
+                foreach (var item in expanseList)
+                {
+                    reportdata.FixedExpanse += (item.StaffSalary + item.StaffBhatta + item.DriverRoomRent + item.Donation + item.FormanSalary + item.ExtraDriversSalary + item.ExtraExpense);
+                }
+            }
+
+            reportdata.Installment = context.Installment.Where(c => c.EntryDate.Value.Date >= data.StartDate.Date)
+                    .Where(c => c.EntryDate.Value.Date <= data.EndDate.Date)
+                    .Where(c => data.VehicleNumber != "-1" ? c.VehicleId == vehicleNumber : 1 == 1).ToList().Sum(x => x.Amount);
+
+            reportdata.Profit = 0;
+            Decimal? totalAmdan = context.Voucher.Where(c => c.CreatedDate.Value.Date >= data.StartDate.Date)
+                    .Where(c => c.CreatedDate.Value.Date <= data.EndDate.Date)
+                    .Where(c => data.VehicleNumber != "-1" ? c.VehicleNumber == vehicleNumber : 1 == 1).ToList().Sum(x => x.DownAmount + x.UpAmount);
+
+            Decimal? totalDieselAndOil = 0;
+            var totalDieselAndOilList = context.Voucher.Join(context.VoucherDieselDetails, vou => vou.Id, vou_die => vou_die.VoucherId, (vou, vou_die) => new
+                            {
+                                Date = vou.CreatedDate,
+                                VehicleNo = vou.VehicleNumber,
+                                OilAmount = vou.OilAmount,
+                                Litre = vou_die.Litre,
+                                Rate = vou_die.Rate,
+                                Amount = vou_die.Amount,
+                            }).Where(c => c.Date.Value.Date >= data.StartDate.Date)
+                    .Where(c => c.Date.Value.Date <= data.EndDate.Date)
+                    .Where(c => data.VehicleNumber != "-1" ? c.VehicleNo == vehicleNumber : 1 == 1).ToList();
+
+            if (totalDieselAndOilList.Count > 0) {
+                foreach (var item in totalDieselAndOilList)
+                {
+                    totalDieselAndOil += ((item.Litre * item.Rate) + item.Amount);
+                }
+                totalDieselAndOil += totalDieselAndOilList[0].OilAmount;
+            }
+
+            Decimal? totalOtherExpanse = context.Voucher.Join(context.VoucherOthersExpenses, vou => vou.Id, vou_other => vou_other.VoucherId, (vou, vou_other) => new
+                            {
+                                Date = vou.CreatedDate,
+                                VehicleNo = vou.VehicleNumber,
+                                OtherAmount = vou_other.Amount,
+                            }).Where(c => c.Date.Value.Date >= data.StartDate.Date)
+                    .Where(c => c.Date.Value.Date <= data.EndDate.Date)
+                    .Where(c => data.VehicleNumber != "-1" ? c.VehicleNo == vehicleNumber : 1 == 1).ToList().Sum(x => x.OtherAmount);
+
+            reportdata.Profit = (totalAmdan - (totalDieselAndOil + totalOtherExpanse));
+
+            reportdata.TotalRemaining = (reportdata.Profit - reportdata.Claim - reportdata.Maintenance - reportdata.FixedExpanse - reportdata.Installment);
+
+            return Json(new { data = reportdata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+
     }
 }
