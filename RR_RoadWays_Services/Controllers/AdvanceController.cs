@@ -59,6 +59,15 @@ namespace RR_RoadWays_Services.Controllers
             ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
             ViewBag.StationId = new SelectList(context.Station.Where(x => x.StationType.ToLower().Contains("PickupPoint")).ToList(), "Id", "Name");
 
+            ViewBag.StationType = new SelectList(new List<SelectListItem>
+                {
+                    new SelectListItem { Selected = true, Text = "Pump", Value = "Pump"},
+                    new SelectListItem { Selected = false, Text = "Oil Shop", Value = "OilShop"},
+                    new SelectListItem { Selected = false, Text = "Maintenance Shop", Value = "MaintenanceShop"},
+                    new SelectListItem { Selected = false, Text = "Pickup Point", Value = "PickupPoint"},
+                }, "Value", "Text");
+            ViewBag.cities = new SelectList(context.City.ToList(), "Id", "Name");
+
             return View(new Advance());
         }
 
@@ -72,6 +81,15 @@ namespace RR_RoadWays_Services.Controllers
                 context.SaveChanges();
                 ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
                 ViewBag.StationId = new SelectList(context.Station.Where(x => x.StationType.ToLower().Contains("PickupPoint")).ToList(), "Id", "Name");
+
+                ViewBag.StationType = new SelectList(new List<SelectListItem>
+                {
+                    new SelectListItem { Selected = true, Text = "Pump", Value = "Pump"},
+                    new SelectListItem { Selected = false, Text = "Oil Shop", Value = "OilShop"},
+                    new SelectListItem { Selected = false, Text = "Maintenance Shop", Value = "MaintenanceShop"},
+                    new SelectListItem { Selected = false, Text = "Pickup Point", Value = "PickupPoint"},
+                }, "Value", "Text");
+                ViewBag.cities = new SelectList(context.City.ToList(), "Id", "Name");
                 ViewBag.result = "Record Saved Successfully!";
             }
             catch (Exception e)
@@ -89,6 +107,14 @@ namespace RR_RoadWays_Services.Controllers
             var std = context.Advance.Where(s => s.Id == Id).FirstOrDefault();
             ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
             ViewBag.StationId = new SelectList(context.Station.Where(x => x.StationType.ToLower().Contains("PickupPoint")).ToList(), "Id", "Name");
+            ViewBag.StationType = new SelectList(new List<SelectListItem>
+                {
+                    new SelectListItem { Selected = true, Text = "Pump", Value = "Pump"},
+                    new SelectListItem { Selected = false, Text = "Oil Shop", Value = "OilShop"},
+                    new SelectListItem { Selected = false, Text = "Maintenance Shop", Value = "MaintenanceShop"},
+                    new SelectListItem { Selected = false, Text = "Pickup Point", Value = "PickupPoint"},
+                }, "Value", "Text");
+            ViewBag.cities = new SelectList(context.City.ToList(), "Id", "Name");
 
             return View(std);
         }
@@ -110,6 +136,14 @@ namespace RR_RoadWays_Services.Controllers
                 context.SaveChanges();
                 ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
                 ViewBag.StationId = new SelectList(context.Station.Where(x => x.StationType.ToLower().Contains("PickupPoint")).ToList(), "Id", "Name");
+                ViewBag.StationType = new SelectList(new List<SelectListItem>
+                {
+                    new SelectListItem { Selected = true, Text = "Pump", Value = "Pump"},
+                    new SelectListItem { Selected = false, Text = "Oil Shop", Value = "OilShop"},
+                    new SelectListItem { Selected = false, Text = "Maintenance Shop", Value = "MaintenanceShop"},
+                    new SelectListItem { Selected = false, Text = "Pickup Point", Value = "PickupPoint"},
+                }, "Value", "Text");
+                ViewBag.cities = new SelectList(context.City.ToList(), "Id", "Name");
 
                 ViewBag.result = "Record Updated Successfully!";
             }
@@ -141,6 +175,27 @@ namespace RR_RoadWays_Services.Controllers
 
         [HttpPost]
         public IActionResult SaveVehicle(Vehicle data)
+        {
+            try
+            {
+                var context = new RRRoadwaysDBContext();
+                data.CreatedDate = DateTime.Now.Date;
+                data.IsDeleted = false;
+                context.Add(data);
+                context.SaveChanges();
+                ViewBag.result = "Record Saved Successfully!";
+            }
+            catch (Exception e)
+            {
+                var error = e;
+                ViewBag.error = e.Message;
+            }
+            ModelState.Clear();
+            return Json(data, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [HttpPost]
+        public IActionResult SavePickup(Station data)
         {
             try
             {

@@ -37,7 +37,7 @@
         </div>
         <div class="col-12 col-md-1">
             <div class="input-group input-group-sm mb-3">
-                <a href='@Url.Action("Add", "Station")' class="btn btn-dark" style="color: #ffc107">
+                <a id="AddNewPickup" class="btn btn-dark" style="color: #ffc107">
                     <i class="fa fa-plus"></i>
                 </a>
             </div>
@@ -141,8 +141,147 @@
         </div>
     </div>
 
+    <div class="modal fade" id="NewPickup">
+        <div class="modal-dialog modal-lg" style=" width :900px !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    @*<h4>Add New City</h4>*@
+                </div>
+
+                <form id="NewPickupForm">
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Name</span>
+                                        </div>
+                                        <input type="text" id="modalPickupName" name="modalPickupName" placeholder="Name" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Location</span>
+                                        </div>
+                                        <input type="text" id="modalPickupLocation" name="modalPickupLocation" placeholder="Location" class="form-control" />
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Owner Name</span>
+                                        </div>
+                                        <input type="text" id="modalPickupOwnerName" name="modalPickupOwnerName" placeholder="Owner Name" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Contact Number</span>
+                                        </div>
+                                        <input type="text" id="modalPickupContactNumber" name="modalPickupContactNumber" placeholder="Contact Number" class="form-control" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Station Type</span>
+                                        </div>
+                                        @Html.DropDownList("modalPickupStationType", (IEnumerable<SelectListItem>)ViewBag.StationType, "--- Select Station Type ---", new { @class = "form-control", required = "required" })
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Cities</span>
+                                        </div>
+                                        @Html.DropDownList("modalPickupCityId", (IEnumerable<SelectListItem>)ViewBag.cities, "--- Select City ---", new { @class = "form-control", required = "required" })
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button id="saveNewPickup" type="submit" class="btn btn-dark">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     @section scripts{
         <script>
+
+            $("#AddNewPickup").click(function (e) {
+                $("#NewPickup").modal();
+            });
+
+            function saveNewPickup(data) {
+                return $.ajax({
+                    type: 'POST',
+                    url: "/Advance/SavePickup",
+                    data: data,
+                    success: function (result) {
+                        if (result.Id) {
+                            alert("Record Saved Successfully!")
+                            $("#modalPickupName").val('');
+                            $("#modalPickupLocation").val('');
+                            $("#modalPickupOwnerName").val('');
+                            $("#modalPickupContactNumber").val('');
+                            var ddl = $('#StationId');
+                            $(document.createElement('option'))
+                                .attr('value', result.Id)
+                                .text(result.Name)
+                                .appendTo(ddl)
+                        }
+                    },
+                    error: function () {
+                        alert("Error!")
+                    }
+                });
+            }
+            //Collect Multiple Order List For Pass To Controller
+            $("#saveNewPickup").click(function (e) {
+                e.preventDefault();
+
+                var modalPickupName = $("#modalPickupName").val();
+                var modalPickupLocation = $("#modalPickupLocation").val();
+                var modalPickupOwnerName = $("#modalPickupOwnerName").val();
+                var modalPickupContactNumber = $("#modalPickupContactNumber").val();
+                var modalPickupStationType = $("#modalPickupStationType").val();
+                var modalPickupCityId = $("#modalPickupCityId").val();
+
+                var data = {
+                    Name: modalPickupName,
+                    Location: modalPickupLocation,
+                    OwnerName: modalPickupOwnerName,
+                    ContactNumber: modalPickupContactNumber,
+                    StationType: modalPickupStationType,
+                    CityId: modalPickupCityId
+                };
+
+                $.when(saveNewPickup(data)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+
+            });
 
             $("#AddNewVehicle").click(function (e) {
                 $("#NewVehicle").modal();

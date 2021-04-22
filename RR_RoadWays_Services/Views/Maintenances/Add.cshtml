@@ -52,7 +52,7 @@
         </div>
         <div class="col-12 col-md-1">
             <div class="input-group input-group-sm mb-3">
-                <a href='@Url.Action("Add", "Station")' class="btn btn-dark" style="color: #ffc107">
+                <a id="AddNewMaintenanceShop" class="btn btn-dark" style="color: #ffc107">
                     <i class="fa fa-plus"></i>
                 </a>
             </div>
@@ -209,8 +209,148 @@
         </div>
     </div>
 
+    <div class="modal fade" id="NewMaintenanceShop">
+        <div class="modal-dialog modal-lg" style=" width :900px !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    @*<h4>Add New City</h4>*@
+                </div>
+
+                <form id="NewMaintenanceShopForm">
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Name</span>
+                                        </div>
+                                        <input type="text" id="modalMaintenanceShopName" name="modalMaintenanceShopName" placeholder="Name" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Location</span>
+                                        </div>
+                                        <input type="text" id="modalMaintenanceShopLocation" name="modalMaintenanceShopLocation" placeholder="Location" class="form-control" />
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Owner Name</span>
+                                        </div>
+                                        <input type="text" id="modalMaintenanceShopOwnerName" name="modalMaintenanceShopOwnerName" placeholder="Owner Name" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Contact Number</span>
+                                        </div>
+                                        <input type="text" id="modalMaintenanceShopContactNumber" name="modalMaintenanceShopContactNumber" placeholder="Contact Number" class="form-control" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Station Type</span>
+                                        </div>
+                                        @Html.DropDownList("modalMaintenanceShopStationType", (IEnumerable<SelectListItem>)ViewBag.StationType, "--- Select Station Type ---", new { @class = "form-control", required = "required" })
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Cities</span>
+                                        </div>
+                                        @Html.DropDownList("modalMaintenanceShopCityId", (IEnumerable<SelectListItem>)ViewBag.cities, "--- Select City ---", new { @class = "form-control", required = "required" })
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button id="saveNewMaintenanceShop" type="submit" class="btn btn-dark">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     @section scripts{
         <script>
+
+            $("#AddNewMaintenanceShop").click(function (e) {
+                $("#NewMaintenanceShop").modal();
+            });
+
+            function saveNewMaintenanceShop(data) {
+                return $.ajax({
+                    type: 'POST',
+                    url: "/Maintenances/SaveMaintenanceShop",
+                    data: data,
+                    success: function (result) {
+                        if (result.Id) {
+                            alert("Record Saved Successfully!")
+                            $("#modalsaveNewMaintenanceShopName").val('');
+                            $("#modalsaveNewMaintenanceShopLocation").val('');
+                            $("#modalsaveNewMaintenanceShopOwnerName").val('');
+                            $("#modalsaveNewMaintenanceShopContactNumber").val('');
+                            var ddl = $('#StationId');
+                            $(document.createElement('option'))
+                                .attr('value', result.Id)
+                                .text(result.Name)
+                                .appendTo(ddl)
+                        }
+                    },
+                    error: function () {
+                        alert("Error!")
+                    }
+                });
+            }
+            //Collect Multiple Order List For Pass To Controller
+            $("#saveNewMaintenanceShop").click(function (e) {
+                e.preventDefault();
+
+                var modalsaveNewMaintenanceShopName = $("#modalsaveNewMaintenanceShopName").val();
+                var modalsaveNewMaintenanceShopLocation = $("#modalsaveNewMaintenanceShopLocation").val();
+                var modalsaveNewMaintenanceShopOwnerName = $("#modalsaveNewMaintenanceShopOwnerName").val();
+                var modalsaveNewMaintenanceShopContactNumber = $("#modalsaveNewMaintenanceShopContactNumber").val();
+                var modalsaveNewMaintenanceShopStationType = $("#modalsaveNewMaintenanceShopStationType").val();
+                var modalsaveNewMaintenanceShopCityId = $("#modalsaveNewMaintenanceShopCityId").val();
+
+                var data = {
+                    Name: modalsaveNewMaintenanceShopName,
+                    Location: modalsaveNewMaintenanceShopLocation,
+                    OwnerName: modalsaveNewMaintenanceShopOwnerName,
+                    ContactNumber: modalsaveNewMaintenanceShopContactNumber,
+                    StationType: modalsaveNewMaintenanceShopStationType,
+                    CityId: modalsaveNewMaintenanceShopCityId
+                };
+
+                $.when(saveNewMaintenanceShop(data)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+
+            });
+
             $("#AddNewVehicle").click(function (e) {
                 $("#NewVehicle").modal();
             });
