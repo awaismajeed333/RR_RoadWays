@@ -177,5 +177,15 @@ namespace RR_RoadWays_Services.Controllers
             ModelState.Clear();
             return Json(data, new Newtonsoft.Json.JsonSerializerSettings());
         }
+
+        public ActionResult Details(int Id)
+        {
+            var context = new RRRoadwaysDBContext();
+            var std = context.Maintenance.Where(s => s.Id == Id).FirstOrDefault();
+            ViewBag.stationId = new SelectList(context.Station.Where(x => x.StationType == "MaintenanceShop").ToList(), "Id", "Name");
+            ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
+            ViewBag.departId = new SelectList(context.Department.ToList(), "Id", "DepartmentName");
+            return View(std);
+        }
     }
 }

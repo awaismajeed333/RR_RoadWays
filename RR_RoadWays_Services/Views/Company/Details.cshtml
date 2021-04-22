@@ -1,0 +1,75 @@
+﻿@model RR_RoadWays_Services.Models.Company;
+@{
+    ViewData["Title"] = "View Company";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <h4>View Company</h4>
+    <hr />
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Company Name</span>
+                </div>
+                @Html.EditorFor(model => model.Name, new
+                {
+                    htmlAttributes =
+                    new { @class = "form-control", required = "required", @disabled = "disabled" }
+                })
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Contact Person</span>
+                </div>
+                @Html.EditorFor(model => model.ContactPerson, new
+                {
+                    htmlAttributes =
+                    new { @class = "form-control", required = "required", @disabled = "disabled" }
+                })
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Contact #</span>
+                </div>
+                @Html.EditorFor(model => model.ContactNumber, new
+                {
+                    htmlAttributes =
+                    new { @class = "form-control", required = "required", @disabled = "disabled" }
+                })
+            </div>
+        </div>
+    </div>
+
+    <a asp-action="Index">Back to List</a>
+
+    @if (!String.IsNullOrEmpty(ViewBag.error))
+    {
+        <div class="mt-2">
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.error
+            </div>
+        </div>
+    }
+
+    @if (!String.IsNullOrEmpty(ViewBag.result))
+    {
+        <div class="mt-2">
+            <div class="alert alert-success" role="alert">
+                @ViewBag.result
+            </div>
+        </div>
+    }
+
+</div>
+}
+

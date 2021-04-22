@@ -40,6 +40,16 @@ namespace RR_RoadWays_Services.Controllers
             return Json(new { data = dataAdvances }, new Newtonsoft.Json.JsonSerializerSettings());
         }
 
+        public ActionResult Details(int Id)
+        {
+            var context = new RRRoadwaysDBContext();
+            var std = context.Advance.Where(s => s.Id == Id).FirstOrDefault();
+            ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
+            ViewBag.StationId = new SelectList(context.Station.Where(x => x.StationType.ToLower().Contains("PickupPoint")).ToList(), "Id", "Name");
+
+            return View(std);
+        }
+
         public IActionResult Add()
         {
             var context = new RRRoadwaysDBContext();

@@ -174,5 +174,21 @@ namespace RR_RoadWays_Services.Controllers
             ModelState.Clear();
             return Json(data , new Newtonsoft.Json.JsonSerializerSettings());
         }
+
+        public ActionResult Details(int Id)
+        {
+            var context = new RRRoadwaysDBContext();
+            var std = context.Station.Where(s => s.Id == Id).FirstOrDefault();
+            ViewBag.stationtypes = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Selected = true, Text = "Pump", Value = "Pump"},
+                new SelectListItem { Selected = false, Text = "Oil Shop", Value = "OilShop"},
+                new SelectListItem { Selected = false, Text = "Maintenance Shop", Value = "MaintenanceShop"},
+                    new SelectListItem { Selected = false, Text = "Pickup Point", Value = "PickupPoint"},
+
+            }, "Value", "Text");
+            ViewBag.cities = new SelectList(context.City.ToList(), "Id", "Name");
+            return View(std);
+        }
     }
 }

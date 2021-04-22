@@ -103,5 +103,13 @@ namespace RR_RoadWays_Services.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public ActionResult Details(int Id)
+        {
+            var context = new RRRoadwaysDBContext();
+            var std = context.Vehicle.Where(s => s.Id == Id).FirstOrDefault();
+
+            return View(std);
+        }
     }
 }

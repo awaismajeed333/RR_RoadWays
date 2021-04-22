@@ -139,6 +139,14 @@ namespace RR_RoadWays_Services.Controllers
             ModelState.Clear();
             return Json(data, new Newtonsoft.Json.JsonSerializerSettings());
         }
+
+        public ActionResult Details(int Id)
+        {
+            var context = new RRRoadwaysDBContext();
+            var std = context.VehicleClaim.Where(s => s.Id == Id).FirstOrDefault();
+            ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
+            return View(std);
+        }
     }
 
 }
