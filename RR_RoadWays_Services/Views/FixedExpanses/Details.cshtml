@@ -2,264 +2,351 @@
 @{
     ViewData["Title"] = "View Fixed Expanse";
 }
+<script>
+    $(document).ready(function () {
+        (function ($) {
+            var opt;
+
+            $.fn.printThis = function (options) {
+                opt = $.extend({}, $.fn.printThis.defaults, options);
+
+                var $element = (this instanceof jQuery) ? this : $(this);
+
+                var strFrameName = ("printThis-" + (new Date()).getTime());
+
+                var $iframe = $("<iframe id='" + strFrameName + "' style='display:none' src='about:blank'/>");
+
+                if (!opt.debug) { $iframe.css({ position: "absolute", width: "0px", height: "0px", left: "-600px", top: "-600px" }); }
+
+                $iframe.appendTo("body");
+
+                var $doc = $("#" + strFrameName).contents();
+                // allow iframe to fully render before action
+                setTimeout(function () {
+
+                    // import page css
+                    if (opt.importCSS) {
+                        $("link[rel=stylesheet]").each(function () {
+                            var href = $(this).attr('href');
+                            if (href) {
+                                var media = $(this).attr('media') || 'all';
+                                $doc.find("head").append("<link type='text/css' rel='stylesheet' href='" + href + "' media='" + media + "'>");
+                            }
+                        });
+                    }
+
+                    // add another stylesheet
+                    if (opt.loadCSS) {
+                        $doc.find("head").append("<link type='text/css' rel='stylesheet' href='" + opt.loadCSS + "'>");
+
+                    }
+
+                    //grab outer container
+                    if (opt.printContainer) { $doc.find("body").append($element.outer()); }
+                    else { $element.each(function () { $doc.find("body").append($(this).html()); }); }
+
+                    //$doc.close();
+                    // print
+                    setTimeout(function () { ($iframe[0].contentWindow).print(); }, 100);
+
+                    //removed iframe after 60 seconds
+                    setTimeout(
+                        function () {
+                            $iframe.remove();
+                        },
+                        (200)
+                    );
+                }, 333);
+            }
+
+
+            $.fn.printThis.defaults = {
+                debug: false, //show the iframe for debugging
+                importCSS: true, // import page CSS
+                printContainer: true, // grab outer container as well as the contents of the selector
+                loadCSS: "" //path to additional css file
+            };
+
+
+            jQuery.fn.outer = function () {
+                return $($('<div></div>').html(this.clone())).html();
+            }
+        })(jQuery);
+    });
+</script>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-<div class="form-horizontal">
-    <h4>View Fixed Expanses</h4>
-    <hr />
     <div class="row">
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle</span>
-                </div>
-                @Html.DropDownListFor(model => model.VehicleId, (IEnumerable<SelectListItem>)ViewBag.vehicleId, "--- Select Vehicle ---", new { @class = "form-control", required = "required", @disabled = "disabled" })
-
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Month</span>
-                </div>
-                @Html.DropDownListFor(model => model.ExpanseMonth, Enumerable.Range(1, 12).Select(x => new SelectListItem { Value = x.ToString(), Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(x) }), "--- Select Month ---", new { @class = "form-control", @disabled = "disabled" })
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Staff Salary</span>
-                </div>
-                @Html.EditorFor(model => model.StaffSalary, new
-           {
-               htmlAttributes =
-                       new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
-           })
-
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Staff Bhatta</span>
-                </div>
-                @Html.EditorFor(model => model.StaffBhatta, new
-           {
-               htmlAttributes =
-                       new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
-           })
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Bhatta Details</span>
-                </div>
-                @Html.EditorFor(model => model.BhattaDetails, new
-           {
-               htmlAttributes =
-                      new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
-           })
-
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Donations</span>
-                </div>
-                @Html.EditorFor(model => model.Donation, new
-           {
-               htmlAttributes =
-                    new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
-           })
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Driver's Room Rent</span>
-                </div>
-                @Html.EditorFor(model => model.DriverRoomRent, new
-           {
-               htmlAttributes =
-                    new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
-           })
-            </div>
-        </div>
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Forman Salary + Account	</span>
-                </div>
-                @Html.EditorFor(model => model.FormanSalary, new
-           {
-               htmlAttributes =
-                    new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
-           })
-            </div>
-        </div>
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Extra Driver's Salary</span>
-                </div>
-                @Html.EditorFor(model => model.ExtraDriversSalary, new
-           {
-               htmlAttributes =
-                    new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
-           })
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Extra Expense</span>
-                </div>
-                @Html.EditorFor(model => model.ExtraExpense, new
-           {
-               htmlAttributes =
-                    new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
-           })
-            </div>
-        </div>
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Extra Expense Details</span>
-                </div>
-                @Html.EditorFor(model => model.ExtraExpenseDetails, new
-           {
-               htmlAttributes =
-                  new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
-           })
-            </div>
-        </div>
-        <div class="col-12 col-md-6  text-center">
-            Total <h5 id="Totals">0</h5>
+        <div class="col-12 col-md-12 center">
+            <input type="button" id="printbutton" class="btn btn-success" value="Print" />
         </div>
     </div>
-    @section scripts{
-        <script>
-            $("#AddNewVehicle").click(function (e) {
-                $("#NewVehicle").modal();
-            });
+    <div class="form-horizontal">
+        <div id="reportprint">
+            <h4>Fixed Expanses</h4>
+            <hr />
+            <div class="row">
+                <div class="col-6 col-md-6">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle</span>
+                        </div>
+                        @Html.DropDownListFor(model => model.VehicleId, (IEnumerable<SelectListItem>)ViewBag.vehicleId, "--- Select Vehicle ---", new { @class = "form-control", required = "required", @disabled = "disabled" })
 
-            function saveNewVehicle(data) {
-                return $.ajax({
-                    type: 'POST',
-                    url: "/FixedExpanses/SaveVehicle",
-                    data: data,
-                    success: function (result) {
-                        if (result.Id) {
-                            alert("Record Saved Successfully!")
-                            $("#modalVehicleNumber").val('');
-                            $("#modalOwnerName").val('');
-                            $("#modalOwnerContactNumber").val('');
-                            var ddl = $('#VehicleId');
-                            $(document.createElement('option'))
-                                .attr('value', result.Id)
-                                .text(result.VehicleNumber)
-                                .appendTo(ddl)
-                        }
-                    },
-                    error: function () {
-                        alert("Error!")
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-6">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Month</span>
+                        </div>
+                        @Html.DropDownListFor(model => model.ExpanseMonth, Enumerable.Range(1, 12).Select(x => new SelectListItem { Value = x.ToString(), Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(x) }), "--- Select Month ---", new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-6">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Staff Salary</span>
+                        </div>
+                        @Html.EditorFor(model => model.StaffSalary, new
+                   {
+                       htmlAttributes =
+                               new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+                   })
+
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-6">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Staff Bhatta</span>
+                        </div>
+                        @Html.EditorFor(model => model.StaffBhatta, new
+                   {
+                       htmlAttributes =
+                               new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+                   })
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-6">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Bhatta Details</span>
+                        </div>
+                        @Html.EditorFor(model => model.BhattaDetails, new
+                   {
+                       htmlAttributes =
+                              new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+                   })
+
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-6">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Donations</span>
+                        </div>
+                        @Html.EditorFor(model => model.Donation, new
+                   {
+                       htmlAttributes =
+                            new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+                   })
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-6">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Driver's Room Rent</span>
+                        </div>
+                        @Html.EditorFor(model => model.DriverRoomRent, new
+                   {
+                       htmlAttributes =
+                            new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+                   })
+                    </div>
+                </div>
+                <div class="col-6 col-md-6">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text width-150" id="inputGroup-sizing-sm">Forman Salary + Account</span>
+                        </div>
+                        @Html.EditorFor(model => model.FormanSalary, new
+                   {
+                       htmlAttributes =
+                            new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+                   })
+                    </div>
+                </div>
+                <div class="col-6 col-md-6">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Extra Driver's Salary</span>
+                        </div>
+                        @Html.EditorFor(model => model.ExtraDriversSalary, new
+                   {
+                       htmlAttributes =
+                            new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+                   })
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-6">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Extra Expense</span>
+                        </div>
+                        @Html.EditorFor(model => model.ExtraExpense, new
+                   {
+                       htmlAttributes =
+                            new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+                   })
+                    </div>
+                </div>
+                <div class="col-6 col-md-6">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Extra Expense Details</span>
+                        </div>
+                        @Html.EditorFor(model => model.ExtraExpenseDetails, new
+                   {
+                       htmlAttributes =
+                          new { @class = "form-control", @onchange = "UpdatePage()", @disabled = "disabled" }
+                   })
+                    </div>
+                </div>
+                <div class="col-6 col-md-6  text-center">
+                    Total <h5 id="Totals">0</h5>
+                </div>
+            </div>
+            @section scripts{
+                <script>
+                    $("#AddNewVehicle").click(function (e) {
+                        $("#NewVehicle").modal();
+                    });
+
+                    function saveNewVehicle(data) {
+                        return $.ajax({
+                            type: 'POST',
+                            url: "/FixedExpanses/SaveVehicle",
+                            data: data,
+                            success: function (result) {
+                                if (result.Id) {
+                                    alert("Record Saved Successfully!")
+                                    $("#modalVehicleNumber").val('');
+                                    $("#modalOwnerName").val('');
+                                    $("#modalOwnerContactNumber").val('');
+                                    var ddl = $('#VehicleId');
+                                    $(document.createElement('option'))
+                                        .attr('value', result.Id)
+                                        .text(result.VehicleNumber)
+                                        .appendTo(ddl)
+                                }
+                            },
+                            error: function () {
+                                alert("Error!")
+                            }
+                        });
                     }
-                });
+                    //Collect Multiple Order List For Pass To Controller
+                    $("#saveNewVehicle").click(function (e) {
+                        e.preventDefault();
+
+                        var VehicleNumber = $("#modalVehicleNumber").val();
+                        var OwnerName = $("#modalOwnerName").val();
+                        var OwnerContactNumber = $("#modalOwnerContactNumber").val();
+
+                        var data = {
+                            VehicleNumber: VehicleNumber,
+                            OwnerName: OwnerName,
+                            OwnerContactNumber: OwnerContactNumber
+                        };
+
+                        $.when(saveNewVehicle(data)).then(function (response) {
+                            console.log(response);
+                        }).fail(function (err) {
+                            console.log(err);
+                        });
+
+                    });
+
+                    $(document).ready(
+                        function () {
+                            UpdatePage();
+                        }
+                    );
+                    function UpdatePage() {
+
+                        var Total = 0;
+                        var StaffSalary = $("#StaffSalary").val();
+                        if (StaffSalary == '' || isNaN(StaffSalary)) {
+                            StaffSalary = 0;
+                        }
+                        var StaffBhatta = $("#StaffBhatta").val();
+                        if (StaffBhatta == '' || isNaN(StaffBhatta)) {
+                            StaffBhatta = 0;
+                        }
+                        var Donation = $("#Donation").val();
+                        if (Donation == '' || isNaN(Donation)) {
+                            Donation = 0;
+                        }
+                        var DriverRoomRent = $("#DriverRoomRent").val();
+                        if (DriverRoomRent == '' || isNaN(DriverRoomRent)) {
+                            DriverRoomRent = 0;
+                        }
+                        var FormanSalary = $("#FormanSalary").val();
+                        if (FormanSalary == '' || isNaN(FormanSalary)) {
+                            FormanSalary = 0;
+                        }
+                        var ExtraDriversSalary = $("#ExtraDriversSalary").val();
+                        if (ExtraDriversSalary == '' || isNaN(ExtraDriversSalary)) {
+                            ExtraDriversSalary = 0;
+                        }
+                        var ExtraExpense = $("#ExtraExpense").val();
+                        if (ExtraExpense == '' || isNaN(ExtraExpense)) {
+                            ExtraExpense = 0;
+                        }
+
+                        Total = parseFloat(StaffSalary) + parseFloat(StaffBhatta) + parseFloat(Donation) + parseFloat(DriverRoomRent) + parseFloat(FormanSalary) +
+                            parseFloat(ExtraDriversSalary) + parseFloat(ExtraExpense)
+                        $("#Totals").text(Total);
+                    }
+                </script>
             }
-            //Collect Multiple Order List For Pass To Controller
-            $("#saveNewVehicle").click(function (e) {
-                e.preventDefault();
+        </div>
+        <a asp-action="Index">Back to List</a>
 
-                var VehicleNumber = $("#modalVehicleNumber").val();
-                var OwnerName = $("#modalOwnerName").val();
-                var OwnerContactNumber = $("#modalOwnerContactNumber").val();
+        @if (!String.IsNullOrEmpty(ViewBag.error))
+        {
+            <div class="mt-2">
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.error
+                </div>
+            </div>
+        }
 
-                var data = {
-                    VehicleNumber: VehicleNumber,
-                    OwnerName: OwnerName,
-                    OwnerContactNumber: OwnerContactNumber
-                };
-
-                $.when(saveNewVehicle(data)).then(function (response) {
-                    console.log(response);
-                }).fail(function (err) {
-                    console.log(err);
+        @if (!String.IsNullOrEmpty(ViewBag.result))
+        {
+            <div class="mt-2">
+                <div class="alert alert-success" role="alert">
+                    @ViewBag.result
+                </div>
+            </div>
+        }
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#printbutton').click(function () {
+                    $('#reportprint').printThis();
                 });
-
             });
 
-            $(document).ready(
-                function () {
-                    UpdatePage();
-                }
-            );
-            function UpdatePage() {
-
-                var Total = 0;
-                var StaffSalary = $("#StaffSalary").val();
-                if (StaffSalary == '' || isNaN(StaffSalary)) {
-                    StaffSalary = 0;
-                }
-                var StaffBhatta = $("#StaffBhatta").val();
-                if (StaffBhatta == '' || isNaN(StaffBhatta)) {
-                    StaffBhatta = 0;
-                }
-                var Donation = $("#Donation").val();
-                if (Donation == '' || isNaN(Donation)) {
-                    Donation = 0;
-                }
-                var DriverRoomRent = $("#DriverRoomRent").val();
-                if (DriverRoomRent == '' || isNaN(DriverRoomRent)) {
-                    DriverRoomRent = 0;
-                }
-                var FormanSalary = $("#FormanSalary").val();
-                if (FormanSalary == '' || isNaN(FormanSalary)) {
-                    FormanSalary = 0;
-                }
-                var ExtraDriversSalary = $("#ExtraDriversSalary").val();
-                if (ExtraDriversSalary == '' || isNaN(ExtraDriversSalary)) {
-                    ExtraDriversSalary = 0;
-                }
-                var ExtraExpense = $("#ExtraExpense").val();
-                if (ExtraExpense == '' || isNaN(ExtraExpense)) {
-                    ExtraExpense = 0;
-                }
-
-                Total = parseFloat(StaffSalary) + parseFloat(StaffBhatta) + parseFloat(Donation) + parseFloat(DriverRoomRent) + parseFloat(FormanSalary) +
-                    parseFloat(ExtraDriversSalary) + parseFloat(ExtraExpense)
-                $("#Totals").text(Total);
-            }
         </script>
-    }
-    <a asp-action="Index">Back to List</a>
-
-    @if (!String.IsNullOrEmpty(ViewBag.error))
-    {
-        <div class="mt-2">
-            <div class="alert alert-danger" role="alert">
-                @ViewBag.error
-            </div>
-        </div>
-    }
-
-    @if (!String.IsNullOrEmpty(ViewBag.result))
-    {
-        <div class="mt-2">
-            <div class="alert alert-success" role="alert">
-                @ViewBag.result
-            </div>
-        </div>
-    }
-</div>
+    </div>
 }

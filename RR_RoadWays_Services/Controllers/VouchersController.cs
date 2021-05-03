@@ -56,7 +56,7 @@ namespace RR_RoadWays_Services.Controllers
             ViewBag.error = "";
 
             ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
-            ViewBag.UpFrom = new SelectList(context.Company.ToList(), "Id", "Name");
+            ViewBag.UpFrom = new SelectList(context.Company.Where(x => x.IsDeleted == false).ToList(), "Id", "Name");
             ViewBag.UpTo = new SelectList(context.City.ToList(), "Id", "Name");
 
             ViewBag.DownFrom = new SelectList(context.City.ToList(), "Id", "Name");
@@ -154,7 +154,7 @@ namespace RR_RoadWays_Services.Controllers
             ViewBag.error = "";
 
             ViewBag.vehicleId = new SelectList(context.Vehicle.Where(x => x.IsDeleted == false).ToList(), "Id", "VehicleNumber");
-            ViewBag.UpFrom = new SelectList(context.Company.ToList(), "Id", "Name");
+            ViewBag.UpFrom = new SelectList(context.Company.Where(x => x.IsDeleted == false).ToList(), "Id", "Name");
             ViewBag.UpTo = new SelectList(context.City.ToList(), "Id", "Name");
 
             ViewBag.DownFrom = new SelectList(context.City.ToList(), "Id", "Name");

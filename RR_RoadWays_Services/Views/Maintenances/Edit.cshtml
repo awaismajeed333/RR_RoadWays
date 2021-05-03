@@ -194,7 +194,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button id="saveDepartment" type="submit" class="btn btn-dark">Save</button>
+                        <button id="btnsaveDepartment" type="submit" class="btn btn-dark">Save</button>
                     </div>
                 </form>
             </div>
@@ -299,10 +299,10 @@
                     success: function (result) {
                         if (result.Id) {
                             alert("Record Saved Successfully!")
-                            $("#modalsaveNewMaintenanceShopName").val('');
-                            $("#modalsaveNewMaintenanceShopLocation").val('');
-                            $("#modalsaveNewMaintenanceShopOwnerName").val('');
-                            $("#modalsaveNewMaintenanceShopContactNumber").val('');
+                            $("#modalMaintenanceShopName").val('');
+                            $("#modalMaintenanceShopLocation").val('');
+                            $("#modalMaintenanceShopOwnerName").val('');
+                            $("#modalMaintenanceShopContactNumber").val('');
                             var ddl = $('#StationId');
                             $(document.createElement('option'))
                                 .attr('value', result.Id)
@@ -319,12 +319,12 @@
             $("#saveNewMaintenanceShop").click(function (e) {
                 e.preventDefault();
 
-                var modalsaveNewMaintenanceShopName = $("#modalsaveNewMaintenanceShopName").val();
-                var modalsaveNewMaintenanceShopLocation = $("#modalsaveNewMaintenanceShopLocation").val();
-                var modalsaveNewMaintenanceShopOwnerName = $("#modalsaveNewMaintenanceShopOwnerName").val();
-                var modalsaveNewMaintenanceShopContactNumber = $("#modalsaveNewMaintenanceShopContactNumber").val();
-                var modalsaveNewMaintenanceShopStationType = $("#modalsaveNewMaintenanceShopStationType").val();
-                var modalsaveNewMaintenanceShopCityId = $("#modalsaveNewMaintenanceShopCityId").val();
+                var modalsaveNewMaintenanceShopName = $("#modalMaintenanceShopName").val();
+                var modalsaveNewMaintenanceShopLocation = $("#modalMaintenanceShopLocation").val();
+                var modalsaveNewMaintenanceShopOwnerName = $("#modalMaintenanceShopOwnerName").val();
+                var modalsaveNewMaintenanceShopContactNumber = $("#modalMaintenanceShopContactNumber").val();
+                var modalsaveNewMaintenanceShopStationType = $("#modalMaintenanceShopStationType").val();
+                var modalsaveNewMaintenanceShopCityId = $("#modalMaintenanceShopCityId").val();
 
                 var data = {
                     Name: modalsaveNewMaintenanceShopName,
