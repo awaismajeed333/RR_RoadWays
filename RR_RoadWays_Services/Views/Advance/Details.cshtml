@@ -1,13 +1,20 @@
 ﻿@model RR_RoadWays_Services.Models.Advance;
 @{
-    ViewData["Title"] = "Cash Advance";
+    ViewData["Title"] = "View Advances";
 }
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 <div class="form-horizontal">
-    <h4>View Cash Advance</h4>
+    <div style="display:none">
+        @Html.EditorFor(model => model.Id, new
+     {
+         htmlAttributes = new { @class = "form-control", required = "required", @disabled = "disabled" }
+     })
+        
+    </div>
+    <h4>View Advance</h4>
     <hr />
     <div class="row">
         <div class="col-12 col-md-6">
@@ -19,57 +26,504 @@
 
             </div>
         </div>
-        
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Pickup Point</span>
-                </div>
-                @Html.DropDownListFor(model => model.StationId, (IEnumerable<SelectListItem>)ViewBag.StationId, "--- Select Pickup Point ---", new { @class = "form-control", required = "required", @disabled = "disabled" })
-            </div>
-        </div>
-        
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Advance Date</span>
-                </div>
-                @Html.EditorFor(model => model.AdvanceDate, new
-           {
-               htmlAttributes =
-                       new { @class = "form-control", required = "required", @disabled = "disabled" }
-           })
-            </div>
-        </div>
+    </div>
+    <br />
+    <h5>Pickup Points</h5>
+    <hr />
+   
 
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Description</span>
+    <div id="AdvanceDetails" style="display: none">
+        <br />
+        <div class="row">
+            <div class="col-12 col-md-5">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Pickup Point</span>
+                    </div>
+                    @Html.DropDownList("StationId", (IEnumerable<SelectListItem>)ViewBag.StationId, "--- Select Pickup Point ---", new { @class = "form-control" })
                 </div>
-                @Html.EditorFor(model => model.Description, new
-                {
-                    htmlAttributes =
-                    new { @class = "form-control", @disabled = "disabled" }
-                })
             </div>
-        </div>
-        <div class="col-12 col-md-6">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Amount</span>
+            <div class="col-12 col-md-1">
+                <div class="input-group input-group-sm mb-3">
+                    <a id="AddNewPickup" class="btn btn-dark" style="color: #ffc107">
+                        <i class="fa fa-plus"></i>
+                    </a>
                 </div>
-                @Html.EditorFor(model => model.Amount, new
-           {
-               htmlAttributes =
-                    new { @class = "form-control" , @disabled = "disabled" }
-           })
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Advance Date</span>
+                    </div>
+                    <input class="form-control text-box single-line" id="AdvanceDate" name="AdvanceDate" required="required" type="datetime-local" value="">
+                    @*@Html.Editor("AdvanceDate", new
+                        {
+                            htmlAttributes =
+                                    new { @class = "form-control", required = "required" }
+                        })*@
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Amount</span>
+                    </div>
+                    <input type="number" id="Amount" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                    @*@Html.Editor("Amount", new
+                        {
+                            htmlAttributes =
+                            new { @class = "form-control" }
+                        })*@
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Description</span>
+                    </div>
+                    <textarea id="Description" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"></textarea>
+                    @*@Html.Editor("Description", new
+                        {
+                            htmlAttributes =
+                            new { @class = "form-control" }
+                        })*@
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-12">
+                <button type="button" class="btn btn-warning float-right" id="saveAdvanceDetails">Save Advance Details</button>
             </div>
         </div>
     </div>
 
-    <a asp-action="Index">Back to List</a>
-   
+    <div class="row">
+        <div class="col-12 col-md-12 pl-2">
+            <table id="tbl_AdvanceDetails" class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th>Sr. No</th>
+                        <th>Station</th>
+                        <th>Advance Date</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+  
+    <div class="modal fade" id="NewVehicle">
+        <div class="modal-dialog modal-lg" style=" width :900px !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    @*<h4>Add New City</h4>*@
+                </div>
+
+                <form id="NewVehicleForm">
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Number</span>
+                                        </div>
+                                        <input type="text" id="modalVehicleNumber" name="modalVehicleNumber" placeholder="Vehicle Number" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Owner Name</span>
+                                        </div>
+                                        <input type="text" id="modalOwnerName" name="modalOwnerName" placeholder="Owner Name" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Owner Contact Number</span>
+                                        </div>
+                                        <input type="text" id="modalOwnerContactNumber" name="modalOwnerContactNumber" placeholder="Owner Contact Number" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button id="saveNewVehicle" type="submit" class="btn btn-dark">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="NewPickup">
+        <div class="modal-dialog modal-lg" style=" width :900px !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    @*<h4>Add New City</h4>*@
+                </div>
+
+                <form id="NewPickupForm">
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Name</span>
+                                        </div>
+                                        <input type="text" id="modalPickupName" name="modalPickupName" placeholder="Name" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Location</span>
+                                        </div>
+                                        <input type="text" id="modalPickupLocation" name="modalPickupLocation" placeholder="Location" class="form-control" />
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Owner Name</span>
+                                        </div>
+                                        <input type="text" id="modalPickupOwnerName" name="modalPickupOwnerName" placeholder="Owner Name" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Contact Number</span>
+                                        </div>
+                                        <input type="text" id="modalPickupContactNumber" name="modalPickupContactNumber" placeholder="Contact Number" class="form-control" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Station Type</span>
+                                        </div>
+                                        @Html.DropDownList("modalPickupStationType", (IEnumerable<SelectListItem>)ViewBag.StationType, "--- Select Station Type ---", new { @class = "form-control", required = "required" })
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Cities</span>
+                                        </div>
+                                        @Html.DropDownList("modalPickupCityId", (IEnumerable<SelectListItem>)ViewBag.cities, "--- Select City ---", new { @class = "form-control", required = "required" })
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button id="saveNewPickup" type="submit" class="btn btn-dark">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="newExpanseModal">
+        <div class="modal-dialog modal-lg" style="width:1000px !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Expanse Details</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <form id="NewExpanseForm">
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Pickup Point</span>
+                                        </div>
+                                        @Html.DropDownList("StationId", (IEnumerable<SelectListItem>)ViewBag.StationId, "--- Select Pickup Point ---", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-1">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <a id="AddNewPickup" class="btn btn-dark" style="color: #ffc107">
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">To</span>
+                                        </div>
+
+                                       @* @Html.DropDownList("dropDownExpanseHead", (IEnumerable<SelectListItem>)ViewBag.ExpanseHead, "--- Select Expanse Head ---", new { @class = "form-control", style = "width: 50%;" })*@
+                                    <!--</div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text width-100" id="inputGroup-sizing-sm">Amount</span>
+                                        </div>
+                                        <input type="number" id="txtExpanseAmount" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    </div>
+                                </div>
+                            </div>-->
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button id="saveExpanseDetails" type="submit" class="btn btn-warning">Save Expanse Details</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @section scripts{
+        <script>
+
+                $("#addAdvanceDetails").click(function (e) {
+                    $("#AdvanceDetails").show();
+                    $("#closeAdvanceDetails").show();
+                    //$("#AdvanceDetails").attr("display: block");
+                });
+
+                $("#closeAdvanceDetails").click(function (e) {
+                    $("#AdvanceDetails").hide();
+                    $("#closeAdvanceDetails").hide();
+                    //$("#AdvanceDetails").attr("display: block");
+                });
+
+                //Collect Multiple Order List For Pass To Controller
+                $("#saveAdvanceDetails").click(function (e) {
+                    e.preventDefault();
+
+                    if ($.trim($("#StationId").val()) == "" || $.trim($("#AdvanceDate").val()) == "" || $.trim($("#Amount").val()) == "") return;
+
+                    var Description = $("#Description").val(),
+                        StationId = $("#StationId").val(),
+                        StationName = $("select#StationId option:selected").val(),
+                        AdvanceDate = $("#AdvanceDate").val(),
+                        Amount = $("#Amount").val().trim(),
+
+                    detailsTableBody = $("#tbl_AdvanceDetails tbody");
+                    var index = document.getElementById("tbl_AdvanceDetails").rows.length;
+                    var productItem = '<tr><td>' + index + '</td><td>' + StationName + '</td><td>' + AdvanceDate + '</td><td>' + parseFloat(Amount).toFixed(2) + '</td><td>' + Description + '</td><td> <a data-itemId="0" href="#" class="deleteItem">Remove</a></td><td style="visibility:hidden;">' + StationId + '</td></tr > ';
+                    detailsTableBody.append(productItem);
+                    clearItem();
+                });
+
+                function clearItem() {
+                    $("#StationId").val('');
+                    $("#AdvanceDate").val('');
+                    $("#Amount").val('');
+                    $("#Description").val('');
+                }
+
+                $("#btnSaveCashAdvance").click(function (e) {
+                    $("#btnSaveCashAdvance").attr("disabled", true);
+                    var AdvanceDetailsArr = [];
+
+                    $.each($("#tbl_AdvanceDetails tbody tr"), function () {
+                        AdvanceDetailsArr.push({
+                            /*Id: $(this).find('td:eq(7)').html().trim(),*/
+                            AdvanceId: $("#Id").val(),
+                            StationId: $(this).find('td:eq(6)').html().trim(),
+                            AdvanceDate: $(this).find('td:eq(2)').html().trim(),
+                            Amount: $(this).find('td:eq(3)').html().trim(),
+                            Description: $(this).find('td:eq(4)').html().trim()
+                        })
+                    });
+
+                    var data = JSON.stringify({
+                        Id: $("#Id").val(),
+                        VehicleId: $("#VehicleId").val(),
+                        AdvanceDetails: AdvanceDetailsArr
+                    });
+
+                    $.ajax({
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        type: 'POST',
+                        url: "/Advance/Edit",
+                        data: data,
+                        success: function (result) {
+                            if (typeof result != "undefined" && result != null) {
+                                alert(result);
+                                $("#btnSaveCashAdvance").attr("disabled", false);
+                            }
+                        },
+                        error: function () {
+                            $("#btnSaveCashAdvance").attr("disabled", false);
+                            alert("Error!");
+                        }
+                    });
+                });
+
+                // After Add A New Order In The List, If You Want, You Can Remove It.
+                $(document).on('click', 'a.deleteItem', function (e) {
+                    e.preventDefault();
+                    var $self = $(this);
+                    if ($(this).attr('data-itemId') == "0") {
+                        $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800, function () {
+                            $(this).remove();
+                        });
+                    }
+
+                });
+
+                $("#AddNewPickup").click(function (e) {
+                    $("#NewPickup").modal();
+                });
+
+                function saveNewPickup(data) {
+                    return $.ajax({
+                        type: 'POST',
+                        url: "/Advance/SavePickup",
+                        data: data,
+                        success: function (result) {
+                            if (result.Id) {
+                                alert("Record Saved Successfully!")
+                                $("#modalPickupName").val('');
+                                $("#modalPickupLocation").val('');
+                                $("#modalPickupOwnerName").val('');
+                                $("#modalPickupContactNumber").val('');
+                                var ddl = $('#StationId');
+                                $(document.createElement('option'))
+                                    .attr('value', result.Id)
+                                    .text(result.Name)
+                                    .appendTo(ddl)
+                            }
+                        },
+                        error: function () {
+                            alert("Error!")
+                        }
+                    });
+                }
+                //Collect Multiple Order List For Pass To Controller
+                $("#saveNewPickup").click(function (e) {
+                    e.preventDefault();
+
+                    var modalPickupName = $("#modalPickupName").val();
+                    var modalPickupLocation = $("#modalPickupLocation").val();
+                    var modalPickupOwnerName = $("#modalPickupOwnerName").val();
+                    var modalPickupContactNumber = $("#modalPickupContactNumber").val();
+                    var modalPickupStationType = $("#modalPickupStationType").val();
+                    var modalPickupCityId = $("#modalPickupCityId").val();
+
+                    var data = {
+                        Name: modalPickupName,
+                        Location: modalPickupLocation,
+                        OwnerName: modalPickupOwnerName,
+                        ContactNumber: modalPickupContactNumber,
+                        StationType: modalPickupStationType,
+                        CityId: modalPickupCityId
+                    };
+
+                    $.when(saveNewPickup(data)).then(function (response) {
+                        console.log(response);
+                    }).fail(function (err) {
+                        console.log(err);
+                    });
+
+                });
+
+                $("#AddNewVehicle").click(function (e) {
+                    $("#NewVehicle").modal();
+                });
+
+                function saveNewVehicle(data) {
+                    return $.ajax({
+                        type: 'POST',
+                        url: "/Advance/SaveVehicle",
+                        data: data,
+                        success: function (result) {
+                            if (result.Id) {
+                                alert("Record Saved Successfully!")
+                                $("#modalVehicleNumber").val('');
+                                $("#modalOwnerName").val('');
+                                $("#modalOwnerContactNumber").val('');
+                                var ddl = $('#VehicleId');
+                                $(document.createElement('option'))
+                                    .attr('value', result.Id)
+                                    .text(result.VehicleNumber)
+                                    .appendTo(ddl)
+                            }
+                        },
+                        error: function () {
+                            alert("Error!")
+                        }
+                    });
+                }
+                //Collect Multiple Order List For Pass To Controller
+                $("#saveNewVehicle").click(function (e) {
+                    e.preventDefault();
+
+                    var VehicleNumber = $("#modalVehicleNumber").val();
+                    var OwnerName = $("#modalOwnerName").val();
+                    var OwnerContactNumber = $("#modalOwnerContactNumber").val();
+
+                    var data = {
+                        VehicleNumber: VehicleNumber,
+                        OwnerName: OwnerName,
+                        OwnerContactNumber: OwnerContactNumber
+                    };
+
+                    $.when(saveNewVehicle(data)).then(function (response) {
+                        console.log(response);
+                    }).fail(function (err) {
+                        console.log(err);
+                    });
+
+                });
+
+                $(document).ready(
+                    function () {
+                        var StatonId = @Html.Raw(Json.Serialize(ViewBag.StationId));
+                        var model = @Html.Raw(Json.Serialize(Model));
+                        console.log(model);
+
+                        if (model.advanceDetails != undefined && model.advanceDetails.length> 0) {
+                            for (var i = 0; i < model.advanceDetails.length; i++) {
+                                let detailsTableBody = $("#tbl_AdvanceDetails tbody");
+                                var index = document.getElementById("tbl_AdvanceDetails").rows.length;
+                                var productItem = '<tr><td>' + index + '</td><td>' + model.advanceDetails[i].station.name + '</td><td>' + model.advanceDetails[i].advanceDate + '</td><td>' + parseFloat(model.advanceDetails[i].amount).toFixed(2) + '</td><td>' + model.advanceDetails[i].description + '</td></tr > ';
+                                detailsTableBody.append(productItem);
+                            }
+                        }
+                    });
+
+        </script>
+    }
     @if (!String.IsNullOrEmpty(ViewBag.error))
     {
         <div class="mt-2">
@@ -90,3 +544,4 @@
 
 </div>
 }
+

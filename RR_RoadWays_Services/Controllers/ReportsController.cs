@@ -360,17 +360,18 @@ namespace RR_RoadWays_Services.Controllers
             int pickpupPointId = Convert.ToInt32(data.PickupPointId);
             List<CashAdvanceReport> griddata = new List<CashAdvanceReport>();
             var cashAdnacceList = context.Advance
-                    .Join(context.Vehicle, a => a.VehicleId, v => v.Id, (a, v) => new { a, v })
-                    .Join(context.Station, d => d.a.StationId, s => s.Id, (d, s) => new
+                    .Join(context.AdvanceDetails, a=> a.Id, ad=>ad.AdvanceId, (a,ad) => new { a, ad } )
+                    .Join(context.Vehicle, a => a.a.VehicleId, v => v.Id, (a, v) => new { a, v })
+                    .Join(context.Station, d => d.a.ad.StationId, s => s.Id, (d, s) => new
                     {
-                        Date = d.a.AdvanceDate,
-                        Vechicle = d.a.VehicleId,
+                        Date = d.a.ad.AdvanceDate,
+                        Vechicle = d.a.a.VehicleId,
                         VechicleNumber = d.v.VehicleNumber,
-                        PickupPointId = d.a.StationId,
+                        PickupPointId = d.a.ad.StationId,
                         PickupPointName = s.Name,
-                        Description = d.a.Description,
-                        Amount = d.a.Amount
-                        }).Where(c => c.Date.Value.Date >= data.StartDate.Date)
+                        Description = d.a.ad.Description,
+                        Amount = d.a.ad.Amount
+                    }).Where(c => c.Date.Value.Date >= data.StartDate.Date)
                     .Where(c => c.Date.Value.Date <= data.EndDate.Date)
                     .Where(c => data.PickupPointId != "-1" ? c.PickupPointId == pickpupPointId : 1 == 1)
                     .Where(c => data.VehicleNumber != "-1" ? c.Vechicle == vehicleNumber : 1 == 1).ToList();
