@@ -19,6 +19,7 @@ namespace RR_RoadWays_Services.Models
         }
 
         public virtual DbSet<Advance> Advance { get; set; }
+        public virtual DbSet<AdvanceDetails> AdvanceDetails { get; set; }
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<Company> Company { get; set; }
         public virtual DbSet<Department> Department { get; set; }
@@ -43,10 +44,11 @@ namespace RR_RoadWays_Services.Models
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 //optionsBuilder.UseSqlServer("Server=DESKTOP-KI4V3OT\\SQLEXPRESS;Database=RRRoadwaysDB;Trusted_Connection=True;");
-                IConfigurationRoot configuration = new ConfigurationBuilder()
-                   .SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
-                   .AddJsonFile("appsettings.json")
-                   .Build();
+
+              IConfigurationRoot configuration = new ConfigurationBuilder()
+              .SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
+              .AddJsonFile("appsettings.json")
+              .Build();
                 optionsBuilder.UseSqlServer(configuration.GetConnectionString("RRRDbConstr"));
             }
         }
@@ -59,21 +61,29 @@ namespace RR_RoadWays_Services.Models
             {
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.HasOne(d => d.Vehicle)
+                    .WithMany(p => p.Advance)
+                    .HasForeignKey(d => d.VehicleId)
+                    .HasConstraintName("FK_Advance_Vehicle");
+            });
+
+            modelBuilder.Entity<AdvanceDetails>(entity =>
+            {
                 entity.Property(e => e.AdvanceDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Amount).HasColumnType("numeric(18, 2)");
 
                 entity.Property(e => e.Description).IsUnicode(false);
 
-                entity.HasOne(d => d.Station)
-                    .WithMany(p => p.Advance)
-                    .HasForeignKey(d => d.StationId)
-                    .HasConstraintName("FK_Advance_Station");
+                entity.HasOne(d => d.Advance)
+                    .WithMany(p => p.AdvanceDetails)
+                    .HasForeignKey(d => d.AdvanceId)
+                    .HasConstraintName("FK_AdvanceDetails_Advance");
 
-                entity.HasOne(d => d.Vehicle)
-                    .WithMany(p => p.Advance)
-                    .HasForeignKey(d => d.VehicleId)
-                    .HasConstraintName("FK_Advance_Vehicle");
+                entity.HasOne(d => d.Station)
+                    .WithMany(p => p.AdvanceDetails)
+                    .HasForeignKey(d => d.StationId)
+                    .HasConstraintName("FK_AdvanceDetails_Station");
             });
 
             modelBuilder.Entity<City>(entity =>
