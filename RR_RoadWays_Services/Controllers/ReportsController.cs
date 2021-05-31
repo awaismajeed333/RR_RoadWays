@@ -95,7 +95,7 @@ namespace RR_RoadWays_Services.Controllers
                    {
                        VoucherNumber = c.vo.VoucherNumber,
                        PumpId = vdd.StationId,
-                       Date = c.vo.CreatedDate,
+                       Date = vdd.Date,
                        VehicleNumber = c.v.Id,
                        Vehicle = c.v.VehicleNumber,
                        Litre = vdd.Litre,
