@@ -1,0 +1,124 @@
+﻿@model RR_RoadWays_Services.Models.DataValidation;
+@{
+    ViewData["Title"] = "Add Data Validation";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>Add Data Validation Entry</h4>
+        <hr />
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle</span>
+                    </div>
+                    @Html.DropDownListFor(model => model.Vehicle, (IEnumerable<SelectListItem>)ViewBag.vehicleId, "--- Select Vehicle ---", new { @class = "form-control", disabled="true", required = "required" })
+
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">SRP </span>
+                    </div>
+                    @Html.EditorFor(model => model.Srp, new
+                {
+                    htmlAttributes =
+                            new { @class = "form-control", required = "required" }
+                })
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">PRP </span>
+                    </div>
+                    @Html.EditorFor(model => model.Prp, new
+                {
+                    htmlAttributes =
+                            new { @class = "form-control", required = "required" }
+                })
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Kpk(Route Permit) </span>
+                    </div>
+                    @Html.EditorFor(model => model.KpkRp, new
+                {
+                    htmlAttributes =
+                            new { @class = "form-control", required = "required" }
+                })
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Tax Paper </span>
+                    </div>
+                    @Html.EditorFor(model => model.TaxPaper, new
+                {
+                    htmlAttributes =
+                            new { @class = "form-control", required = "required" }
+                })
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Fitness </span>
+                    </div>
+                    @Html.EditorFor(model => model.Fitness, new
+                {
+                    htmlAttributes =
+                            new { @class = "form-control", required = "required" }
+                })
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Insurance </span>
+                    </div>
+                    @Html.EditorFor(model => model.Insurance, new
+                {
+                    htmlAttributes =
+                            new { @class = "form-control", required = "required" }
+                })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-dark" />
+                </div>
+            </div>
+        </div>
+
+        @if (!String.IsNullOrEmpty(ViewBag.error))
+        {
+            <div class="mt-2">
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.error
+                </div>
+            </div>
+        }
+
+        @if (!String.IsNullOrEmpty(ViewBag.result))
+        {
+            <div class="mt-2">
+                <div class="alert alert-success" role="alert">
+                    @ViewBag.result
+                </div>
+            </div>
+        }
+
+    </div>
+}

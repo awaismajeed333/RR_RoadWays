@@ -1,297 +1,101 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model List<RR_RoadWays_Services.Models.DataValidation>;
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
+<div>
+    <div class="m-2 text-center border-bottom">
+        <h3>Data Validation</h3>    
+    </div>
+    <div class="m-2 float-right">
+        <input type="button" class="btn btn-dark" value="Add New" onclick="location.href='@Url.Action("Add", "Home")'" />
+    </div>
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Vehicle</th>
+                <th>SRP (A&B)</th>
+                <th>PRP</th>
+                <th>KPK(Route Permit)</th>
+                <th>Tax Paper</th>
+                <th>Fitness</th>
+                <th>Isurance</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>
 </div>
-    @*<div>
-        <h4>Voucher Details</h4>
-        <hr />
-        <div class="row">
-            <div class="col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Number</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Month</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-            </div>
-        </div>
-        <h4>UP Details</h4>
-        <hr />
-        <div class="row">
-            <div class="col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Date</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">From</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">To</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Amount</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-            </div>
-        </div>
-        <h4>Down Details</h4>
-        <hr />
-        <div class="row">
-            <div class="col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Returned Date</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">From</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">To</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Description</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Amount</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Total</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <h4>Diesel Details</h4>
-            </div>
-            <div class="col-md-6">
-                <button type="button" class="btn btn-outline-primary float-right">Add New</button>
-            </div>
-        </div>
-        <hr />
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Sr.No</th>
-                            <th>Date</th>
-                            <th>Pump Name</th>
-                            <th>Litre</th>
-                            <th>Rate</th>
-                            <th>Amount</th>
-                            <th>Oil & Others</th>
-                            <th>Amount</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>7/2/2021</td>
-                            <td>PumpA</td>
-                            <td>317</td>
-                            <td>125.01</td>
-                            <td>39628.17</td>
-                            <td></td>
-                            <td>111</td>
-                            <td>39739.17</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>7/2/2021</td>
-                            <td>Random</td>
-                            <td>310</td>
-                            <td>124.6</td>
-                            <td>38626</td>
-                            <td></td>
-                            <td>111</td>
-                            <td>38737</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td class="totalsbg">Total Diesel</td>
-                            <td class="totalsbg">738</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="totalsbg">Total Diesel</td>
-                            <td class="totalsbg">78476.17</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="totalsbg">Oil Shop 2</td>
-                            <td class="totalsbg">20,000</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="totalsbg">Total Amount</td>
-                            <td class="totalsbg">98476.17</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <hr />
-        <div class="row">
-            <div class="col-md-6 pl-2">
-                <div class="row totalsbg mb-3">
-                    <div class="col-md-2">
-                        Sr.No
-                    </div>
-                    <div class="col-md-5">
-                        Others Expense
-                    </div>
-                    <div class="col-md-5">
-                        Amount
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        1
-                    </div>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" value="Toll Tax" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                    </div>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" value="14,500" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-md-2">
-                        1
-                    </div>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" value="Fone Chokidarah	" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                    </div>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" value="800" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-md-2">
 
-                    </div>
-                    <div class="col-md-5 totalsbg">
-                        Total
-                    </div>
-                    <div class="col-md-5 totalsbg">
-                        36,634
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-1 pl-2"></div>
-            <div class="col-md-5 pr-2">
-                <div class="row">
-                    <div class="col-md-6">
-                        Total Amdan
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" value="200,000" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-md-6">
-                        Total Deisel & oil
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" value="98,476" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-md-6">
-                        Total Others Expense
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" value="36,634" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-12 totalsbg text-center">
-                        Trip Profit
-                    </div>
-                    <div class="col-md-12  text-center">
-                        <h3>
-                            64,890
-                        </h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr />
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <div class="center">
-                    <button type="button" class="btn btn-primary ">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>*@
+<script>
+    $(document).ready(function () {
+        let userRole = "@String.Format(User.Claims.FirstOrDefault(x => x.Type.Contains("role")).Value)"
+        var table = $('#example').DataTable({
+            "ajax": "/Home/getDataValidationDetails",
+            "ordering": false,
+            "columns": [
+                { "data": "Vehicle" },
+                { "data": "Srp"},
+                { "data": "Prp"},
+                { "data": "KpkRp" },
+                { "data": "TaxPaper" },
+                { "data": "Fitness" },
+                { "data": "Insurance" },
+                { "data": "" },
+            ],
+            'rowCallback': function (row, data, index) {
+                let days = 15;
+                let currentdate = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate();
+                let srp = new Date(data['Srp']);
+                srp.setDate(srp.getDate() - days);
+                srp = srp.getFullYear() + '-' + (srp.getMonth()+1) + '-' + srp.getDate() ;
+                let prp = new Date(data['Prp']);
+                prp.setDate( prp.getDate() - days );
+                prp = prp.getFullYear()+ '-' + (prp.getMonth()+1) + '-' + prp.getDate() ;
+                let kpk = new Date(data['KpkRp']);
+                kpk.setDate( kpk.getDate() - days );
+                kpk = kpk.getFullYear()+ '-' + (kpk.getMonth()+1) + '-' + kpk.getDate() ;
+                let taxpaper = new Date(data['TaxPaper']);
+                taxpaper.setDate( taxpaper.getDate() - days );
+                taxpaper = taxpaper.getFullYear()+ '-' + (taxpaper.getMonth()+1) + '-' + taxpaper.getDate() ;
+                let fitness = new Date(data['Fitness']);
+                fitness.setDate( fitness.getDate() - days );
+                fitness = fitness.getFullYear()+ '-' + (fitness.getMonth()+1) + '-' + fitness.getDate() ;
+                let insurance = new Date(data['Insurance']);
+                insurance.setDate( insurance.getDate() - days );
+                insurance = insurance.getFullYear()+ '-' + (insurance.getMonth()+1) + '-' + insurance.getDate() ;
+
+                new Date(srp) <= new Date(currentdate) ? $(row).find('td:eq(1)').css('background-color', 'red') : $(row).find('td:eq(1)').css('background-color', 'none'); 
+                new Date(prp) <= new Date(currentdate) ? $(row).find('td:eq(2)').css('background-color', 'red') : $(row).find('td:eq(2)').css('background-color', 'none'); 
+                new Date(kpk) <= new Date(currentdate) ? $(row).find('td:eq(3)').css('background-color', 'red') : $(row).find('td:eq(3)').css('background-color', 'none'); 
+                new Date(taxpaper) <= new Date(currentdate) ? $(row).find('td:eq(4)').css('background-color', 'red') : $(row).find('td:eq(4)').css('background-color', 'none'); 
+                new Date(fitness) <= new Date(currentdate) ? $(row).find('td:eq(5)').css('background-color', 'red') : $(row).find('td:eq(5)').css('background-color', 'none'); 
+                new Date(insurance) <= new Date(currentdate) ? $(row).find('td:eq(6)').css('background-color', 'red') : $(row).find('td:eq(6)').css('background-color', 'none'); 
+
+                $(row).find('td:eq(1)').text(new Date(data['Srp']).getDate() + '-' + (new Date(data['Srp']).getMonth()+1) + '-' + new Date(data['Srp']).getFullYear());
+                $(row).find('td:eq(2)').text(new Date(data['Prp']).getDate() + '-' + (new Date(data['Prp']).getMonth()+1) + '-' + new Date(data['Prp']).getFullYear());
+                $(row).find('td:eq(3)').text(new Date(data['KpkRp']).getDate() + '-' + (new Date(data['KpkRp']).getMonth()+1) + '-' + new Date(data['KpkRp']).getFullYear());
+                $(row).find('td:eq(4)').text(new Date(data['TaxPaper']).getDate() + '-' + (new Date(data['TaxPaper']).getMonth()+1) + '-' + new Date(data['TaxPaper']).getFullYear());
+                $(row).find('td:eq(5)').text(new Date(data['Fitness']).getDate() + '-' + (new Date(data['Fitness']).getMonth()+1) + '-' + new Date(data['Fitness']).getFullYear());
+                $(row).find('td:eq(6)').text(new Date(data['Insurance']).getDate() + '-' + (new Date(data['Insurance']).getMonth()+1) + '-' + new Date(data['Insurance']).getFullYear());
+              },
+            "columnDefs": [
+                {
+                    "data": null,
+                    "defaultContent": userRole == "Admin" ? "<button id='edit' class='btn btn-dark'>Edit</button>": "",
+                    "targets": -1,
+                    "orderable": false,
+                }
+            ],
+            error: function (error) {
+            alert(error);
+        }
+        });
+
+        $('#example tbody').on( 'click', '#edit', function () {
+            var data = table.row( $(this).parents('tr') ).data();
+            var url = '@Url.Action("Edit", "Home", new { id = "__id__" })';
+            window.location.href = url.replace('__id__', data.Id);
+        });
+
+    });
+</script>

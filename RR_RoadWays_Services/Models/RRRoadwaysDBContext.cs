@@ -22,6 +22,7 @@ namespace RR_RoadWays_Services.Models
         public virtual DbSet<AdvanceDetails> AdvanceDetails { get; set; }
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<Company> Company { get; set; }
+        public virtual DbSet<DataValidation> DataValidation { get; set; }
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<ExpanseHead> ExpanseHead { get; set; }
         public virtual DbSet<FixedExpanse> FixedExpanse { get; set; }
@@ -45,17 +46,17 @@ namespace RR_RoadWays_Services.Models
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 //optionsBuilder.UseSqlServer("Server=DESKTOP-KI4V3OT\\SQLEXPRESS;Database=RRRoadwaysDB;Trusted_Connection=True;");
 
-              IConfigurationRoot configuration = new ConfigurationBuilder()
-              .SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
-              .AddJsonFile("appsettings.json")
-              .Build();
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
+                .AddJsonFile("appsettings.json")
+                .Build();
                 optionsBuilder.UseSqlServer(configuration.GetConnectionString("RRRDbConstr"));
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
+            modelBuilder.HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
 
             modelBuilder.Entity<Advance>(entity =>
             {
@@ -111,6 +112,33 @@ namespace RR_RoadWays_Services.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<DataValidation>(entity =>
+            {
+                entity.Property(e => e.Fitness).HasColumnType("date");
+
+                entity.Property(e => e.Insurance).HasColumnType("date");
+
+                entity.Property(e => e.KpkRp)
+                    .HasColumnName("KPK_RP")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.Prp)
+                    .HasColumnName("PRP")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.Srp)
+                    .HasColumnName("SRP")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.TaxPaper).HasColumnType("date");
+
+                entity.HasOne(d => d.VehicleNavigation)
+                    .WithMany(p => p.DataValidation)
+                    .HasForeignKey(d => d.Vehicle)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("VehicleKey");
             });
 
             modelBuilder.Entity<Department>(entity =>
@@ -329,7 +357,7 @@ namespace RR_RoadWays_Services.Models
             modelBuilder.Entity<VehicleLoadingDetail>(entity =>
             {
                 entity.HasKey(e => new { e.Id, e.VloadingId })
-                    .HasName("PK__VehicleL__8B8F42457341171F");
+                    .HasName("PK__VehicleL__8B8F4245BD6566EC");
 
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
