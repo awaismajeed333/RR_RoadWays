@@ -139,7 +139,10 @@ namespace RR_RoadWays_Services.Controllers
             vehiclelist.Insert(0, new Vehicle() { Id = -1, VehicleNumber = "All" });
             List<Department> departmentlist = context.Department.ToList();
             departmentlist.Insert(0, new Department() { Id = -1, DepartmentName = "All" });
+            List<Station> OilShoplist = context.Station.Where(x => x.StationType.ToLower().Contains("maintenanceshop")).ToList();
+            OilShoplist.Insert(0, new Station() { Id = -1, Name = "All" });
 
+            ViewBag.OilShop = new SelectList(OilShoplist, "Id", "Name");
             ViewBag.vehicleId = new SelectList(vehiclelist, "Id", "VehicleNumber");
             ViewBag.departmentId = new SelectList(departmentlist, "Id", "DepartmentName");
             return View();
@@ -150,6 +153,7 @@ namespace RR_RoadWays_Services.Controllers
             var context = new RRRoadwaysDBContext();
             int vehicleNumber = Convert.ToInt32(data.VehicleNumber);
             int departmentId = Convert.ToInt32(data.DepartmentId);
+            int shopId = Convert.ToInt32(data.ShopId);
             List<MaintenanceReport> griddata = new List<MaintenanceReport>();
             var maintenances = context.Maintenance
                     .Join(context.Station, m => m.StationId, s => s.Id, (m, s) => new { m, s })
@@ -161,6 +165,7 @@ namespace RR_RoadWays_Services.Controllers
                         DepartmentId = b.v.m.DepartmentId,
                         Date = b.v.m.MaintenanceDate,
                         MaintenanceShop = b.v.s.Name,
+                        MaintenanceShopId = b.v.s.Id,
                         Department = d.DepartmentName,
                         Description = b.v.m.Description,
                         Maintenance = b.v.m.MaintenanceDesc,
@@ -168,6 +173,7 @@ namespace RR_RoadWays_Services.Controllers
                     }).Where(c => c.Date.Value.Date >= data.StartDate.Date)
                     .Where(c => c.Date.Value.Date <= data.EndDate.Date)
                     .Where(c => data.DepartmentId != "-1" ? c.DepartmentId == departmentId : 1 == 1)
+                    .Where(c => data.ShopId != "-1" ? c.MaintenanceShopId == shopId : 1 == 1)
                     .Where(c => data.VehicleNumber != "-1" ? c.VehicleId == vehicleNumber : 1==1).ToList();
 
             if (maintenances.Count > 0)

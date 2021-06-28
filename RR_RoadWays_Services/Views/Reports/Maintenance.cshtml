@@ -77,54 +77,65 @@
 <div>
     @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "searchform" }))
     {
-        <div class="row mt-2">
-            <div class="col-12 col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Number</span>
-                    </div>
-                    @Html.DropDownListFor(model => model.VehicleNumber, (IEnumerable<SelectListItem>)ViewBag.vehicleId, "--- Select Vehicle ---", new { @class = "form-control", id = "VehicleDropDown", required = "required" })
+    <div class="row mt-2">
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Vehicle Number</span>
+                </div>
+                @Html.DropDownListFor(model => model.VehicleNumber, (IEnumerable<SelectListItem>)ViewBag.vehicleId, "--- Select Vehicle ---", new { @class = "form-control", id = "VehicleDropDown", required = "required" })
 
-                </div>
-            </div>
-            <div class="col-12 col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Department</span>
-                    </div>
-                    @Html.DropDownListFor(model => model.VehicleNumber, (IEnumerable<SelectListItem>)ViewBag.departmentId, "--- Select Department ---", new { @class = "form-control", id = "departmentDropDown", required = "required" })
-
-                </div>
-            </div>
-            <div class="col-12 col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">Start Date</span>
-                    </div>
-                    @Html.EditorFor(model => model.StartDate, new
-                {
-                    htmlAttributes = new { @class = "form-control", id = "startdate", required = "required" }
-                })
-                </div>
-            </div>
-            <div class="col-12 col-md-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text width-100" id="inputGroup-sizing-sm">End Date</span>
-                    </div>
-                    @Html.EditorFor(model => model.EndDate, new
-                {
-                    htmlAttributes = new { @class = "form-control", id = "enddate", required = "required" }
-                })
-                </div>
-            </div>
-            <div class="col-12 col-md-12">
-                <div class="m-2 float-right">
-                    <input type="button" id="searchbutton" class="btn btn-dark" value="Search" />
-                    <input type="button" id="printbutton" class="btn btn-success" value="Print" />
-                </div>
             </div>
         </div>
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Department</span>
+                </div>
+                @Html.DropDownListFor(model => model.DepartmentId, (IEnumerable<SelectListItem>)ViewBag.departmentId, "--- Select Department ---", new { @class = "form-control", id = "departmentDropDown", required = "required" })
+
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Maintenance Shop</span>
+                </div>
+                @Html.DropDownListFor(model => model.ShopId, (IEnumerable<SelectListItem>)ViewBag.OilShop, "--- Select Shop ---", new { @class = "form-control", id = "shopDropDown", required = "required" })
+
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">Start Date</span>
+                </div>
+                @Html.EditorFor(model => model.StartDate, new
+            {
+                htmlAttributes = new { @class = "form-control", id = "startdate", required = "required" }
+            })
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text width-100" id="inputGroup-sizing-sm">End Date</span>
+                </div>
+                @Html.EditorFor(model => model.EndDate, new
+            {
+                htmlAttributes = new { @class = "form-control", id = "enddate", required = "required" }
+            })
+            </div>
+        </div>
+        <div class="col-12 col-md-12">
+            <div class="m-2 float-right">
+                <input type="button" id="searchbutton" class="btn btn-dark" value="Search" />
+                <input type="button" id="printbutton" class="btn btn-success" value="Print" />
+            </div>
+        </div>
+    </div>
     }
 <div class="row" id="reportprint">
     <div class="col-12 col-md-12 text-center">
@@ -214,7 +225,8 @@
                     StartDate: new Date($('#startdate').val()).toLocaleDateString('en-GB'),
                     EndDate: new Date($('#enddate').val()).toLocaleDateString('en-GB'),
                     VehicleNumber: $('#VehicleDropDown option:selected').val(),
-                    DepartmentId: $('#departmentDropDown option:selected').val()
+                    DepartmentId: $('#departmentDropDown option:selected').val(),
+                    ShopId: $('#shopDropDown option:selected').val()
                 }
                 var table = $('#example').DataTable({
                     "destroy": true,

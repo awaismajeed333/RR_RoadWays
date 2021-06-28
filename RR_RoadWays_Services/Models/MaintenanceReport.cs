@@ -9,6 +9,7 @@ namespace RR_RoadWays_Services.Models
     {
         public string VehicleNumber { get; set; }
         public string DepartmentId { get; set; }
+        public string ShopId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
     }
