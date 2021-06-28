@@ -465,7 +465,7 @@ namespace RR_RoadWays_Services.Controllers
                 {
                     totalDieselAndOil += ((item.Litre * item.Rate) + item.Amount);
                 }
-                totalDieselAndOil += totalDieselAndOilList[0].OilAmount;
+                totalDieselAndOil += totalDieselAndOilList[0].OilAmount == null ? 0: totalDieselAndOilList[0].OilAmount;
             }
 
             Decimal? totalOtherExpanse = context.Voucher.Join(context.VoucherOthersExpenses, vou => vou.Id, vou_other => vou_other.VoucherId, (vou, vou_other) => new
