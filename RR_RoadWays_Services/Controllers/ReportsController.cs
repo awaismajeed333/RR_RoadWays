@@ -405,7 +405,7 @@ namespace RR_RoadWays_Services.Controllers
         public IActionResult OverAll()
         {
             var context = new RRRoadwaysDBContext();
-            List<Vehicle> vehiclelist = context.Vehicle.Where(x => x.IsDeleted == false).ToList();
+            List<Vehicle> vehiclelist = context.Vehicle.Where(x => x.IsDeleted == false).OrderBy(c=>c.VehicleNumber).ToList();
             vehiclelist.Insert(0, new Vehicle() { Id = -1, VehicleNumber = "All" });
 
             ViewBag.vehicleId = new SelectList(vehiclelist, "Id", "VehicleNumber");
@@ -447,6 +447,11 @@ namespace RR_RoadWays_Services.Controllers
                     .Where(c => c.CreatedDate.Value.Date <= data.EndDate.Date)
                     .Where(c => data.VehicleNumber != "-1" ? c.VehicleNumber == vehicleNumber : 1 == 1).ToList().Sum(x => x.DownAmount + x.UpAmount);
 
+
+            Decimal? OilAmount = context.Voucher.Where(c => c.CreatedDate.Value.Date >= data.StartDate.Date)
+                    .Where(c => c.CreatedDate.Value.Date <= data.EndDate.Date)
+                    .Where(c => data.VehicleNumber != "-1" ? c.VehicleNumber == vehicleNumber : 1 == 1).ToList().Sum(x => x.OilAmount);
+
             Decimal? totalDieselAndOil = 0;
             Decimal? totalOil = 0;
             var totalDieselAndOilList = context.Voucher.Join(context.VoucherDieselDetails, vou => vou.Id, vou_die => vou_die.VoucherId, (vou, vou_die) => new
@@ -460,20 +465,22 @@ namespace RR_RoadWays_Services.Controllers
                                 Amount = vou_die.Amount,
                             }).Where(c => c.Date.Value.Date >= data.StartDate.Date)
                     .Where(c => c.Date.Value.Date <= data.EndDate.Date)
-                    .Where(c => data.VehicleNumber != "-1" ? c.VehicleNo == vehicleNumber : 1 == 1).ToList();
+                    .Where(c=> data.VehicleNumber != "-1" ? c.VehicleNo == vehicleNumber : 1 == 1).ToList();
 
             if (totalDieselAndOilList.Count > 0) {
-                int tempId = 0;
+                //int tempId = 0;
                 foreach (var item in totalDieselAndOilList)
                 {
                     totalDieselAndOil += ((item.Litre * item.Rate) + item.Amount);
-                    if (tempId == 0 || tempId != item.voucherId) {
-                        tempId = item.voucherId;
-                        totalDieselAndOil += item.OilAmount == null ? 0 : item.OilAmount;
-                    }
+                    //if (tempId == 0 || tempId != item.voucherId) {
+                        
+                    //    tempId = item.voucherId;
+                    //    totalDieselAndOil += item.OilAmount == null ? 0 : item.OilAmount;
+                    //}
 
                 }
             }
+            totalDieselAndOil += OilAmount;
 
             Decimal? totalOtherExpanse = context.Voucher.Join(context.VoucherOthersExpenses, vou => vou.Id, vou_other => vou_other.VoucherId, (vou, vou_other) => new
                             {
